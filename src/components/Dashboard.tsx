@@ -4,16 +4,29 @@ import { MarketOverview } from './MarketOverview';
 import { Portfolio } from './Portfolio';
 import { TrendingStocks } from './TrendingStocks';
 import { MarketChart } from './MarketChart';
-import { TrendingUp, BookOpen, Wallet, BarChart2, Newspaper, Calendar, Building2, Briefcase, Users } from 'lucide-react';
+import { TrendingUp, BookOpen, Wallet, BarChart2, Newspaper, Calendar, Building2, Briefcase, Users, Calculator, Target, Activity, Zap } from 'lucide-react';
 import { NewsFeed } from './news/NewsFeed';
 import { NewsAnalysis } from './NewsAnalysis';
 import { ComicMarketIndexGlow } from './ComicMarketIndexGlow';
 import { RecommendationsCards } from './markets/RecommendationsCards';
 import { IPOAnnouncements } from './markets/IPOAnnouncements';
+import { RealTimeMarketWidget } from './landing/RealTimeMarketWidget';
+import { PortfolioROICalculator } from './landing/PortfolioROICalculator';
+import { LiveTradingFeed } from './landing/LiveTradingFeed';
+import { AssetPerformanceComparison } from './landing/AssetPerformanceComparison';
+import { RiskAssessmentQuiz } from './landing/RiskAssessmentQuiz';
+import { MarketSentimentDashboard } from './landing/MarketSentimentDashboard';
+import { CreatorPerformanceLeaderboard } from './landing/CreatorPerformanceLeaderboard';
+import { InteractiveAllocationChart } from './landing/InteractiveAllocationChart';
+import { NewsImpactHeatmap } from './landing/NewsImpactHeatmap';
+import { SuccessStoriesCarousel } from './landing/SuccessStoriesCarousel';
 
 export function Dashboard() {
   return (
     <div className="space-y-6">
+      {/* Real-Time Market Index Widget - Hero Section */}
+      <RealTimeMarketWidget />
+      
       <div className="hero-card p-6 sm:p-8 text-white rounded-xl mb-8">
         {/* Centered heading and tagline */}
         <div className="text-center mb-8">
@@ -84,8 +97,19 @@ export function Dashboard() {
         </div>
       </div>
 
+      {/* Portfolio ROI Calculator - High Impact Section */}
+      <PortfolioROICalculator />
+      
+      {/* Market Sentiment Dashboard */}
+      <MarketSentimentDashboard />
+      
+      {/* Asset Performance Comparison Tool */}
+      <AssetPerformanceComparison />
       {/* Recommendations Cards */}
       <RecommendationsCards />
+
+      {/* Risk Assessment Quiz */}
+      <RiskAssessmentQuiz />
 
       {/* Asset Categories */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -138,6 +162,11 @@ export function Dashboard() {
         </Link>
       </div>
 
+      {/* Creator Performance Leaderboard */}
+      <CreatorPerformanceLeaderboard />
+      
+      {/* Interactive Asset Allocation Chart */}
+      <InteractiveAllocationChart />
       {/* Market Overview and News Analysis in a 2-column layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <MarketOverview />
@@ -149,6 +178,9 @@ export function Dashboard() {
           maxKeywords={5}
         />
       </div>
+      
+      {/* News Impact Correlation Heatmap */}
+      <NewsImpactHeatmap />
       
       {/* Market Chart spanning full width */}
       <ComicMarketIndexGlow />
@@ -179,6 +211,9 @@ export function Dashboard() {
             </div>
             <NewsFeed maxItems={7} showFilters={false} compact={true} />
           </div>
+          
+          {/* Live Trading Activity Feed */}
+          <LiveTradingFeed />
         </div>
         
         {/* Third column: Market Insights */}
@@ -266,6 +301,9 @@ export function Dashboard() {
           </div>
         </div>
       </div>
+      
+      {/* Success Stories Carousel */}
+      <SuccessStoriesCarousel />
     </div>
   );
 }
