@@ -48,6 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Link to="/markets" className="nav-link">Markets</Link>
               <Link to="/portfolio" className="nav-link">Portfolio</Link>
               <Link to="/trading" className="nav-link">Trading</Link>
+              <Link to="/ideas" className="nav-link">Ideas</Link>
               <Link to="/news" className="nav-link">News</Link>
               <Link to="/learn" className="nav-link">Learn</Link>
             </nav>
@@ -112,6 +113,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Link to="/trading" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
             Trading
           </Link>
+          <Link to="/ideas" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Ideas
+          </Link>
           <Link to="/news" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
             News
           </Link>
@@ -144,6 +148,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <li><Link to="/markets" className="text-gray-400 hover:text-white">Markets</Link></li>
                 <li><Link to="/portfolio" className="text-gray-400 hover:text-white">Portfolio</Link></li>
                 <li><Link to="/trading" className="text-gray-400 hover:text-white">Trading</Link></li>
+                <li><Link to="/ideas" className="text-gray-400 hover:text-white">Ideas</Link></li>
                 <li><Link to="/news" className="text-gray-400 hover:text-white">News</Link></li>
               </ul>
             </div>

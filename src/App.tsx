@@ -39,6 +39,9 @@ const FinancialDashboard = lazy(() => import('./pages/FinancialDashboard').then(
 const AssetPage = lazy(() => import('./pages/AssetPage').then(module => ({ default: module.AssetPage })));
 const CreatorCategoryPage = lazy(() => import('./pages/CreatorCategoryPage').then(module => ({ default: module.CreatorCategoryPage })));
 
+// Ideas Page
+const IdeasPage = lazy(() => import('./pages/IdeasPage').then(module => ({ default: module.IdeasPage })));
+
 // Bond Pages
 const BondListPage = lazy(() => import('./pages/bond/BondListPage').then(module => ({ default: module.BondListPage })));
 const BondDetailsPage = lazy(() => import('./pages/bond/BondDetailsPage').then(module => ({ default: module.BondDetailsPage })));
@@ -144,6 +147,9 @@ function App() {
             <Route path="/creator-profile/:symbol" element={<CreatorProfile />} />
             <Route path="/creator-category/:category" element={<CreatorCategoryPage />} />
             <Route path="/assets/:assetType" element={<AssetPage />} />
+            
+            {/* Ideas Routes */}
+            <Route path="/ideas" element={<IdeasPage />} />
             
             {/* Bond Routes */}
             <Route path="/bonds" element={<BondListPage />} />

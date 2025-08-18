@@ -195,3 +195,57 @@ export interface Gadget {
   description?: string;
   image?: string;
 }
+
+// Idea Management Types
+export interface Idea {
+  id: string;
+  content: string;
+  title: string;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  clusterId?: string;
+  sentiment?: 'positive' | 'negative' | 'neutral';
+  priority?: number;
+  category?: string;
+}
+
+export interface IdeaCluster {
+  id: string;
+  name: string;
+  description: string;
+  ideas: Idea[];
+  keyTerms: string[];
+  sentiment?: 'positive' | 'negative' | 'neutral';
+  confidence: number;
+  size: number;
+}
+
+export interface ClusteringResult {
+  clusters: IdeaCluster[];
+  totalIdeas: number;
+  processingTime: number;
+  confidence: number;
+  suggestions?: string[];
+}
+
+// Subscription Types
+export type SubscriptionTier = 'basic' | 'standard' | 'premium';
+
+export interface SubscriptionFeatures {
+  maxClusters: number;
+  realTimeClustering: boolean;
+  sentimentAnalysis: boolean;
+  crossProjectClustering: boolean;
+  advancedVisualization: boolean;
+  customClusterMerging: boolean;
+  priorityProcessing: boolean;
+  exportCapabilities: boolean;
+  apiAccess: boolean;
+}
+
+export interface SubscriptionState {
+  currentTier: SubscriptionTier;
+  features: SubscriptionFeatures;
+  setTier: (tier: SubscriptionTier) => void;
+}
