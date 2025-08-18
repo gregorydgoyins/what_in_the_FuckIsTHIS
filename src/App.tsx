@@ -42,6 +42,9 @@ const CreatorCategoryPage = lazy(() => import('./pages/CreatorCategoryPage').the
 // Ideas Page
 const IdeasPage = lazy(() => import('./pages/IdeasPage').then(module => ({ default: module.IdeasPage })));
 
+// Idea Mapping Page
+const IdeaMappingPage = lazy(() => import('./pages/IdeaMappingPage').then(module => ({ default: module.IdeaMappingPage })));
+
 // Bond Pages
 const BondListPage = lazy(() => import('./pages/bond/BondListPage').then(module => ({ default: module.BondListPage })));
 const BondDetailsPage = lazy(() => import('./pages/bond/BondDetailsPage').then(module => ({ default: module.BondDetailsPage })));
@@ -150,6 +153,7 @@ function App() {
             
             {/* Ideas Routes */}
             <Route path="/ideas" element={<IdeasPage />} />
+            <Route path="/ideas/mapping" element={<IdeaMappingPage />} />
             
             {/* Bond Routes */}
             <Route path="/bonds" element={<BondListPage />} />

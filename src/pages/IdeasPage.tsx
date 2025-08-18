@@ -1,5 +1,6 @@
 import React from 'react';
-import { Brain, Crown, Star, Lightbulb, Zap, Check, X } from 'lucide-react';
+import { Brain, Crown, Star, Lightbulb, Zap, Check, X, Network, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Breadcrumbs } from '../components/common/Breadcrumbs';
 import { IdeaClustering } from '../components/IdeaClustering';
 import { useSubscriptionStore } from '../store/subscriptionStore';
@@ -63,6 +64,14 @@ export function IdeasPage() {
           <Brain className="h-8 w-8 text-indigo-400" />
           <h1 className="text-3xl font-bold text-white">AI-Powered Idea Management</h1>
         </div>
+        <Link
+          to="/ideas/mapping"
+          className="flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
+        >
+          <Network className="h-5 w-5" />
+          <span>Relationship Mapping</span>
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
 
       {/* Tier Selection */}
