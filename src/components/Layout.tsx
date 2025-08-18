@@ -159,6 +159,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <li><Link to="/learn" className="text-gray-400 hover:text-white">Learning Center</Link></li>
                 <li><Link to="/market-index" className="text-gray-400 hover:text-white">Market Index</Link></li>
                 <li><Link to="/price-trends" className="text-gray-400 hover:text-white">Price Trends</Link></li>
+                <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Idea Mapping</Link></li>
                 <li><Link to="/research" className="text-gray-400 hover:text-white">Research</Link></li>
               </ul>
             </div>
