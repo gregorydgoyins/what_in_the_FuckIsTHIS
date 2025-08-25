@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   Network, Lock, Zap, Star
 } from 'lucide-react';
-import { ClusteringHeader } from './ideaClustering/ClusteringHeader';
-import { IdeaClusterCard } from './ideaClustering/IdeaClusterCard';
+import { ClusteringHeader } from '../ideaClustering/ClusteringHeader';
+import { IdeaClusterCard } from '../ideaClustering/IdeaClusterCard';
 import { useSubscriptionStore } from '../store/subscriptionStore';
 import { aiClusteringService } from '../services/aiClusteringService';
 import { mockIdeas } from '../data/ideaData';
