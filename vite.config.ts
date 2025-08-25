@@ -52,7 +52,7 @@ export default defineConfig({
     }
   ],
   server: {
-    port: Number(process.env.VITE_PORT) || 5173,
+    port: Number(process.env.VITE_PORT) || 4173,
     open: true,
     strictPort: false,
     cors: true,
