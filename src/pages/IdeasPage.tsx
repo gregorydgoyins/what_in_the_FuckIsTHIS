@@ -11,46 +11,46 @@ export function IdeasPage() {
 
   const tierInfo = {
     basic: {
-      name: 'Idea Organizer',
+      name: 'Market Observer',
       price: '$5-15/month',
-      description: 'Basic clustering into core themes',
+      description: 'Basic market trend analysis and categorization',
       icon: Lightbulb,
       color: 'bg-blue-600',
       features: [
-        'Up to 7 clusters',
-        'Basic keyword grouping',
-        'Simple theme identification',
+        'Up to 7 market segments',
+        'Basic trend grouping',
+        'Simple pattern identification',
         'Manual categorization'
       ]
     },
     standard: {
-      name: 'Semantic Analyst',
+      name: 'Market Analyst',
       price: '$20-45/month',
-      description: 'Advanced clustering with sentiment analysis',
+      description: 'Advanced market analysis with sentiment tracking',
       icon: Star,
       color: 'bg-yellow-600',
       features: [
-        'Up to 25 clusters',
-        'Sentiment analysis',
-        'Custom cluster merging',
+        'Up to 25 market segments',
+        'Publisher sentiment analysis',
+        'Custom analysis merging',
         'Export capabilities',
-        'Key term extraction'
+        'Key trend extraction'
       ]
     },
     premium: {
-      name: 'Insight Navigator',
+      name: 'Strategic Intelligence',
       price: '$50-150/month',
-      description: 'Premium clustering with real-time insights',
+      description: 'Premium market intelligence with real-time insights',
       icon: Crown,
       color: 'bg-purple-600',
       features: [
-        'Up to 100 clusters',
-        'Real-time clustering',
+        'Up to 100 market segments',
+        'Real-time market analysis',
         'Advanced visualizations',
-        'Cross-project analysis',
+        'Cross-market analysis',
         'Priority processing',
         'API access',
-        'AI recommendations'
+        'AI trading recommendations'
       ]
     }
   };
@@ -62,21 +62,21 @@ export function IdeasPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Brain className="h-8 w-8 text-indigo-400" />
-          <h1 className="text-3xl font-bold text-white">AI-Powered Idea Management</h1>
+          <h1 className="text-3xl font-bold text-white">Comic Industry Intelligence Lab</h1>
         </div>
         <Link
           to="/ideas/mapping"
           className="flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
         >
           <Network className="h-5 w-5" />
-          <span>Relationship Mapping</span>
+          <span>Market Analysis</span>
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
 
       {/* Tier Selection */}
       <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
-        <h2 className="text-xl font-bold text-white mb-6">Choose Your Subscription Tier</h2>
+        <h2 className="text-xl font-bold text-white mb-6">Choose Your Market Intelligence Tier</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {(Object.keys(tierInfo) as SubscriptionTier[]).map((tier) => {
@@ -215,12 +215,12 @@ export function IdeasPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">
-                Ready to unlock advanced AI insights?
+                Ready to unlock advanced market intelligence?
               </h2>
               <p className="text-white/90 mb-4">
                 {currentTier === 'basic' 
-                  ? 'Upgrade to Standard for sentiment analysis and custom cluster merging.'
-                  : 'Upgrade to Premium for real-time clustering and advanced visualizations.'}
+                  ? 'Upgrade to Market Analyst for publisher sentiment analysis and custom market reports.'
+                  : 'Upgrade to Strategic Intelligence for real-time market analysis and advanced visualizations.'}
               </p>
               <button
                 onClick={() => setTier(currentTier === 'basic' ? 'standard' : 'premium')}

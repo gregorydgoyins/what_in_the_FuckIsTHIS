@@ -8,9 +8,9 @@ export function Dashboard() {
       {/* Hero Section */}
       <div className="hero-card p-8 text-white rounded-xl mb-8">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Innovation Studio</h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">Panel Profits</h1>
           <p className="text-xl text-white/80 mb-8 max-w-4xl mx-auto">
-            Transform your ideas into strategic insights with AI-powered clustering and interactive relationship mapping
+            The Ultimate Comic Book Trading Platform with AI-Powered Market Analysis and Strategic Insights
           </p>
         </div>
         
@@ -26,7 +26,7 @@ export function Dashboard() {
           >
             <span className="relative z-10 flex items-center space-x-3">
               <Brain className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-              <span>Start AI Clustering</span>
+              <span>Analyze Market Trends</span>
             </span>
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
           </Link>
@@ -42,7 +42,7 @@ export function Dashboard() {
           >
             <span className="relative z-10 flex items-center space-x-3">
               <Network className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-              <span>Map Relationships</span>
+              <span>Strategic Analysis</span>
             </span>
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
           </Link>
@@ -54,26 +54,26 @@ export function Dashboard() {
         <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
           <div className="flex items-center space-x-3 mb-4">
             <Brain className="h-8 w-8 text-purple-400" />
-            <h2 className="text-2xl font-bold text-white">AI-Powered Clustering</h2>
+            <h2 className="text-2xl font-bold text-white">AI Market Intelligence</h2>
           </div>
           
           <p className="text-gray-300 mb-6">
-            Transform scattered ideas into organized, meaningful clusters using advanced AI analysis. 
-            Get insights into patterns and themes you might have missed.
+            Analyze market trends, publisher strategies, and creator opportunities using advanced AI. 
+            Discover patterns and insights that drive successful comic investments.
           </p>
           
           <div className="space-y-3 mb-6">
             <div className="flex items-center space-x-2">
               <Lightbulb className="h-5 w-5 text-blue-400" />
-              <span className="text-gray-300">Basic clustering into core themes</span>
+              <span className="text-gray-300">Market trend analysis and categorization</span>
             </div>
             <div className="flex items-center space-x-2">
               <Star className="h-5 w-5 text-yellow-400" />
-              <span className="text-gray-300">Sentiment analysis and custom merging</span>
+              <span className="text-gray-300">Publisher sentiment analysis and custom reports</span>
             </div>
             <div className="flex items-center space-x-2">
               <Crown className="h-5 w-5 text-purple-400" />
-              <span className="text-gray-300">Real-time insights and AI recommendations</span>
+              <span className="text-gray-300">Real-time market insights and trading recommendations</span>
             </div>
           </div>
           
@@ -82,7 +82,7 @@ export function Dashboard() {
             className="inline-flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
           >
             <Brain className="h-5 w-5" />
-            <span>Try AI Clustering</span>
+            <span>Analyze Market Trends</span>
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -90,26 +90,26 @@ export function Dashboard() {
         <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
           <div className="flex items-center space-x-3 mb-4">
             <Network className="h-8 w-8 text-indigo-400" />
-            <h2 className="text-2xl font-bold text-white">Relationship Mapping</h2>
+            <h2 className="text-2xl font-bold text-white">Strategic Market Analysis</h2>
           </div>
           
           <p className="text-gray-300 mb-6">
-            Visualize complex relationships between ideas using interactive graphs. 
-            Identify dependencies, contradictions, and opportunities for innovation.
+            Visualize complex relationships between market factors using interactive graphs. 
+            Identify dependencies, correlations, and strategic opportunities in the comic market.
           </p>
           
           <div className="space-y-3 mb-6">
             <div className="flex items-center space-x-2">
               <Target className="h-5 w-5 text-green-400" />
-              <span className="text-gray-300">Interactive node-graph visualization</span>
+              <span className="text-gray-300">Interactive market factor visualization</span>
             </div>
             <div className="flex items-center space-x-2">
               <BarChart2 className="h-5 w-5 text-indigo-400" />
-              <span className="text-gray-300">Critical path and dependency analysis</span>
+              <span className="text-gray-300">Market correlation and dependency analysis</span>
             </div>
             <div className="flex items-center space-x-2">
               <Users className="h-5 w-5 text-blue-400" />
-              <span className="text-gray-300">Collaborative network building</span>
+              <span className="text-gray-300">Collaborative market research</span>
             </div>
           </div>
           
@@ -118,7 +118,7 @@ export function Dashboard() {
             className="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
           >
             <Network className="h-5 w-5" />
-            <span>Start Mapping</span>
+            <span>Start Analysis</span>
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

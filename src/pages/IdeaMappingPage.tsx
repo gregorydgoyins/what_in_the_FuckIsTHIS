@@ -73,19 +73,19 @@ export function IdeaMappingPage() {
             <div className="space-y-2 text-white/90">
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
-                <span>Click "Add Idea" to create your first idea node</span>
+                <span>Click "Add Factor" to create your first market factor node</span>
               </p>
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
-                <span>Select two nodes and click "Connect" to define relationships</span>
+                <span>Select two factors and click "Connect" to define market relationships</span>
               </p>
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</span>
-                <span>Use "Auto Layout" to organize your network visually</span>
+                <span>Use "Auto Layout" to organize your market network visually</span>
               </p>
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</span>
-                <span>Toggle "Analysis" to discover insights and critical paths</span>
+                <span>Toggle "Analysis" to discover market insights and critical opportunities</span>
               </p>
             </div>
           </div>

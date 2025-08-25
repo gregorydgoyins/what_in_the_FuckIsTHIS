@@ -46,11 +46,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link to="/ideas" className="nav-link flex items-center space-x-2">
                 <Brain className="h-4 w-4" />
-                <span>AI Clustering</span>
+                <span>Industry Insights</span>
               </Link>
               <Link to="/ideas/mapping" className="nav-link flex items-center space-x-2">
                 <Network className="h-4 w-4" />
-                <span>Idea Mapping</span>
+                <span>Market Analysis</span>
               </Link>
             </nav>
             
@@ -88,10 +88,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             Dashboard
           </Link>
           <Link to="/ideas" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            AI Clustering
+            Industry Insights
           </Link>
           <Link to="/ideas/mapping" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Idea Mapping
+            Market Analysis
           </Link>
         </div>
       </div>
@@ -106,15 +106,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container-responsive mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Innovation Studio</h3>
-              <p className="text-gray-400">AI-powered idea management and relationship mapping for strategic thinking.</p>
+              <h3 className="text-lg font-semibold text-white mb-4">Comic Innovation Lab</h3>
+              <p className="text-gray-400">AI-powered market analysis and strategic insights for comic industry professionals.</p>
             </div>
             
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Features</h3>
               <ul className="space-y-2">
-                <li><Link to="/ideas" className="text-gray-400 hover:text-white">AI Clustering</Link></li>
-                <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Relationship Mapping</Link></li>
+                <li><Link to="/ideas" className="text-gray-400 hover:text-white">Industry Insights</Link></li>
+                <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Market Analysis</Link></li>
               </ul>
             </div>
             
