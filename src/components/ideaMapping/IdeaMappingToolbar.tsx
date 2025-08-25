@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Network, Lock, Zap
+  Network, Lock, Zap, Star
 } from 'lucide-react';
 import { ClusteringHeader } from './ideaClustering/ClusteringHeader';
 import { IdeaClusterCard } from './ideaClustering/IdeaClusterCard';
@@ -66,6 +66,11 @@ export function IdeaClustering({ className = '' }: IdeaClusteringProps) {
 
   const handleClusterClick = (clusterId: string) => {
     setSelectedCluster(selectedCluster === clusterId ? null : clusterId);
+  };
+
+  const getSentimentIcon = (sentiment: any) => {
+    // Placeholder function for sentiment icon
+    return null;
   };
 
   if (isLoading) {
@@ -160,46 +165,70 @@ export function IdeaClustering({ className = '' }: IdeaClusteringProps) {
               {clusteringResult.clusters.map((cluster) => (
                 <IdeaClusterCard
                   key={cluster.id}
-                      {cluster.keyTerms.slice(0, currentTier === 'premium' ? 8 : 3).map((term, index) => (
-                        <span key={index} className="px-2 py-1 bg-indigo-900/50 text-indigo-200 rounded text-xs">
-                          {term}
-                        </span>
+                  cluster={cluster}
+                  currentTier={currentTier}
+                  features={features}
+                  showSentiment={showSentiment}
+                  onClick={() => handleClusterClick(cluster.id)}
+                  isSelected={selectedCluster === cluster.id}
+                >
+                  <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl border border-slate-700/50 hover:border-indigo-500/50 transition-all cursor-pointer">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-bold text-white mb-2">{cluster.name}</h3>
+                        <p className="text-gray-300 text-sm">{cluster.description}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-2xl font-bold text-indigo-400">{cluster.ideas.length}</p>
+                        <p className="text-xs text-gray-400">ideas</p>
+                      </div>
+                    </div>
+
+                    {/* Key terms */}
+                    <div className="mb-4">
+                      <p className="text-xs text-gray-400 mb-2">Key Terms</p>
+                      <div className="flex flex-wrap gap-1">
+                        {cluster.keyTerms.slice(0, currentTier === 'premium' ? 8 : 3).map((term, index) => (
+                          <span key={index} className="px-2 py-1 bg-indigo-900/50 text-indigo-200 rounded text-xs">
+                            {term}
+                          </span>
+                        ))}
+                        {cluster.keyTerms.length > (currentTier === 'premium' ? 8 : 3) && (
+                          <span className="px-2 py-1 bg-slate-700/50 text-gray-400 rounded text-xs">
+                            +{cluster.keyTerms.length - (currentTier === 'premium' ? 8 : 3)} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Ideas preview */}
+                    <div className="space-y-2">
+                      {cluster.ideas.slice(0, 3).map((idea) => (
+                        <div key={idea.id} className="bg-slate-700/50 p-2 rounded border border-slate-600/50">
+                          <p className="text-white text-sm font-medium">{idea.title}</p>
+                          <p className="text-gray-400 text-xs line-clamp-1">{idea.content}</p>
+                        </div>
                       ))}
-                      {cluster.keyTerms.length > (currentTier === 'premium' ? 8 : 3) && (
-                        <span className="px-2 py-1 bg-slate-700/50 text-gray-400 rounded text-xs">
-                          +{cluster.keyTerms.length - (currentTier === 'premium' ? 8 : 3)} more
-                        </span>
+                      {cluster.ideas.length > 3 && (
+                        <p className="text-xs text-gray-400 text-center">
+                          +{cluster.ideas.length - 3} more ideas
+                        </p>
                       )}
                     </div>
-                  </div>
 
-                  {/* Ideas preview */}
-                  <div className="space-y-2">
-                    {cluster.ideas.slice(0, 3).map((idea) => (
-                      <div key={idea.id} className="bg-slate-700/50 p-2 rounded border border-slate-600/50">
-                        <p className="text-white text-sm font-medium">{idea.title}</p>
-                        <p className="text-gray-400 text-xs line-clamp-1">{idea.content}</p>
+                    {/* Cluster actions */}
+                    {features.customClusterMerging && (
+                      <div className="mt-4 flex space-x-2">
+                        <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-1 px-3 rounded text-xs transition-colors">
+                          Merge
+                        </button>
+                        <button className="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-1 px-3 rounded text-xs transition-colors">
+                          Split
+                        </button>
                       </div>
-                    ))}
-                    {cluster.ideas.length > 3 && (
-                      <p className="text-xs text-gray-400 text-center">
-                        +{cluster.ideas.length - 3} more ideas
-                      </p>
                     )}
                   </div>
-
-                  {/* Cluster actions */}
-                  {features.customClusterMerging && (
-                    <div className="mt-4 flex space-x-2">
-                      <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-1 px-3 rounded text-xs transition-colors">
-                        Merge
-                      </button>
-                      <button className="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-1 px-3 rounded text-xs transition-colors">
-                        Split
-                      </button>
-                    </div>
-                  )}
-                </div>
+                </IdeaClusterCard>
               ))}
             </div>
           ) : (
