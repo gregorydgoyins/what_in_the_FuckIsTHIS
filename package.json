@@ -1,5 +1,4 @@
 {
-  "name": "panel-profits-innovation-studio",
   "name": "panel-profits",
   "version": "0.1.0",
   "description": "AI-Powered Comic Book Trading Platform with Market Intelligence",
@@ -15,6 +14,7 @@
     "dev:test": "concurrently \"npm run dev\" \"npm run test\""
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.56.0",
     "date-fns": "^3.3.1",
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",

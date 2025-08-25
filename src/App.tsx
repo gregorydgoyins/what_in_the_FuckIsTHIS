@@ -79,6 +79,8 @@ const LearningCenter = lazy(() => import('./components/learn/LearningCenter').th
 // News pages
 const BlogFeed = lazy(() => import('./components/news/BlogFeed').then(module => ({ default: module.BlogFeed })));
 const NewsFeed = lazy(() => import('./components/news/NewsFeed').then(module => ({ default: module.NewsFeed })));
+const NewsDetailPage = lazy(() => import('./pages/news/NewsDetailPage').then(module => ({ default: module.NewsDetailPage })));
+const NewsManagement = lazy(() => import('./components/news/NewsManagement').then(module => ({ default: module.NewsManagement })));
 
 // Research pages
 const ResearchReport = lazy(() => import('./components/research/ResearchReport').then(module => ({ default: module.ResearchReport })));
@@ -186,6 +188,8 @@ function App() {
             
             {/* News Routes */}
             <Route path="/news" element={<NewsFeed />} />
+            <Route path="/news/:id" element={<NewsDetailPage />} />
+            <Route path="/news/manage" element={<NewsManagement userRole="admin" />} />
             <Route path="/blog" element={<BlogFeed />} />
             
             {/* Research Routes */}

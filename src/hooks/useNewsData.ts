@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { newsService } from '../services/newsService';
 
 export interface NewsItem {
   id: string;
@@ -28,92 +29,94 @@ interface UseNewsDataReturn {
   latestStory: NewsItem | null;
 }
 
-// Mock data for demonstration
-const mockNewsData: NewsItem[] = [
-  {
-    id: '1',
-    title: 'Marvel Studios Announces New Phase 5 Movies',
-    description: 'Disney reveals upcoming Marvel Cinematic Universe films through 2025',
-    content: 'Marvel Studios has officially announced their Phase 5 lineup, featuring new heroes and returning favorites. The announcement has sparked excitement among comic book fans and investors alike.',
-    publishedAt: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-    url: 'https://example.com/marvel-phase-5',
-    source: 'Comic Book News',
-    impact: 'positive',
-    imageUrl: 'https://images.unsplash.com/photo-1635805737707-575885ab0820?w=400',
-    keywords: ['Marvel', 'Phase 5', 'Movies', 'MCU'],
-    relatedSecurity: {
-      type: 'publisher',
-      symbol: 'MAR',
-      name: 'Marvel Comics'
-    }
-  },
-  {
-    id: '2',
-    title: 'DC Comics Restructures Creative Teams',
-    description: 'Major shake-up in editorial leadership affects multiple ongoing series',
-    content: 'DC Comics has announced significant changes to their creative structure, with new editors taking over key titles. This restructuring could impact the direction of major storylines.',
-    publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-    url: 'https://example.com/dc-restructure',
-    source: 'Comics Alliance',
-    impact: 'neutral',
-    imageUrl: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400',
-    keywords: ['DC Comics', 'Editorial', 'Restructure'],
-    relatedSecurity: {
-      type: 'publisher',
-      symbol: 'DC',
-      name: 'DC Comics'
-    }
-  },
-  {
-    id: '3',
-    title: 'Image Comics Sales Decline in Q3',
-    description: 'Independent publisher reports lower than expected quarterly performance',
-    content: 'Image Comics has reported a decline in sales for the third quarter, raising concerns about the independent comic market. Several key titles underperformed expectations.',
-    publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 6), // 6 hours ago
-    url: 'https://example.com/image-q3-decline',
-    source: 'Publishers Weekly',
-    impact: 'negative',
-    imageUrl: 'https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=400',
-    keywords: ['Image Comics', 'Sales', 'Q3', 'Performance'],
-    relatedSecurity: {
-      type: 'publisher',
-      symbol: 'IMG',
-      name: 'Image Comics'
-    }
-  }
-];
+interface UseNewsDataOptions {
+  limit?: number;
+  category?: string;
+  impact?: string;
+  source?: string;
+  featured?: boolean;
+  autoRefresh?: boolean;
+  refreshInterval?: number;
+}
 
-export function useNewsData(): UseNewsDataReturn {
+export function useNewsData(options: UseNewsDataOptions = {}): UseNewsDataReturn {
   const [data, setData] = useState<NewsItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [dataSource, setDataSource] = useState<'api' | 'cache' | 'demo' | null>(null);
 
-  const fetchData = async () => {
+  const {
+    limit = 10,
+    category,
+    impact,
+    source,
+    featured = false,
+    autoRefresh = true,
+    refreshInterval = 300000 // 5 minutes
+  } = options;
+
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      let result;
       
-      // In a real app, this would be an actual API call
-      setData(mockNewsData);
+      if (featured) {
+        result = await newsService.getFeaturedNews();
+      } else if (category && category !== 'all') {
+        result = await newsService.getNewsByCategory(category, limit);
+      } else {
+        result = await newsService.getNewsArticles({
+          limit,
+          category: category !== 'all' ? category : undefined,
+          impact: impact !== 'all' ? impact : undefined,
+          source: source !== 'all' ? source : undefined
+        });
+      }
+
+      if (result.error) {
+        throw new Error(result.error.message || 'Failed to fetch news');
+      }
+
+      setData(result.data || []);
+      setDataSource('api');
       setLastUpdated(new Date());
     } catch (err) {
-      setError('Failed to fetch news data');
+      console.error('News fetch error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch news data');
+      
+      // Fallback to cached data or demo data if available
+      if (data) {
+        setDataSource('cache');
+      } else {
+        setDataSource('demo');
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [limit, category, impact, source, featured, data]);
 
-  const refetch = () => {
+  const refetch = useCallback(() => {
     fetchData();
-  };
+  }, [fetchData]);
 
+  // Initial data fetch
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
+
+  // Auto-refresh setup
+  useEffect(() => {
+    if (!autoRefresh) return;
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, refreshInterval);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh, refreshInterval, fetchData]);
 
   return {
     data,
@@ -121,7 +124,86 @@ export function useNewsData(): UseNewsDataReturn {
     error,
     refetch,
     lastUpdated,
-    dataSource: 'demo',
+    dataSource,
     latestStory: data?.[0] || null
   };
+}
+
+// Hook for getting a single news article
+export function useNewsArticle(id: string) {
+  const [article, setArticle] = useState<NewsItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const { data, error } = await newsService.getNewsArticleById(id);
+
+        if (error) {
+          throw new Error(error.message || 'Failed to fetch article');
+        }
+
+        setArticle(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch article');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchArticle();
+    }
+  }, [id]);
+
+  return { article, isLoading, error };
+}
+
+// Hook for searching news
+export function useNewsSearch(query: string, options: {
+  limit?: number;
+  category?: string;
+  impact?: string;
+} = {}) {
+  const [results, setResults] = useState<NewsItem[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const search = useCallback(async (searchQuery: string) => {
+    if (!searchQuery.trim()) {
+      setResults([]);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { data, error } = await newsService.searchNewsArticles(searchQuery, options);
+
+      if (error) {
+        throw new Error(error.message || 'Search failed');
+      }
+
+      setResults(data || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Search failed');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [options]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      search(query);
+    }, 300); // Debounce search
+
+    return () => clearTimeout(timeoutId);
+  }, [query, search]);
+
+  return { results, isLoading, error, search };
 }
