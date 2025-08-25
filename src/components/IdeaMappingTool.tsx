@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
-  Network, Plus, Edit, Trash2, Search, Filter, Download, 
-  Upload, RotateCcw, ZoomIn, ZoomOut, Maximize, Settings,
-  Link as LinkIcon, Target, BarChart2, Info, Eye, EyeOff,
-  Save, X, Check, AlertTriangle, Lightbulb, ArrowRight
+  Network, RotateCcw, ZoomIn, ZoomOut, Maximize, 
+  Lightbulb, ArrowRight
 } from 'lucide-react';
+import { IdeaNodeRenderer } from './ideaMapping/IdeaNodeRenderer';
+import { IdeaRelationshipRenderer } from './ideaMapping/IdeaRelationshipRenderer';
+import { IdeaMappingToolbar } from './ideaMapping/IdeaMappingToolbar';
+import { IdeaMappingModals } from './ideaMapping/IdeaMappingModals';
 import { ideaMappingService } from '../services/ideaMappingService';
 import { IdeaNode, IdeaRelationship, RelationshipType, RelationshipStrength, RelationshipDirection } from '../types';
 
@@ -170,7 +172,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     }
   };
 
-  // Node selection and interaction
+  // Event handlers
   const handleNodeClick = (nodeId: string, event: React.MouseEvent) => {
     event.stopPropagation();
     
@@ -196,70 +198,9 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     setNewNodeForm({
       label: node.label,
       description: node.description,
-      category: node.category,
-      tags: node.tags.join(', ')
-    });
-    setIsEditNodeModalOpen(true);
-  };
-
-  // Filtering and search
-  const filteredNodes = nodes.filter(node => {
-    const matchesSearch = searchQuery === '' || 
-      node.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      node.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      node.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    const matchesCategory = filterCategory === 'all' || node.category === filterCategory;
-    
-    return matchesSearch && matchesCategory;
-  });
-
-  const filteredRelationships = relationships.filter(rel => {
-    const matchesType = filterRelationType === 'all' || rel.type === filterRelationType;
-    const sourceVisible = filteredNodes.some(node => node.id === rel.sourceId);
-    const targetVisible = filteredNodes.some(node => node.id === rel.targetId);
-    
-    return matchesType && sourceVisible && targetVisible;
-  });
-
-  // Visualization helpers
-  const getCategoryColor = (category: string): string => {
-    const colors: Record<string, string> = {
-      technology: '#3B82F6',
-      finance: '#10B981',
-      security: '#F59E0B',
-      general: '#6B7280',
-      marketing: '#EC4899',
-      analytics: '#8B5CF6'
-    };
-    return colors[category] || colors.general;
-  };
-
-  const getRelationshipStyle = (relationship: IdeaRelationship) => {
-    const styles: Record<RelationshipType, { color: string; strokeDasharray?: string }> = {
-      'depends-on': { color: '#EF4444' },
-      'related-to': { color: '#6B7280' },
-      'contradicts': { color: '#F59E0B', strokeDasharray: '5,5' },
-      'sub-idea-of': { color: '#8B5CF6' },
-      'influences': { color: '#10B981' },
-      'blocks': { color: '#DC2626', strokeDasharray: '3,3' },
-      'enables': { color: '#059669' },
-      'custom': { color: '#6366F1' }
-    };
-    
-    return styles[relationship.type] || styles['related-to'];
-  };
-
-  const getStrokeWidth = (strength: RelationshipStrength): number => {
-    switch (strength) {
-      case 'weak': return 1;
-      case 'moderate': return 2;
-      case 'strong': return 3;
-      default: return 2;
-    }
-  };
-
-  // Export functionality
+  // Handlers for toolbar actions
+  const handleShowAnalysis = () => setShowAnalysis(!showAnalysis);
+  
   const handleExport = () => {
     const data = ideaMappingService.exportNetwork();
     const blob = new Blob([data], { type: 'application/json' });
@@ -273,8 +214,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     URL.revokeObjectURL(url);
   };
 
-  // Auto-layout algorithm (simplified force-directed layout)
-  const applyAutoLayout = () => {
+  const handleAutoLayout = () => {
     const updatedNodes = [...nodes];
     const iterations = 50;
     const repulsionStrength = 1000;
@@ -328,8 +268,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     });
   };
 
-  // Quick connect selected nodes
-  const quickConnectNodes = () => {
+  const handleQuickConnect = () => {
     const selectedArray = Array.from(selectedNodes);
     if (selectedArray.length === 2) {
       setNewRelationshipForm(prev => ({
@@ -339,6 +278,17 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
       }));
       setIsCreateRelationshipModalOpen(true);
     }
+  };
+
+  const handleNodeDoubleClick = (node: IdeaNode) => {
+    setEditingNode(node);
+    setNewNodeForm({
+      label: node.label,
+      description: node.description,
+      category: node.category,
+      tags: node.tags.join(', ')
+    });
+    setIsEditNodeModalOpen(true);
   };
 
   return (
@@ -392,77 +342,23 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
       </div>
 
       {/* Toolbar */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
-        <div className="flex items-center space-x-4">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search ideas..."
-              className="pl-10 pr-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-          
-          {/* Category filter */}
-          <div className="flex items-center space-x-2">
-            <Filter className="h-4 w-4 text-gray-400" />
-            <select
-              value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
-              className="bg-slate-700/50 text-white text-sm border-slate-600/50 rounded-lg px-3 py-2"
-            >
-              <option value="all">All Categories</option>
-              {ideaMappingService.getCategories().map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
-          
-          {/* Relationship type filter */}
-          <select
-            value={filterRelationType}
-            onChange={(e) => setFilterRelationType(e.target.value as RelationshipType | 'all')}
-            className="bg-slate-700/50 text-white text-sm border-slate-600/50 rounded-lg px-3 py-2"
-          >
-            <option value="all">All Relationships</option>
-            {ideaMappingService.getRelationshipTypes().map(type => (
-              <option key={type} value={type}>{type.replace('-', ' ')}</option>
-            ))}
-          </select>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          {/* Action buttons */}
-          <button
-            onClick={() => setIsCreateNodeModalOpen(true)}
-            className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg transition-colors"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add Idea</span>
-          </button>
-          
-          {selectedNodes.size === 2 && (
-            <button
-              onClick={quickConnectNodes}
-              className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors"
-            >
-              <LinkIcon className="h-4 w-4" />
-              <span>Connect</span>
-            </button>
-          )}
-          
-          <button
-            onClick={applyAutoLayout}
-            className="flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg transition-colors"
-          >
-            <Target className="h-4 w-4" />
-            <span>Auto Layout</span>
-          </button>
-        </div>
-      </div>
+      <IdeaMappingToolbar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        filterCategory={filterCategory}
+        setFilterCategory={setFilterCategory}
+        filterRelationType={filterRelationType}
+        setFilterRelationType={setFilterRelationType}
+        selectedNodesCount={selectedNodes.size}
+        showAnalysis={showAnalysis}
+        setShowAnalysis={handleShowAnalysis}
+        onAddIdea={() => setIsCreateNodeModalOpen(true)}
+        onQuickConnect={handleQuickConnect}
+        onAutoLayout={handleAutoLayout}
+        onExport={handleExport}
+        categories={ideaMappingService.getCategories()}
+        relationshipTypes={ideaMappingService.getRelationshipTypes()}
+      />
 
       {/* Main content area */}
       <div className="flex h-[600px]">
@@ -494,80 +390,32 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
                 return null;
               }
               
-              const style = getRelationshipStyle(relationship);
-              const strokeWidth = getStrokeWidth(relationship.strength);
-              
               return (
-                <g key={relationship.id}>
-                  <line
-                    x1={sourceNode.position.x}
-                    y1={sourceNode.position.y}
-                    x2={targetNode.position.x}
-                    y2={targetNode.position.y}
-                    stroke={style.color}
-                    strokeWidth={strokeWidth}
-                    strokeDasharray={style.strokeDasharray}
-                    className="cursor-pointer hover:opacity-80"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedRelationship(relationship.id);
-                    }}
-                  />
-                  
-                  {/* Arrow for unidirectional relationships */}
-                  {relationship.direction === 'unidirectional' && (
-                    <polygon
-                      points={`${targetNode.position.x - 5},${targetNode.position.y - 5} ${targetNode.position.x + 5},${targetNode.position.y} ${targetNode.position.x - 5},${targetNode.position.y + 5}`}
-                      fill={style.color}
-                    />
-                  )}
-                  
-                  {/* Relationship label */}
-                  <text
-                    x={(sourceNode.position.x + targetNode.position.x) / 2}
-                    y={(sourceNode.position.y + targetNode.position.y) / 2 - 10}
-                    fill="#9CA3AF"
-                    fontSize="10"
-                    textAnchor="middle"
-                    className="pointer-events-none"
-                  >
-                    {relationship.type.replace('-', ' ')}
-                  </text>
-                </g>
+                <IdeaRelationshipRenderer
+                  key={relationship.id}
+                  relationship={relationship}
+                  sourceNode={sourceNode}
+                  targetNode={targetNode}
+                  onClick={handleRelationshipClick}
+                  getRelationshipStyle={getRelationshipStyle}
+                  getStrokeWidth={getStrokeWidth}
+                />
               );
             })}
             
             {/* Nodes */}
             {filteredNodes.map(node => {
-              if (!node.position) return null;
-              
               const isSelected = selectedNodes.has(node.id);
-              const categoryColor = getCategoryColor(node.category);
               
               return (
-                <g key={node.id}>
-                  <circle
-                    cx={node.position.x}
-                    cy={node.position.y}
-                    r="25"
-                    fill={categoryColor}
-                    stroke={isSelected ? '#FBBF24' : '#374151'}
-                    strokeWidth={isSelected ? 3 : 1}
-                    className="cursor-pointer hover:opacity-80"
-                    onClick={(e) => handleNodeClick(node.id, e)}
-                    onDoubleClick={() => handleNodeDoubleClick(node)}
-                  />
-                  <text
-                    x={node.position.x}
-                    y={node.position.y + 5}
-                    fill="white"
-                    fontSize="10"
-                    textAnchor="middle"
-                    className="pointer-events-none font-medium"
-                  >
-                    {node.label.length > 12 ? node.label.substring(0, 12) + '...' : node.label}
-                  </text>
-                </g>
+                <IdeaNodeRenderer
+                  key={node.id}
+                  node={node}
+                  isSelected={isSelected}
+                  onClick={handleNodeClick}
+                  onDoubleClick={handleNodeDoubleClick}
+                  getCategoryColor={getCategoryColor}
+                />
               );
             })}
           </svg>
@@ -692,302 +540,26 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         </div>
       </div>
 
-      {/* Create Node Modal */}
-      {isCreateNodeModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl shadow-2xl border border-slate-700/50 w-full max-w-md">
-            <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
-              <h3 className="text-lg font-bold text-white">Create New Idea</h3>
-              <button
-                onClick={() => setIsCreateNodeModalOpen(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Label</label>
-                <input
-                  type="text"
-                  value={newNodeForm.label}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, label: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                  placeholder="Enter idea title..."
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Description</label>
-                <textarea
-                  value={newNodeForm.description}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, description: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white h-24"
-                  placeholder="Describe your idea..."
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Category</label>
-                <select
-                  value={newNodeForm.category}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                >
-                  <option value="general">General</option>
-                  <option value="technology">Technology</option>
-                  <option value="finance">Finance</option>
-                  <option value="security">Security</option>
-                  <option value="marketing">Marketing</option>
-                  <option value="analytics">Analytics</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Tags (comma-separated)</label>
-                <input
-                  type="text"
-                  value={newNodeForm.tags}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, tags: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                  placeholder="tag1, tag2, tag3..."
-                />
-              </div>
-            </div>
-            
-            <div className="flex justify-end space-x-3 p-6 border-t border-slate-700/50">
-              <button
-                onClick={() => setIsCreateNodeModalOpen(false)}
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCreateNode}
-                disabled={!newNodeForm.label.trim()}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Create Idea
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Create Relationship Modal */}
-      {isCreateRelationshipModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl shadow-2xl border border-slate-700/50 w-full max-w-md">
-            <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
-              <h3 className="text-lg font-bold text-white">Create Relationship</h3>
-              <button
-                onClick={() => setIsCreateRelationshipModalOpen(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">From</label>
-                  <select
-                    value={newRelationshipForm.sourceId}
-                    onChange={(e) => setNewRelationshipForm(prev => ({ ...prev, sourceId: e.target.value }))}
-                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                  >
-                    <option value="">Select idea...</option>
-                    {nodes.map(node => (
-                      <option key={node.id} value={node.id}>{node.label}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">To</label>
-                  <select
-                    value={newRelationshipForm.targetId}
-                    onChange={(e) => setNewRelationshipForm(prev => ({ ...prev, targetId: e.target.value }))}
-                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                  >
-                    <option value="">Select idea...</option>
-                    {nodes.filter(node => node.id !== newRelationshipForm.sourceId).map(node => (
-                      <option key={node.id} value={node.id}>{node.label}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Relationship Type</label>
-                <select
-                  value={newRelationshipForm.type}
-                  onChange={(e) => setNewRelationshipForm(prev => ({ ...prev, type: e.target.value as RelationshipType }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                >
-                  <option value="depends-on">Depends On</option>
-                  <option value="related-to">Related To</option>
-                  <option value="contradicts">Contradicts</option>
-                  <option value="sub-idea-of">Sub-idea Of</option>
-                  <option value="influences">Influences</option>
-                  <option value="blocks">Blocks</option>
-                  <option value="enables">Enables</option>
-                </select>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">Strength</label>
-                  <select
-                    value={newRelationshipForm.strength}
-                    onChange={(e) => setNewRelationshipForm(prev => ({ ...prev, strength: e.target.value as RelationshipStrength }))}
-                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                  >
-                    <option value="weak">Weak</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="strong">Strong</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-2">Direction</label>
-                  <select
-                    value={newRelationshipForm.direction}
-                    onChange={(e) => setNewRelationshipForm(prev => ({ ...prev, direction: e.target.value as RelationshipDirection }))}
-                    className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                  >
-                    <option value="unidirectional">One-way</option>
-                    <option value="bidirectional">Two-way</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Description (optional)</label>
-                <textarea
-                  value={newRelationshipForm.description}
-                  onChange={(e) => setNewRelationshipForm(prev => ({ ...prev, description: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white h-20"
-                  placeholder="Describe the relationship..."
-                />
-              </div>
-            </div>
-            
-            <div className="flex justify-end space-x-3 p-6 border-t border-slate-700/50">
-              <button
-                onClick={() => setIsCreateRelationshipModalOpen(false)}
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCreateRelationship}
-                disabled={!newRelationshipForm.sourceId || !newRelationshipForm.targetId}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Create Relationship
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Edit Node Modal */}
-      {isEditNodeModalOpen && editingNode && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl shadow-2xl border border-slate-700/50 w-full max-w-md">
-            <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
-              <h3 className="text-lg font-bold text-white">Edit Idea</h3>
-              <button
-                onClick={() => {
-                  setIsEditNodeModalOpen(false);
-                  setEditingNode(null);
-                }}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Label</label>
-                <input
-                  type="text"
-                  value={newNodeForm.label}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, label: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Description</label>
-                <textarea
-                  value={newNodeForm.description}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, description: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white h-24"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Category</label>
-                <select
-                  value={newNodeForm.category}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                >
-                  <option value="general">General</option>
-                  <option value="technology">Technology</option>
-                  <option value="finance">Finance</option>
-                  <option value="security">Security</option>
-                  <option value="marketing">Marketing</option>
-                  <option value="analytics">Analytics</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Tags</label>
-                <input
-                  type="text"
-                  value={newNodeForm.tags}
-                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, tags: e.target.value }))}
-                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
-                />
-              </div>
-            </div>
-            
-            <div className="flex justify-between p-6 border-t border-slate-700/50">
-              <button
-                onClick={() => handleDeleteNode(editingNode.id)}
-                className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
-              >
-                <Trash2 className="h-4 w-4" />
-                <span>Delete</span>
-              </button>
-              
-              <div className="flex space-x-3">
-                <button
-                  onClick={() => {
-                    setIsEditNodeModalOpen(false);
-                    setEditingNode(null);
-                  }}
-                  className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleUpdateNode}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* All Modals */}
+      <IdeaMappingModals
+        isCreateNodeModalOpen={isCreateNodeModalOpen}
+        setIsCreateNodeModalOpen={setIsCreateNodeModalOpen}
+        newNodeForm={newNodeForm}
+        setNewNodeForm={setNewNodeForm}
+        handleCreateNode={handleCreateNode}
+        isCreateRelationshipModalOpen={isCreateRelationshipModalOpen}
+        setIsCreateRelationshipModalOpen={setIsCreateRelationshipModalOpen}
+        newRelationshipForm={newRelationshipForm}
+        setNewRelationshipForm={setNewRelationshipForm}
+        handleCreateRelationship={handleCreateRelationship}
+        nodes={nodes}
+        isEditNodeModalOpen={isEditNodeModalOpen}
+        setIsEditNodeModalOpen={setIsEditNodeModalOpen}
+        editingNode={editingNode}
+        setEditingNode={setEditingNode}
+        handleUpdateNode={handleUpdateNode}
+        handleDeleteNode={handleDeleteNode}
+      />
 
       {/* Tutorial overlay for first-time users */}
       {nodes.length === 0 && (
