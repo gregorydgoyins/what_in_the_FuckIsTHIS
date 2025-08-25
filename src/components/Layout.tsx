@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Bell, User, Brain, Network, Lightbulb } from 'lucide-react';
+import { Menu, X, Search, Bell, User, Brain, Network, Lightbulb, TrendingUp, Users, BarChart2, GraduationCap } from 'lucide-react';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,38 +34,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
               
               <Link to="/" className="flex items-center space-x-2">
                 <Brain className="h-8 w-8 text-indigo-400" />
-                <span className="text-xl font-bold text-white">Innovation Studio</span>
+                <span className="text-xl font-bold text-white">Panel Profits</span>
               </Link>
             </div>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
               <Link to="/" className="nav-link flex items-center space-x-2">
+                <Brain className="h-4 w-4" />
+                <span>Home</span>
+              </Link>
+              <Link to="/ideas" className="nav-link flex items-center space-x-2">
                 <Lightbulb className="h-4 w-4" />
-                <span>Dashboard</span>
+                <span>AI Intelligence</span>
               </Link>
               <Link to="/trading" className="nav-link flex items-center space-x-2">
-                <Brain className="h-4 w-4" />
+                <TrendingUp className="h-4 w-4" />
                 <span>Trading</span>
               </Link>
               <Link to="/characters" className="nav-link flex items-center space-x-2">
-                <Network className="h-4 w-4" />
-                <span>Characters</span>
+                <Users className="h-4 w-4" />
+                <span>Assets</span>
               </Link>
               <Link to="/portfolio" className="nav-link flex items-center space-x-2">
-                <Lightbulb className="h-4 w-4" />
+                <BarChart2 className="h-4 w-4" />
                 <span>Portfolio</span>
               </Link>
-              <Link to="/ideas" className="nav-link flex items-center space-x-2">
-                <Brain className="h-4 w-4" />
-                <span>Industry Insights</span>
-              </Link>
-              <Link to="/ideas/mapping" className="nav-link flex items-center space-x-2">
+              <Link to="/markets" className="nav-link flex items-center space-x-2">
                 <Network className="h-4 w-4" />
-                <span>Market Analysis</span>
+                <span>Markets</span>
               </Link>
               <Link to="/learn" className="nav-link flex items-center space-x-2">
-                <Lightbulb className="h-4 w-4" />
+                <GraduationCap className="h-4 w-4" />
                 <span>Learn</span>
               </Link>
             </nav>
@@ -101,10 +101,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="bg-slate-800 border-b border-slate-700 px-2 pt-2 pb-3 space-y-1">
           <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Dashboard
+            Home
           </Link>
           <Link to="/ideas" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            AI Analysis
+            AI Intelligence
           </Link>
           <Link to="/trading" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
             Trading
@@ -114,6 +114,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </Link>
           <Link to="/portfolio" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
             Portfolio
+          </Link>
+          <Link to="/markets" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Markets
           </Link>
           <Link to="/learn" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
             Learn
@@ -131,30 +134,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container-responsive mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Comic Innovation Lab</h3>
-              <p className="text-gray-400">AI-powered market analysis and strategic insights for comic industry professionals.</p>
+              <h3 className="text-lg font-semibold text-white mb-4">Panel Profits</h3>
+              <p className="text-gray-400">AI-powered comic book trading platform with advanced market intelligence and professional-grade analytics.</p>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Features</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Trading</h3>
               <ul className="space-y-2">
-                <li><Link to="/ideas" className="text-gray-400 hover:text-white">Industry Insights</Link></li>
-                <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Market Analysis</Link></li>
+                <li><Link to="/characters" className="text-gray-400 hover:text-white">Characters</Link></li>
+                <li><Link to="/creators" className="text-gray-400 hover:text-white">Creators</Link></li>
+                <li><Link to="/bonds" className="text-gray-400 hover:text-white">Bonds</Link></li>
+                <li><Link to="/funds" className="text-gray-400 hover:text-white">Funds</Link></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Resources</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Intelligence</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white">Documentation</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">API Reference</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Support</a></li>
+                <li><Link to="/ideas" className="text-gray-400 hover:text-white">AI Analysis</Link></li>
+                <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Market Mapping</Link></li>
+                <li><Link to="/learn" className="text-gray-400 hover:text-white">Learning Center</Link></li>
               </ul>
             </div>
           </div>
           
           <div className="mt-8 pt-8 border-t border-slate-700/50 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">© 2025 Innovation Studio. Part of the Panel Profits ecosystem.</p>
+            <p className="text-gray-400 text-sm">© 2025 Panel Profits. Advanced Comic Trading Platform.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
               <a href="#" className="text-gray-400 hover:text-white text-sm">Terms of Service</a>

@@ -1,7 +1,8 @@
 {
   "name": "panel-profits-innovation-studio",
+  "name": "panel-profits",
   "version": "0.1.0",
-  "description": "AI-Powered Idea Management and Relationship Mapping Tool",
+  "description": "AI-Powered Comic Book Trading Platform with Market Intelligence",
   "private": true,
   "type": "module",
   "scripts": {

@@ -1,259 +1,473 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Network, Lightbulb, Star, Crown, Zap, TrendingUp, Users, BarChart2, Target, ArrowRight } from 'lucide-react';
+import { 
+  Brain, Network, Lightbulb, Star, Crown, Zap, TrendingUp, Users, 
+  BarChart2, Target, ArrowRight, Activity, DollarSign, Shield,
+  Calendar, Award, Briefcase, Eye, Play, ChevronRight
+} from 'lucide-react';
+import { MarketSentimentGauge } from './ui/MarketSentimentGauge';
+import { RecommendationsCards } from './markets/RecommendationsCards';
+import { IPOAnnouncements } from './markets/IPOAnnouncements';
+import { NewsFeed } from './news/NewsFeed';
 
 export function Dashboard() {
-  return (
-    <div className="space-y-6">
-      {/* Hero Section */}
-      <div className="hero-card p-8 text-white rounded-xl mb-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Panel Profits</h1>
-          <p className="text-xl text-white/80 mb-8 max-w-4xl mx-auto">
-            The Ultimate Comic Book Trading Platform with Integrated AI Market Intelligence
-          </p>
-        </div>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-          <Link 
-            to="/ideas"
-            className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg
-                     bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500
-                     text-white shadow-lg hover:shadow-xl
-                     transition-all duration-300 ease-out transform hover:-translate-y-1 active:translate-y-0
-                     focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-slate-900
-                     w-full sm:w-auto min-w-[250px] overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center space-x-3">
-              <Brain className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-              <span>AI Market Intelligence</span>
-            </span>
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
-          </Link>
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [marketSentiment, setMarketSentiment] = useState(0.75);
+  const [marketIndex, setMarketIndex] = useState(14250);
+  
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+      // Simulate slight market fluctuations
+      setMarketIndex(prev => prev + (Math.random() - 0.5) * 10);
+      setMarketSentiment(prev => {
+        const change = (Math.random() - 0.5) * 0.02;
+        return Math.max(-1, Math.min(1, prev + change));
+      });
+    }, 2000);
+    
+    return () => clearInterval(timer);
+  }, []);
 
-          <Link 
-            to="/trading"
-            className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg
-                     bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500
-                     text-white shadow-lg hover:shadow-xl
-                     transition-all duration-300 ease-out transform hover:-translate-y-1 active:translate-y-0
-                     focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-slate-900
-                     w-full sm:w-auto min-w-[250px] overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center space-x-3">
-              <Network className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-              <span>Start Trading</span>
-            </span>
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
-          </Link>
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Hero Section with Live Market Data */}
+      <div className="hero-card p-8 text-white rounded-xl relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 via-purple-600/20 to-blue-600/20" />
+        <div className="relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between mb-8">
+            <div className="text-center lg:text-left mb-6 lg:mb-0">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+                Panel Profits
+              </h1>
+              <p className="text-xl text-white/90 mb-6 max-w-2xl">
+                AI-Powered Comic Book Trading Platform with Advanced Market Intelligence
+              </p>
+              <div className="flex items-center justify-center lg:justify-start space-x-4 text-sm text-white/80">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Live Trading • {formatTime(currentTime)}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Activity className="h-4 w-4" />
+                  <span>CMI: {marketIndex.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex flex-col items-center space-y-4">
+              <MarketSentimentGauge 
+                sentiment={marketSentiment}
+                confidence={0.85}
+                size="large"
+                label="Market Sentiment"
+              />
+              <div className="text-center">
+                <p className="text-white/60 text-sm">Real-time AI Analysis</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <Link 
+              to="/ideas"
+              className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg
+                       bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500
+                       text-white shadow-lg hover:shadow-xl
+                       transition-all duration-300 ease-out transform hover:-translate-y-1 active:translate-y-0
+                       focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-slate-900
+                       w-full sm:w-auto min-w-[250px] overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center space-x-3">
+                <Brain className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
+                <span>AI Market Intelligence</span>
+                <ArrowRight className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1" />
+              </span>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+            </Link>
+
+            <Link 
+              to="/trading"
+              className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg
+                       bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500
+                       text-white shadow-lg hover:shadow-xl
+                       transition-all duration-300 ease-out transform hover:-translate-y-1 active:translate-y-0
+                       focus:outline-none focus:ring-4 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-900
+                       w-full sm:w-auto min-w-[250px] overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center space-x-3">
+                <TrendingUp className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
+                <span>Start Trading</span>
+                <ArrowRight className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1" />
+              </span>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Feature Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+      {/* Live Market Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          {/* Market Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl hover:shadow-2xl transition-all group">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-full bg-green-600/20">
+                  <TrendingUp className="h-6 w-6 text-green-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-400">Market Index</p>
+                  <p className="text-xl font-bold text-white">{marketIndex.toFixed(0)}</p>
+                  <p className="text-xs text-green-400">+2.3% today</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl hover:shadow-2xl transition-all group">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-full bg-blue-600/20">
+                  <Activity className="h-6 w-6 text-blue-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-400">Volume</p>
+                  <p className="text-xl font-bold text-white">2.8M</p>
+                  <p className="text-xs text-blue-400">Active trading</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl hover:shadow-2xl transition-all group">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-full bg-purple-600/20">
+                  <Brain className="h-6 w-6 text-purple-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-400">AI Confidence</p>
+                  <p className="text-xl font-bold text-white">85%</p>
+                  <p className="text-xs text-purple-400">High accuracy</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl hover:shadow-2xl transition-all group">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-full bg-yellow-600/20">
+                  <Star className="h-6 w-6 text-yellow-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-400">Hot Assets</p>
+                  <p className="text-xl font-bold text-white">47</p>
+                  <p className="text-xs text-yellow-400">Trending now</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* AI Recommendations */}
+          <RecommendationsCards />
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Quick Portfolio Overview */}
+          <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+            <div className="flex items-center space-x-2 mb-4">
+              <Shield className="h-6 w-6 text-indigo-400" />
+              <h3 className="text-lg font-bold text-white">Portfolio Snapshot</h3>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Total Value</span>
+                <span className="text-xl font-bold text-white">CC 2,847,230</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Today's P&L</span>
+                <span className="text-lg font-semibold text-green-400">+CC 42,150 (+1.5%)</span>
+              </div>
+              <div className="w-full bg-slate-700 rounded-full h-2">
+                <div className="bg-green-500 h-2 rounded-full" style={{ width: '68%' }} />
+              </div>
+              <p className="text-sm text-gray-400">Diversification Score: 68/100</p>
+            </div>
+            
+            <Link 
+              to="/portfolio"
+              className="block w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white text-center py-2 rounded-lg transition-colors"
+            >
+              View Full Portfolio
+            </Link>
+          </div>
+
+          {/* Top Movers */}
+          <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+            <div className="flex items-center space-x-2 mb-4">
+              <Activity className="h-6 w-6 text-green-400" />
+              <h3 className="text-lg font-bold text-white">Top Movers</h3>
+            </div>
+            
+            <div className="space-y-3">
+              {[
+                { symbol: 'ASM300', name: 'Amazing Spider-Man #300', change: '+8.5%', positive: true },
+                { symbol: 'BATM', name: 'Batman', change: '+5.2%', positive: true },
+                { symbol: 'TMFS', name: 'Todd McFarlane', change: '+4.8%', positive: true },
+                { symbol: 'SPDR', name: 'Spider-Man', change: '-2.1%', positive: false }
+              ].map((asset, index) => (
+                <Link 
+                  key={index}
+                  to={`/character/${asset.symbol}`}
+                  className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors group"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-white">{asset.symbol}</p>
+                    <p className="text-xs text-gray-400">{asset.name}</p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className={`text-sm font-semibold ${asset.positive ? 'text-green-400' : 'text-red-400'}`}>
+                      {asset.change}
+                    </span>
+                    <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Feature Showcase */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all">
           <div className="flex items-center space-x-3 mb-4">
             <Brain className="h-8 w-8 text-purple-400" />
             <h2 className="text-2xl font-bold text-white">AI Market Intelligence</h2>
           </div>
           
           <p className="text-gray-300 mb-6">
-            Advanced AI-powered analysis of comic market trends, character performance, and trading opportunities. 
-            Get intelligent insights that help you make better investment decisions.
+            Leverage advanced AI to analyze market trends, character performance, and identify trading opportunities 
+            with unprecedented accuracy and speed.
           </p>
           
           <div className="space-y-3 mb-6">
-            <div className="flex items-center space-x-2">
-              <Lightbulb className="h-5 w-5 text-blue-400" />
-              <span className="text-gray-300">Smart market trend analysis and asset categorization</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-purple-400 rounded-full" />
+              <span className="text-gray-300">Real-time sentiment analysis across 50+ data sources</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Star className="h-5 w-5 text-yellow-400" />
-              <span className="text-gray-300">Character and creator sentiment analysis</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-blue-400 rounded-full" />
+              <span className="text-gray-300">Character popularity tracking and prediction models</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Crown className="h-5 w-5 text-purple-400" />
-              <span className="text-gray-300">Real-time trading signals and portfolio optimization</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-indigo-400 rounded-full" />
+              <span className="text-gray-300">Cross-media impact analysis and correlation mapping</span>
             </div>
           </div>
           
-          <Link 
-            to="/ideas"
-            className="inline-flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            <Brain className="h-5 w-5" />
-            <span>Access AI Intelligence</span>
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="flex space-x-3">
+            <Link 
+              to="/ideas"
+              className="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg transition-colors text-center font-medium"
+            >
+              Explore AI Analysis
+            </Link>
+            <Link 
+              to="/ideas/mapping"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white px-4 py-3 rounded-lg transition-colors text-center font-medium"
+            >
+              Market Mapping
+            </Link>
+          </div>
         </div>
 
-        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all">
           <div className="flex items-center space-x-3 mb-4">
-            <TrendingUp className="h-8 w-8 text-indigo-400" />
-            <h2 className="text-2xl font-bold text-white">Comic Asset Trading</h2>
+            <TrendingUp className="h-8 w-8 text-green-400" />
+            <h2 className="text-2xl font-bold text-white">Advanced Trading Platform</h2>
           </div>
           
           <p className="text-gray-300 mb-6">
-            Trade comic characters, creators, publishers, bonds, and funds in a sophisticated virtual market.
-            Build your portfolio with iconic heroes, villains, and comic industry assets.
+            Trade comic characters, creators, publishers, bonds, and funds in a sophisticated virtual market 
+            with professional-grade tools and analytics.
           </p>
           
           <div className="space-y-3 mb-6">
-            <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-green-400" />
-              <span className="text-gray-300">Characters, creators, and comic assets</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-green-400 rounded-full" />
+              <span className="text-gray-300">500+ tradeable comic assets across all eras</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <BarChart2 className="h-5 w-5 text-indigo-400" />
-              <span className="text-gray-300">Real-time pricing and market data</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-emerald-400 rounded-full" />
+              <span className="text-gray-300">Options, futures, and derivative instruments</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Target className="h-5 w-5 text-blue-400" />
-              <span className="text-gray-300">Portfolio management and tracking</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-blue-400 rounded-full" />
+              <span className="text-gray-300">Real-time portfolio tracking and risk management</span>
             </div>
           </div>
           
-          <Link 
-            to="/trading"
-            className="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            <TrendingUp className="h-5 w-5" />
-            <span>Start Trading</span>
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="flex space-x-3">
+            <Link 
+              to="/trading"
+              className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition-colors text-center font-medium"
+            >
+              Start Trading
+            </Link>
+            <Link 
+              to="/portfolio"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white px-4 py-3 rounded-lg transition-colors text-center font-medium"
+            >
+              My Portfolio
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* AI Intelligence Tiers */}
+      {/* Market Categories */}
       <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
-        <h2 className="text-2xl font-bold text-white mb-6">AI Intelligence Levels</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Explore Asset Categories</h2>
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[
+            { icon: Users, label: 'Characters', path: '/characters', color: 'text-blue-400', count: '250+' },
+            { icon: Award, label: 'Creators', path: '/creators', color: 'text-purple-400', count: '100+' },
+            { icon: Briefcase, label: 'Funds', path: '/funds', color: 'text-indigo-400', count: '25+' },
+            { icon: Shield, label: 'Bonds', path: '/bonds', color: 'text-green-400', count: '50+' },
+            { icon: Target, label: 'Locations', path: '/locations', color: 'text-yellow-400', count: '75+' },
+            { icon: Zap, label: 'Gadgets', path: '/gadgets', color: 'text-red-400', count: '60+' }
+          ].map((category, index) => (
+            <Link
+              key={index}
+              to={category.path}
+              className="group bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700 transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div className="text-center">
+                <category.icon className={`h-8 w-8 ${category.color} mx-auto mb-2 group-hover:scale-110 transition-transform`} />
+                <p className="font-medium text-white">{category.label}</p>
+                <p className="text-xs text-gray-400">{category.count} assets</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* News and IPOs */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <NewsFeed maxItems={5} showFilters={false} compact={true} />
+        </div>
+        
+        <div>
+          <IPOAnnouncements maxItems={5} showFilters={false} compact={true} />
+        </div>
+      </div>
+
+      {/* AI Subscription Tiers */}
+      <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+        <div className="flex items-center space-x-3 mb-6">
+          <Crown className="h-8 w-8 text-purple-400" />
+          <h2 className="text-2xl font-bold text-white">AI Intelligence Tiers</h2>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600/50 hover:border-blue-500/50 transition-colors">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="p-3 rounded-full bg-blue-600">
-                <Lightbulb className="h-6 w-6 text-white" />
+          {[
+            {
+              tier: 'Market Observer',
+              price: '$5-15/month',
+              description: 'Basic market trend analysis',
+              icon: Lightbulb,
+              color: 'bg-blue-600',
+              features: ['7 market segments', 'Basic categorization', 'Simple alerts']
+            },
+            {
+              tier: 'Market Analyst',
+              price: '$20-45/month',
+              description: 'Advanced sentiment tracking',
+              icon: Star,
+              color: 'bg-yellow-600',
+              features: ['25 market segments', 'Sentiment analysis', 'Custom reports', 'Export data']
+            },
+            {
+              tier: 'Strategic Intelligence',
+              price: '$50-150/month',
+              description: 'Real-time AI recommendations',
+              icon: Crown,
+              color: 'bg-purple-600',
+              features: ['100 market segments', 'Real-time signals', 'API access', 'Priority processing']
+            }
+          ].map((tier, index) => (
+            <div key={index} className="bg-slate-700/50 rounded-xl p-6 border border-slate-600/50 hover:border-indigo-500/50 transition-colors group">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className={`p-3 rounded-full ${tier.color}`}>
+                  <tier.icon className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">{tier.tier}</h3>
+                  <p className="text-sm text-indigo-400">{tier.price}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-white">Market Observer</h3>
-                <p className="text-sm text-blue-400">$5-15/month</p>
+              
+              <p className="text-gray-300 text-sm mb-4">{tier.description}</p>
+              
+              <div className="space-y-2">
+                {tier.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center space-x-2">
+                    <Check className="h-4 w-4 text-green-400 flex-shrink-0" />
+                    <span className="text-gray-300 text-sm">{feature}</span>
+                  </div>
+                ))}
               </div>
+              
+              <button className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition-colors group-hover:bg-indigo-500">
+                Select Plan
+              </button>
             </div>
-            
-            <p className="text-gray-300 text-sm mb-4">Basic market analysis and trend identification</p>
-            
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li>✓ Basic market trend analysis</li>
-              <li>✓ Asset categorization</li>
-              <li>✓ Simple price alerts</li>
-            </ul>
-          </div>
-          
-          <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600/50 hover:border-yellow-500/50 transition-colors">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="p-3 rounded-full bg-yellow-600">
-                <Star className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white">Market Analyst</h3>
-                <p className="text-sm text-yellow-400">$20-45/month</p>
-              </div>
-            </div>
-            
-            <p className="text-gray-300 text-sm mb-4">Advanced market analysis with sentiment tracking</p>
-            
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li>✓ Character sentiment analysis</li>
-              <li>✓ Market correlation insights</li>
-              <li>✓ Portfolio optimization tips</li>
-              <li>✓ Custom trading alerts</li>
-            </ul>
-          </div>
-          
-          <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600/50 hover:border-purple-500/50 transition-colors">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="p-3 rounded-full bg-purple-600">
-                <Crown className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white">Trading Intelligence</h3>
-                <p className="text-sm text-purple-400">$50-150/month</p>
-              </div>
-            </div>
-            
-            <p className="text-gray-300 text-sm mb-4">AI-powered trading recommendations and strategies</p>
-            
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li>✓ Real-time trading signals</li>
-              <li>✓ AI-powered buy/sell recommendations</li>
-              <li>✓ Advanced portfolio analytics</li>
-              <li>✓ Predictive market modeling</li>
-              <li>✓ API access</li>
-            </ul>
-          </div>
+          ))}
         </div>
       </div>
 
-      {/* Quick Start Guide */}
+      {/* Quick Actions */}
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to revolutionize your comic trading?</h2>
-            <p className="text-white/90 mb-6 text-lg">
-              Combine AI-powered market intelligence with strategic comic asset trading for maximum returns.
-            </p>
-            <div className="space-y-2 text-white/80">
-              <p className="flex items-center space-x-2">
-                <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
-                <span>Use AI analysis to identify market opportunities</span>
-              </p>
-              <p className="flex items-center space-x-2">
-                <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
-                <span>Build a diversified portfolio of comic assets</span>
-              </p>
-              <p className="flex items-center space-x-2">
-                <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</span>
-                <span>Execute trades with intelligent timing</span>
-              </p>
-              <p className="flex items-center space-x-2">
-                <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</span>
-                <span>Track performance and optimize strategy</span>
-              </p>
-            </div>
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Ready to dominate the comic market?</h2>
+          <p className="text-white/90 mb-8 text-lg max-w-2xl mx-auto">
+            Combine cutting-edge AI analysis with strategic comic asset trading. Start with 2 million Comic Coins and build your empire.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <Link 
+              to="/learn"
+              className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
+            >
+              <Lightbulb className="h-5 w-5" />
+              <span>Learn Trading</span>
+            </Link>
+            
+            <Link 
+              to="/characters"
+              className="flex items-center space-x-2 bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-lg transition-colors font-medium"
+            >
+              <Eye className="h-5 w-5" />
+              <span>Browse Assets</span>
+            </Link>
+            
+            <Link 
+              to="/trading"
+              className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors font-medium"
+            >
+              <Play className="h-5 w-5" />
+              <span>Start Trading Now</span>
+            </Link>
           </div>
-          <div className="hidden md:block">
-            <div className="relative">
-              <Brain className="h-32 w-32 text-white/20" />
-              <Network className="h-24 w-24 text-white/30 absolute -bottom-4 -right-4" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Overview */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl text-center">
-          <Zap className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-white">3</p>
-          <p className="text-sm text-gray-400">Subscription Tiers</p>
-        </div>
-        
-        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl text-center">
-          <Brain className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-white">100+</p>
-          <p className="text-sm text-gray-400">Max Clusters</p>
-        </div>
-        
-        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl text-center">
-          <Network className="h-8 w-8 text-indigo-400 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-white">∞</p>
-          <p className="text-sm text-gray-400">Idea Relationships</p>
-        </div>
-        
-        <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl text-center">
-          <TrendingUp className="h-8 w-8 text-green-400 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-white">Real-time</p>
-          <p className="text-sm text-gray-400">Analysis</p>
         </div>
       </div>
     </div>
