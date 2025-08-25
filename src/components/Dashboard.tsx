@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   Brain, Network, Lightbulb, Star, Crown, Zap, TrendingUp, Users, 
   BarChart2, Target, ArrowRight, Activity, DollarSign, Shield,
-  Calendar, Award, Briefcase, Eye, Play, ChevronRight
+  Calendar, Award, Briefcase, Eye, Play, ChevronRight, Check
 } from 'lucide-react';
 import { MarketSentimentGauge } from './ui/MarketSentimentGauge';
 import { RecommendationsCards } from './markets/RecommendationsCards';
