@@ -10,7 +10,7 @@ export function Dashboard() {
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Panel Profits</h1>
           <p className="text-xl text-white/80 mb-8 max-w-4xl mx-auto">
-            The Ultimate Comic Book Trading Platform with AI-Powered Market Analysis and Strategic Insights
+            The Ultimate Comic Book Trading Platform with Integrated AI Market Intelligence
           </p>
         </div>
         
@@ -26,13 +26,13 @@ export function Dashboard() {
           >
             <span className="relative z-10 flex items-center space-x-3">
               <Brain className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-              <span>Analyze Market Trends</span>
+              <span>AI Market Intelligence</span>
             </span>
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
           </Link>
 
           <Link 
-            to="/ideas/mapping"
+            to="/trading"
             className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg
                      bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500
                      text-white shadow-lg hover:shadow-xl
@@ -42,7 +42,7 @@ export function Dashboard() {
           >
             <span className="relative z-10 flex items-center space-x-3">
               <Network className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-              <span>Strategic Analysis</span>
+              <span>Start Trading</span>
             </span>
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
           </Link>
@@ -58,22 +58,22 @@ export function Dashboard() {
           </div>
           
           <p className="text-gray-300 mb-6">
-            Analyze market trends, publisher strategies, and creator opportunities using advanced AI. 
-            Discover patterns and insights that drive successful comic investments.
+            Advanced AI-powered analysis of comic market trends, character performance, and trading opportunities. 
+            Get intelligent insights that help you make better investment decisions.
           </p>
           
           <div className="space-y-3 mb-6">
             <div className="flex items-center space-x-2">
               <Lightbulb className="h-5 w-5 text-blue-400" />
-              <span className="text-gray-300">Market trend analysis and categorization</span>
+              <span className="text-gray-300">Smart market trend analysis and asset categorization</span>
             </div>
             <div className="flex items-center space-x-2">
               <Star className="h-5 w-5 text-yellow-400" />
-              <span className="text-gray-300">Publisher sentiment analysis and custom reports</span>
+              <span className="text-gray-300">Character and creator sentiment analysis</span>
             </div>
             <div className="flex items-center space-x-2">
               <Crown className="h-5 w-5 text-purple-400" />
-              <span className="text-gray-300">Real-time market insights and trading recommendations</span>
+              <span className="text-gray-300">Real-time trading signals and portfolio optimization</span>
             </div>
           </div>
           
@@ -82,51 +82,51 @@ export function Dashboard() {
             className="inline-flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
           >
             <Brain className="h-5 w-5" />
-            <span>Analyze Market Trends</span>
+            <span>Access AI Intelligence</span>
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
         <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
           <div className="flex items-center space-x-3 mb-4">
-            <Network className="h-8 w-8 text-indigo-400" />
-            <h2 className="text-2xl font-bold text-white">Strategic Market Analysis</h2>
+            <TrendingUp className="h-8 w-8 text-indigo-400" />
+            <h2 className="text-2xl font-bold text-white">Comic Asset Trading</h2>
           </div>
           
           <p className="text-gray-300 mb-6">
-            Visualize complex relationships between market factors using interactive graphs. 
-            Identify dependencies, correlations, and strategic opportunities in the comic market.
+            Trade comic characters, creators, publishers, bonds, and funds in a sophisticated virtual market.
+            Build your portfolio with iconic heroes, villains, and comic industry assets.
           </p>
           
           <div className="space-y-3 mb-6">
             <div className="flex items-center space-x-2">
-              <Target className="h-5 w-5 text-green-400" />
-              <span className="text-gray-300">Interactive market factor visualization</span>
+              <Users className="h-5 w-5 text-green-400" />
+              <span className="text-gray-300">Characters, creators, and comic assets</span>
             </div>
             <div className="flex items-center space-x-2">
               <BarChart2 className="h-5 w-5 text-indigo-400" />
-              <span className="text-gray-300">Market correlation and dependency analysis</span>
+              <span className="text-gray-300">Real-time pricing and market data</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-blue-400" />
-              <span className="text-gray-300">Collaborative market research</span>
+              <Target className="h-5 w-5 text-blue-400" />
+              <span className="text-gray-300">Portfolio management and tracking</span>
             </div>
           </div>
           
           <Link 
-            to="/ideas/mapping"
+            to="/trading"
             className="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
           >
-            <Network className="h-5 w-5" />
-            <span>Start Analysis</span>
+            <TrendingUp className="h-5 w-5" />
+            <span>Start Trading</span>
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
 
-      {/* Subscription Tiers Preview */}
+      {/* AI Intelligence Tiers */}
       <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
-        <h2 className="text-2xl font-bold text-white mb-6">Choose Your Innovation Level</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">AI Intelligence Levels</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600/50 hover:border-blue-500/50 transition-colors">
@@ -135,17 +135,17 @@ export function Dashboard() {
                 <Lightbulb className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Idea Organizer</h3>
+                <h3 className="text-lg font-bold text-white">Market Observer</h3>
                 <p className="text-sm text-blue-400">$5-15/month</p>
               </div>
             </div>
             
-            <p className="text-gray-300 text-sm mb-4">Basic clustering into core themes</p>
+            <p className="text-gray-300 text-sm mb-4">Basic market analysis and trend identification</p>
             
             <ul className="space-y-2 text-sm text-gray-300">
-              <li>✓ Up to 7 clusters</li>
-              <li>✓ Basic keyword grouping</li>
-              <li>✓ Simple theme identification</li>
+              <li>✓ Basic market trend analysis</li>
+              <li>✓ Asset categorization</li>
+              <li>✓ Simple price alerts</li>
             </ul>
           </div>
           
@@ -155,18 +155,18 @@ export function Dashboard() {
                 <Star className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Semantic Analyst</h3>
+                <h3 className="text-lg font-bold text-white">Market Analyst</h3>
                 <p className="text-sm text-yellow-400">$20-45/month</p>
               </div>
             </div>
             
-            <p className="text-gray-300 text-sm mb-4">Advanced clustering with sentiment analysis</p>
+            <p className="text-gray-300 text-sm mb-4">Advanced market analysis with sentiment tracking</p>
             
             <ul className="space-y-2 text-sm text-gray-300">
-              <li>✓ Up to 25 clusters</li>
-              <li>✓ Sentiment analysis</li>
-              <li>✓ Custom cluster merging</li>
-              <li>✓ Export capabilities</li>
+              <li>✓ Character sentiment analysis</li>
+              <li>✓ Market correlation insights</li>
+              <li>✓ Portfolio optimization tips</li>
+              <li>✓ Custom trading alerts</li>
             </ul>
           </div>
           
@@ -176,18 +176,18 @@ export function Dashboard() {
                 <Crown className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Insight Navigator</h3>
+                <h3 className="text-lg font-bold text-white">Trading Intelligence</h3>
                 <p className="text-sm text-purple-400">$50-150/month</p>
               </div>
             </div>
             
-            <p className="text-gray-300 text-sm mb-4">Premium clustering with real-time insights</p>
+            <p className="text-gray-300 text-sm mb-4">AI-powered trading recommendations and strategies</p>
             
             <ul className="space-y-2 text-sm text-gray-300">
-              <li>✓ Up to 100 clusters</li>
-              <li>✓ Real-time clustering</li>
-              <li>✓ Advanced visualizations</li>
-              <li>✓ AI recommendations</li>
+              <li>✓ Real-time trading signals</li>
+              <li>✓ AI-powered buy/sell recommendations</li>
+              <li>✓ Advanced portfolio analytics</li>
+              <li>✓ Predictive market modeling</li>
               <li>✓ API access</li>
             </ul>
           </div>
@@ -198,26 +198,26 @@ export function Dashboard() {
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-8">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to transform your ideas?</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">Ready to revolutionize your comic trading?</h2>
             <p className="text-white/90 mb-6 text-lg">
-              Start with AI clustering to organize your thoughts, then map relationships to discover strategic insights.
+              Combine AI-powered market intelligence with strategic comic asset trading for maximum returns.
             </p>
             <div className="space-y-2 text-white/80">
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
-                <span>Gather your ideas and thoughts</span>
+                <span>Use AI analysis to identify market opportunities</span>
               </p>
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
-                <span>Use AI clustering to find patterns</span>
+                <span>Build a diversified portfolio of comic assets</span>
               </p>
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</span>
-                <span>Map relationships between concepts</span>
+                <span>Execute trades with intelligent timing</span>
               </p>
               <p className="flex items-center space-x-2">
                 <span className="bg-white/20 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</span>
-                <span>Discover strategic insights and opportunities</span>
+                <span>Track performance and optimize strategy</span>
               </p>
             </div>
           </div>

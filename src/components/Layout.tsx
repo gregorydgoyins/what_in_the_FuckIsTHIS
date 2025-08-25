@@ -104,10 +104,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
             Dashboard
           </Link>
           <Link to="/ideas" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Industry Insights
+            AI Analysis
           </Link>
-          <Link to="/ideas/mapping" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Market Analysis
+          <Link to="/trading" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Trading
+          </Link>
+          <Link to="/characters" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Assets
+          </Link>
+          <Link to="/portfolio" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Portfolio
+          </Link>
+          <Link to="/learn" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Learn
           </Link>
         </div>
       </div>
