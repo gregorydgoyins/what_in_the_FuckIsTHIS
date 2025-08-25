@@ -44,6 +44,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Lightbulb className="h-4 w-4" />
                 <span>Dashboard</span>
               </Link>
+              <Link to="/trading" className="nav-link flex items-center space-x-2">
+                <Brain className="h-4 w-4" />
+                <span>Trading</span>
+              </Link>
+              <Link to="/characters" className="nav-link flex items-center space-x-2">
+                <Network className="h-4 w-4" />
+                <span>Characters</span>
+              </Link>
+              <Link to="/portfolio" className="nav-link flex items-center space-x-2">
+                <Lightbulb className="h-4 w-4" />
+                <span>Portfolio</span>
+              </Link>
               <Link to="/ideas" className="nav-link flex items-center space-x-2">
                 <Brain className="h-4 w-4" />
                 <span>Industry Insights</span>
@@ -51,6 +63,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Link to="/ideas/mapping" className="nav-link flex items-center space-x-2">
                 <Network className="h-4 w-4" />
                 <span>Market Analysis</span>
+              </Link>
+              <Link to="/learn" className="nav-link flex items-center space-x-2">
+                <Lightbulb className="h-4 w-4" />
+                <span>Learn</span>
               </Link>
             </nav>
             
