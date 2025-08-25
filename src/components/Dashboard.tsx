@@ -17,6 +17,8 @@ import { AssetPerformanceComparison } from './landing/AssetPerformanceComparison
 import { RiskAssessmentQuiz } from './landing/RiskAssessmentQuiz';
 import { MarketSentimentDashboard } from './landing/MarketSentimentDashboard';
 import { CreatorPerformanceLeaderboard } from './landing/CreatorPerformanceLeaderboard';
+import { InteractiveAllocationChart } from './landing/InteractiveAllocationChart';
+import { NewsImpactHeatmap } from './landing/NewsImpactHeatmap';
 import { SuccessStoriesCarousel } from './landing/SuccessStoriesCarousel';
 
 export function Dashboard() {
