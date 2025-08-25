@@ -228,14 +228,14 @@ export function IdeasPage() {
               >
                 <div className="flex items-center space-x-2">
                   <Zap className="h-5 w-5" />
-        <h1 className="text-3xl font-bold text-white">AI Market Intelligence</h1>
+                  <span>Upgrade Now</span>
                 </div>
               </button>
             </div>
             <div className="hidden md:block">
               <Brain className="h-24 w-24 text-white/20" />
             </div>
-        <span>Strategic Analysis</span>
+          </div>
         </div>
       )}
     </div>
@@ -243,4 +243,3 @@ export function IdeasPage() {
 }
 
 export default IdeasPage;
-      <h2 className="text-xl font-bold text-white mb-6">Choose Your AI Intelligence Level</h2>
