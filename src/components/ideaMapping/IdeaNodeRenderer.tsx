@@ -27,9 +27,12 @@ export function IdeaNodeRenderer({
         cy={node.position.y}
         r="25"
         fill={categoryColor}
-        stroke={isSelected ? '#FBBF24' : '#374151'}
-        strokeWidth={isSelected ? 3 : 1}
+        stroke={isSelected ? '#6366F1' : '#374151'}
+        strokeWidth={isSelected ? 4 : 1}
         className="cursor-pointer hover:opacity-80"
+        style={{
+          filter: isSelected ? 'drop-shadow(0 0 8px rgba(99, 102, 241, 0.8))' : 'none'
+        }}
         onClick={(e) => onClick(node.id, e)}
         onDoubleClick={() => onDoubleClick(node)}
       />
@@ -39,7 +42,10 @@ export function IdeaNodeRenderer({
         fill="white"
         fontSize="10"
         textAnchor="middle"
-        className="pointer-events-none font-medium"
+        className="pointer-events-none font-medium select-none"
+        style={{
+          textShadow: isSelected ? '0 0 4px rgba(99, 102, 241, 0.8)' : '0 1px 2px rgba(0, 0, 0, 0.5)'
+        }}
       >
         {node.label.length > 12 ? node.label.substring(0, 12) + '...' : node.label}
       </text>

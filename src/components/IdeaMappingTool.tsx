@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   Network, RotateCcw, ZoomIn, ZoomOut, Maximize, 
-  Lightbulb, ArrowRight
+  Lightbulb, ArrowRight, Eye, EyeOff, Download
 } from 'lucide-react';
 import { IdeaNodeRenderer } from './ideaMapping/IdeaNodeRenderer';
 import { IdeaRelationshipRenderer } from './ideaMapping/IdeaRelationshipRenderer';
@@ -12,11 +12,6 @@ import { IdeaNode, IdeaRelationship, RelationshipType, RelationshipStrength, Rel
 
 interface IdeaMappingToolProps {
   className?: string;
-}
-
-interface NodePosition {
-  x: number;
-  y: number;
 }
 
 interface ViewportState {
@@ -32,7 +27,6 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
   const [selectedRelationship, setSelectedRelationship] = useState<string | null>(null);
   
   // UI state
-  const [viewMode, setViewMode] = useState<'graph' | 'mindmap'>('graph');
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
@@ -46,8 +40,6 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
   
   // Viewport state
   const [viewport, setViewport] = useState<ViewportState>({ zoom: 1, pan: { x: 0, y: 0 } });
-  const [isDragging, setIsDragging] = useState(false);
-  const [draggedNode, setDraggedNode] = useState<string | null>(null);
   
   // Form state
   const [newNodeForm, setNewNodeForm] = useState({
@@ -80,6 +72,28 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     setNodes(network.nodes);
     setRelationships(network.relationships);
   };
+
+  // Filter nodes and relationships based on current filters
+  const filteredNodes = nodes.filter(node => {
+    const matchesSearch = searchQuery === '' || 
+      node.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      node.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      node.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    const matchesCategory = filterCategory === 'all' || node.category === filterCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
+
+  const filteredRelationships = relationships.filter(relationship => {
+    // Only show relationships where both nodes are visible
+    const sourceVisible = filteredNodes.some(node => node.id === relationship.sourceId);
+    const targetVisible = filteredNodes.some(node => node.id === relationship.targetId);
+    
+    const matchesType = filterRelationType === 'all' || relationship.type === filterRelationType;
+    
+    return sourceVisible && targetVisible && matchesType;
+  });
 
   // Node management
   const handleCreateNode = () => {
@@ -133,6 +147,8 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         newSet.delete(nodeId);
         return newSet;
       });
+      setIsEditNodeModalOpen(false);
+      setEditingNode(null);
     }
   };
 
@@ -198,9 +214,58 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     setNewNodeForm({
       label: node.label,
       description: node.description,
-  // Handlers for toolbar actions
-  const handleShowAnalysis = () => setShowAnalysis(!showAnalysis);
-  
+      category: node.category,
+      tags: node.tags.join(', ')
+    });
+    setIsEditNodeModalOpen(true);
+  };
+
+  const handleRelationshipClick = (relationshipId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setSelectedRelationship(selectedRelationship === relationshipId ? null : relationshipId);
+  };
+
+  // Utility functions
+  const getCategoryColor = (category: string): string => {
+    const colorMap: Record<string, string> = {
+      'general': '#6B7280',
+      'technology': '#3B82F6',
+      'finance': '#10B981',
+      'security': '#EF4444',
+      'marketing': '#F59E0B',
+      'analytics': '#8B5CF6'
+    };
+    return colorMap[category] || colorMap['general'];
+  };
+
+  const getRelationshipStyle = (relationship: IdeaRelationship): { color: string; strokeDasharray?: string } => {
+    const typeColors: Record<RelationshipType, string> = {
+      'depends-on': '#EF4444',
+      'related-to': '#6B7280',
+      'contradicts': '#DC2626',
+      'sub-idea-of': '#059669',
+      'influences': '#7C3AED',
+      'blocks': '#DC2626',
+      'enables': '#059669',
+      'custom': '#F59E0B'
+    };
+    
+    return {
+      color: typeColors[relationship.type] || typeColors['related-to'],
+      strokeDasharray: relationship.type === 'contradicts' ? '5,5' : undefined
+    };
+  };
+
+  const getStrokeWidth = (strength: RelationshipStrength): number => {
+    switch (strength) {
+      case 'weak': return 1;
+      case 'moderate': return 2;
+      case 'strong': return 3;
+      default: return 2;
+    }
+  };
+
+  // Toolbar actions
   const handleExport = () => {
     const data = ideaMappingService.exportNetwork();
     const blob = new Blob([data], { type: 'application/json' });
@@ -223,6 +288,8 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
 
     for (let iter = 0; iter < iterations; iter++) {
       updatedNodes.forEach(node => {
+        if (!node.position) return;
+        
         let fx = 0, fy = 0;
 
         // Repulsion from other nodes
@@ -245,7 +312,6 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
             if (otherNode && node.position && otherNode.position) {
               const dx = otherNode.position.x - node.position.x;
               const dy = otherNode.position.y - node.position.y;
-              const distance = Math.sqrt(dx * dx + dy * dy) || 1;
               fx += dx * attractionStrength;
               fy += dy * attractionStrength;
             }
@@ -264,7 +330,9 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     
     // Update positions in service
     updatedNodes.forEach(node => {
-      ideaMappingService.updateNode(node.id, { position: node.position });
+      if (node.position) {
+        ideaMappingService.updateNode(node.id, { position: node.position });
+      }
     });
   };
 
@@ -280,17 +348,6 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     }
   };
 
-  const handleNodeDoubleClick = (node: IdeaNode) => {
-    setEditingNode(node);
-    setNewNodeForm({
-      label: node.label,
-      description: node.description,
-      category: node.category,
-      tags: node.tags.join(', ')
-    });
-    setIsEditNodeModalOpen(true);
-  };
-
   return (
     <div className={`bg-slate-800/90 backdrop-blur-md rounded-xl shadow-xl ${className}`}>
       {/* Header */}
@@ -301,26 +358,6 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         </div>
         
         <div className="flex items-center space-x-4">
-          {/* View mode toggle */}
-          <div className="flex space-x-2">
-            <button
-              onClick={() => setViewMode('graph')}
-              className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                viewMode === 'graph' ? 'bg-indigo-600 text-white' : 'bg-slate-700/50 text-gray-300'
-              }`}
-            >
-              Graph
-            </button>
-            <button
-              onClick={() => setViewMode('mindmap')}
-              className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                viewMode === 'mindmap' ? 'bg-indigo-600 text-white' : 'bg-slate-700/50 text-gray-300'
-              }`}
-            >
-              Mind Map
-            </button>
-          </div>
-          
           {/* Analysis toggle */}
           <button
             onClick={() => setShowAnalysis(!showAnalysis)}
@@ -351,7 +388,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         setFilterRelationType={setFilterRelationType}
         selectedNodesCount={selectedNodes.size}
         showAnalysis={showAnalysis}
-        setShowAnalysis={handleShowAnalysis}
+        setShowAnalysis={setShowAnalysis}
         onAddIdea={() => setIsCreateNodeModalOpen(true)}
         onQuickConnect={handleQuickConnect}
         onAutoLayout={handleAutoLayout}
@@ -499,10 +536,10 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
                     return (
                       <div>
                         <h4 className="font-medium text-white mb-2">{node.label}</h4>
-                        <p className="text-sm text-gray-300 mb-2">{node.description}</p>
+                        <p className="text-gray-300 text-sm mb-2">{node.description}</p>
                         <div className="flex flex-wrap gap-1">
                           {node.tags.map(tag => (
-                            <span key={tag} className="px-2 py-1 bg-slate-700/50 rounded text-xs text-gray-300">
+                            <span key={tag} className="px-2 py-1 bg-slate-700/50 text-gray-300 rounded text-xs">
                               {tag}
                             </span>
                           ))}
@@ -529,7 +566,10 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         
         <div className="flex items-center space-x-2">
           <button
-            onClick={() => ideaMappingService.resetToMockData()}
+            onClick={() => {
+              ideaMappingService.resetToMockData();
+              loadData();
+            }}
             className="text-gray-400 hover:text-white transition-colors"
           >
             <RotateCcw className="h-4 w-4" />
@@ -574,7 +614,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
               onClick={() => setIsCreateNodeModalOpen(true)}
               className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-colors mx-auto"
             >
-              <Plus className="h-5 w-5" />
+              <Lightbulb className="h-5 w-5" />
               <span>Create Your First Idea</span>
               <ArrowRight className="h-5 w-5" />
             </button>

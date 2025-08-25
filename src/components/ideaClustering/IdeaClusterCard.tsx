@@ -39,7 +39,7 @@ export function IdeaClusterCard({
     <div
       onClick={() => onClick(cluster.id)}
       className={`bg-slate-800/90 backdrop-blur-md rounded-xl p-5 shadow-xl hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all hover:-translate-y-1 cursor-pointer
-        ${isSelected ? 'ring-2 ring-indigo-500' : ''}
+        ${isSelected ? 'ring-2 ring-indigo-500 shadow-[0_0_20px_rgba(99,102,241,0.5)]' : ''}
         ${features.sentimentAnalysis && cluster.sentiment ? getSentimentColor(cluster.sentiment) : ''}`}
     >
       <div className="flex items-start justify-between mb-3">

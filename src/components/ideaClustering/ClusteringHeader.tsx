@@ -62,6 +62,7 @@ export function ClusteringHeader({
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === 'grid' ? 'bg-indigo-600 text-white' : 'bg-slate-700/50 text-gray-300'
                 }`}
+                title="Grid View"
               >
                 <BarChart2 className="h-5 w-5" />
               </button>
@@ -70,6 +71,7 @@ export function ClusteringHeader({
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === 'network' ? 'bg-indigo-600 text-white' : 'bg-slate-700/50 text-gray-300'
                 }`}
+                title="Network View"
               >
                 <Network className="h-5 w-5" />
               </button>
@@ -80,6 +82,7 @@ export function ClusteringHeader({
             <button
               onClick={() => setShowSentiment(!showSentiment)}
               className="flex items-center space-x-2 px-3 py-2 bg-slate-700/50 rounded-lg text-gray-300 hover:text-white transition-colors"
+              title="Toggle Sentiment Display"
             >
               {showSentiment ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
               <span className="text-sm">Sentiment</span>
@@ -90,6 +93,7 @@ export function ClusteringHeader({
             <button
               onClick={onExport}
               className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
+              title="Export Clustering Results"
             >
               <Download className="h-4 w-4" />
               <span>Export</span>
@@ -99,6 +103,7 @@ export function ClusteringHeader({
           <button
             onClick={onRecluster}
             className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+            title="Re-run AI Clustering"
           >
             <Shuffle className="h-4 w-4" />
             <span>Re-cluster</span>

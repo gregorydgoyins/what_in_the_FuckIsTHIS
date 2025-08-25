@@ -81,6 +81,7 @@ export function IdeaMappingModals({
               <button
                 onClick={() => setIsCreateNodeModalOpen(false)}
                 className="text-gray-400 hover:text-white transition-colors"
+                aria-label="Close modal"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -95,6 +96,7 @@ export function IdeaMappingModals({
                   onChange={(e) => setNewNodeForm(prev => ({ ...prev, label: e.target.value }))}
                   className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
                   placeholder="Enter idea title..."
+                  autoFocus
                 />
               </div>
               
@@ -146,7 +148,7 @@ export function IdeaMappingModals({
               <button
                 onClick={handleCreateNode}
                 disabled={!newNodeForm.label.trim()}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-indigo-500"
               >
                 Create Idea
               </button>

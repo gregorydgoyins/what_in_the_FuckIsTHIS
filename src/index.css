@@ -156,6 +156,43 @@
            backdrop-blur-md border border-slate-700/50
            shadow-2xl;
   }
+  
+  /* Innovation Studio specific styles */
+  .idea-network-container {
+    @apply relative overflow-hidden rounded-lg;
+  }
+  
+  .idea-node-tooltip {
+    @apply absolute z-10 bg-slate-800/95 backdrop-blur-md p-3 rounded-lg 
+           shadow-xl border border-slate-700/50 text-sm text-white
+           transform -translate-x-1/2 -translate-y-full mb-2;
+  }
+  
+  .cluster-sorting-controls {
+    @apply flex items-center space-x-2 text-sm;
+  }
+  
+  /* Line clamp utility for long text */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
 }
 
 /* Accessibility Helpers */
