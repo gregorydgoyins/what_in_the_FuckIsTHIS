@@ -38,16 +38,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       errorInfo
     });
 
-    // Log error to console
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
 
-    // Call onError callback if provided
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
-
-    // In a real app, you might want to log to an error reporting service
-    // logErrorToService(error, errorInfo);
   }
 
   handleReset = (): void => {
@@ -60,12 +55,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render(): ReactNode {
     if (this.state.hasError) {
-      // Custom fallback UI
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
-      // Default error UI
       return (
         <div className="min-h-[50vh] flex items-center justify-center">
           <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl max-w-md w-full">

@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Bell, User, LogIn, UserPlus } from 'lucide-react';
-import { GlobalSearch } from './GlobalSearch';
-import { NewsTicker } from './news/NewsTicker';
-import { useAuthStore } from '../store/authStore';
+import { Menu, X, Search, Bell, User, Brain, Network, Lightbulb } from 'lucide-react';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
-  const { isAuthenticated, user } = useAuthStore();
 
   // Close menu when route changes
   useEffect(() => {
@@ -18,8 +13,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white">
-      <NewsTicker />
-      
+      {/* Header */}
       <header className="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/50 sticky top-0 z-40">
         <div className="container-responsive mx-auto">
           <div className="flex items-center justify-between h-16">
@@ -39,24 +33,30 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </button>
               
               <Link to="/" className="flex items-center space-x-2">
-                <span className="text-2xl font-bold text-white">Panel Profits</span>
+                <Brain className="h-8 w-8 text-indigo-400" />
+                <span className="text-xl font-bold text-white">Innovation Studio</span>
               </Link>
             </div>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <Link to="/markets" className="nav-link">Markets</Link>
-              <Link to="/portfolio" className="nav-link">Portfolio</Link>
-              <Link to="/trading" className="nav-link">Trading</Link>
-              <Link to="/ideas" className="nav-link">Ideas</Link>
-              <Link to="/news" className="nav-link">News</Link>
-              <Link to="/learn" className="nav-link">Learn</Link>
+              <Link to="/" className="nav-link flex items-center space-x-2">
+                <Lightbulb className="h-4 w-4" />
+                <span>Dashboard</span>
+              </Link>
+              <Link to="/ideas" className="nav-link flex items-center space-x-2">
+                <Brain className="h-4 w-4" />
+                <span>AI Clustering</span>
+              </Link>
+              <Link to="/ideas/mapping" className="nav-link flex items-center space-x-2">
+                <Network className="h-4 w-4" />
+                <span>Idea Mapping</span>
+              </Link>
             </nav>
             
             {/* Right Side Icons */}
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => setIsSearchOpen(true)}
                 className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 aria-label="Search"
               >
@@ -70,32 +70,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Bell className="h-5 w-5" />
               </button>
               
-              {isAuthenticated ? (
-                <Link
-                  to="/profile"
-                  className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  aria-label="Profile"
-                >
-                  <User className="h-5 w-5" />
-                </Link>
-              ) : (
-                <div className="flex items-center space-x-2">
-                  <Link
-                    to="/login"
-                    className="flex items-center space-x-1 text-sm text-gray-300 hover:text-white"
-                  >
-                    <LogIn className="h-4 w-4" />
-                    <span>Login</span>
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="flex items-center space-x-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-sm transition-colors"
-                  >
-                    <UserPlus className="h-4 w-4" />
-                    <span>Sign Up</span>
-                  </Link>
-                </div>
-              )}
+              <button
+                className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                aria-label="Profile"
+              >
+                <User className="h-5 w-5" />
+              </button>
             </div>
           </div>
         </div>
@@ -104,29 +84,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Mobile Menu */}
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="bg-slate-800 border-b border-slate-700 px-2 pt-2 pb-3 space-y-1">
-          <Link to="/markets" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Markets
-          </Link>
-          <Link to="/portfolio" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Portfolio
-          </Link>
-          <Link to="/trading" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Trading
+          <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Dashboard
           </Link>
           <Link to="/ideas" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Ideas
+            AI Clustering
           </Link>
-          <Link to="/news" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            News
-          </Link>
-          <Link to="/learn" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            Learn
+          <Link to="/ideas/mapping" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+            Idea Mapping
           </Link>
         </div>
       </div>
-      
-      {/* Global Search Modal */}
-      <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       
       {/* Main Content */}
       <main className="container-responsive mx-auto py-6">
@@ -136,59 +104,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="bg-slate-800/90 backdrop-blur-md border-t border-slate-700/50 py-8">
         <div className="container-responsive mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Panel Profits</h3>
-              <p className="text-gray-400">The premier comic book trading platform.</p>
+              <h3 className="text-lg font-semibold text-white mb-4">Innovation Studio</h3>
+              <p className="text-gray-400">AI-powered idea management and relationship mapping for strategic thinking.</p>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Features</h3>
               <ul className="space-y-2">
-                <li><Link to="/markets" className="text-gray-400 hover:text-white">Markets</Link></li>
-                <li><Link to="/portfolio" className="text-gray-400 hover:text-white">Portfolio</Link></li>
-                <li><Link to="/trading" className="text-gray-400 hover:text-white">Trading</Link></li>
-                <li><Link to="/ideas" className="text-gray-400 hover:text-white">Ideas</Link></li>
-                <li><Link to="/news" className="text-gray-400 hover:text-white">News</Link></li>
+                <li><Link to="/ideas" className="text-gray-400 hover:text-white">AI Clustering</Link></li>
+                <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Relationship Mapping</Link></li>
               </ul>
             </div>
             
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Resources</h3>
               <ul className="space-y-2">
-                <li><Link to="/learn" className="text-gray-400 hover:text-white">Learning Center</Link></li>
-                <li><Link to="/market-index" className="text-gray-400 hover:text-white">Market Index</Link></li>
-                <li><Link to="/price-trends" className="text-gray-400 hover:text-white">Price Trends</Link></li>
-                <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Idea Mapping</Link></li>
-                <li><Link to="/research" className="text-gray-400 hover:text-white">Research</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Account</h3>
-              <ul className="space-y-2">
-                {isAuthenticated ? (
-                  <>
-                    <li><Link to="/profile" className="text-gray-400 hover:text-white">Profile</Link></li>
-                    <li><Link to="/portfolio" className="text-gray-400 hover:text-white">My Portfolio</Link></li>
-                    <li><Link to="/portfolio/watchlist" className="text-gray-400 hover:text-white">Watchlist</Link></li>
-                  </>
-                ) : (
-                  <>
-                    <li><Link to="/login" className="text-gray-400 hover:text-white">Login</Link></li>
-                    <li><Link to="/register" className="text-gray-400 hover:text-white">Register</Link></li>
-                  </>
-                )}
+                <li><a href="#" className="text-gray-400 hover:text-white">Documentation</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white">API Reference</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white">Support</a></li>
               </ul>
             </div>
           </div>
           
           <div className="mt-8 pt-8 border-t border-slate-700/50 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">© 2025 Panel Profits. All rights reserved.</p>
+            <p className="text-gray-400 text-sm">© 2025 Innovation Studio. Part of the Panel Profits ecosystem.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link to="/terms" className="text-gray-400 hover:text-white text-sm">Terms of Service</Link>
-              <Link to="/privacy" className="text-gray-400 hover:text-white text-sm">Privacy Policy</Link>
-              <Link to="/contact" className="text-gray-400 hover:text-white text-sm">Contact Us</Link>
+              <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+              <a href="#" className="text-gray-400 hover:text-white text-sm">Terms of Service</a>
             </div>
           </div>
         </div>
