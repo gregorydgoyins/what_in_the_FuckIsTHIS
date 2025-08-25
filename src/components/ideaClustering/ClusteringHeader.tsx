@@ -47,7 +47,7 @@ export function ClusteringHeader({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           <Brain className="h-8 w-8 text-indigo-400" />
-          <h2 className="text-2xl font-bold text-white">AI-Powered Idea Clustering</h2>
+          <h2 className="text-2xl font-bold text-white">AI-Powered Market Intelligence</h2>
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full ${getTierColor(currentTier)} text-white`}>
             {getTierIcon(currentTier)}
             <span className="text-sm font-medium capitalize">{currentTier} Tier</span>

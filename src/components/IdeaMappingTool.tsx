@@ -354,7 +354,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
       <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
         <div className="flex items-center space-x-3">
           <Network className="h-6 w-6 text-indigo-400" />
-          <h2 className="text-2xl font-bold text-white">Idea Relationship Mapping</h2>
+          <h2 className="text-2xl font-bold text-white">Market Factor Relationship Analysis</h2>
         </div>
         
         <div className="flex items-center space-x-4">
