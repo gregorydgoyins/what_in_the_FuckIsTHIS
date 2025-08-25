@@ -57,6 +57,13 @@ export default defineConfig({
     strictPort: false,
     cors: true,
     host: true
+  },
+  preview: {
+    port: 4173,
+    open: true,
+    strictPort: false,
+    cors: true,
+    host: true
   }
 })
 
