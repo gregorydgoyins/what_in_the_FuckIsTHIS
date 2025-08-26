@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lightbulb, TrendingUp, AlertCircle, Star, Zap, Brain, ArrowRight } from 'lucide-react';
+import { Lightbulb, TrendingUp, AlertCircle, AlertTriangle, Star, Zap, Brain, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface MarketInsight {
