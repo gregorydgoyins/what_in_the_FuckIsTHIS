@@ -138,21 +138,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container-responsive mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Panel Profits</h3>
-              <p className="text-gray-400">AI-powered comic book trading platform with advanced market intelligence and professional-grade analytics.</p>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Trading</h3>
-              <ul className="space-y-2">
-                <li><Link to="/characters" className="text-gray-400 hover:text-white">Characters</Link></li>
-                <li><Link to="/creators" className="text-gray-400 hover:text-white">Creators</Link></li>
-                <li><Link to="/bonds" className="text-gray-400 hover:text-white">Bonds</Link></li>
-                <li><Link to="/funds" className="text-gray-400 hover:text-white">Funds</Link></li>
-              </ul>
-            </div>
-            
-            <div>
               <h3 className="text-lg font-semibold text-white mb-4">About & Contact</h3>
               <ul className="space-y-2">
                 <li><Link to="/about" className="text-gray-400 hover:text-white">About Us</Link></li>
@@ -167,11 +152,37 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             
             <div>
+              <h3 className="text-lg font-semibold text-white mb-4">Trading</h3>
+              <ul className="space-y-2">
+                <li><Link to="/characters" className="text-gray-400 hover:text-white">Characters</Link></li>
+                <li><Link to="/creators" className="text-gray-400 hover:text-white">Creators</Link></li>
+                <li><Link to="/bonds" className="text-gray-400 hover:text-white">Bonds</Link></li>
+                <li><Link to="/funds" className="text-gray-400 hover:text-white">Funds</Link></li>
+                <li><Link to="/trading/options" className="text-gray-400 hover:text-white">Options</Link></li>
+                <li><Link to="/portfolio" className="text-gray-400 hover:text-white">Portfolio</Link></li>
+              </ul>
+            </div>
+            
+            <div>
               <h3 className="text-lg font-semibold text-white mb-4">Intelligence</h3>
               <ul className="space-y-2">
                 <li><Link to="/ideas" className="text-gray-400 hover:text-white">AI Analysis</Link></li>
                 <li><Link to="/ideas/mapping" className="text-gray-400 hover:text-white">Market Mapping</Link></li>
+                <li><Link to="/news" className="text-gray-400 hover:text-white">Market News</Link></li>
+                <li><Link to="/markets/calendar" className="text-gray-400 hover:text-white">Market Calendar</Link></li>
                 <li><Link to="/learn" className="text-gray-400 hover:text-white">Learning Center</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-4">Research</h3>
+              <ul className="space-y-2">
+                <li><Link to="/research" className="text-gray-400 hover:text-white">Research Reports</Link></li>
+                <li><Link to="/markets" className="text-gray-400 hover:text-white">Market Analysis</Link></li>
+                <li><Link to="/portfolio/tools" className="text-gray-400 hover:text-white">Charts & Data</Link></li>
+                <li><Link to="/portfolio/formulas" className="text-gray-400 hover:text-white">Analytics Dashboard</Link></li>
+                <li><Link to="/markets/calendar" className="text-gray-400 hover:text-white">Performance Reports</Link></li>
+                <li><Link to="/navigation-test" className="text-gray-400 hover:text-white">System Testing</Link></li>
               </ul>
             </div>
           </div>
