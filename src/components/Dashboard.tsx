@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Brain, Network, Lightbulb, Star, Crown, Zap, TrendingUp, Users, BookOpen,
-  BarChart2, Target, ArrowRight, Activity, DollarSign, Shield,
+  BarChart2, Target, ArrowRight, Activity, DollarSign, Shield, Search,
   Calendar, Award, Briefcase, Eye, Play, ChevronRight, Check
 } from 'lucide-react';
 import { MarketSentimentGauge } from './ui/MarketSentimentGauge';
