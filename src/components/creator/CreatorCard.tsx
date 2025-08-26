@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Star, Award, Calendar } from 'lucide-react';
+import { TrendingUp, TrendingDown, Star, Award, Calendar, BookOpen, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface CreatorCardProps {
