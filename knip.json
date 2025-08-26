@@ -1,0 +1,21 @@
+{
+  "entry": ["src/main.tsx"],
+  "project": ["src/**/*.ts", "src/**/*.tsx"],
+  "ignoreDependencies": [],
+  "ignoreBinaries": [],
+  "ignoreWorkspaces": [],
+  "ignore": [],
+  "ignoreExports": [],
+  "ignoreTypes": [],
+  "ignoreFiles": [],
+  "ignoreEnums": [],
+  "ignoreMembers": [],
+  "ignoreClassMembers": [],
+  "ignoreVariables": [],
+  "ignoreFunctions": [],
+  "ignoreClasses": [],
+  "ignoreConstants": [],
+  "ignoreInterfaces": [],
+  "ignoreNamespaces": [],
+  "ignoreModules": []
+}
