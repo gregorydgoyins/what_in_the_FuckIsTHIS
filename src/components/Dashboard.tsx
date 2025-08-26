@@ -153,12 +153,12 @@ export function Dashboard() {
             <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-4 shadow-xl hover:shadow-2xl transition-all group">
               <div className="flex items-center space-x-3">
                 <div className="p-2 rounded-full bg-purple-600/20">
-                  <Brain className="h-6 w-6 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <Brain className="h-6 w-6 text-orange-300 group-hover:scale-110 transition-transform" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">AI Confidence</p>
                   <p className="text-xl font-bold text-white">85%</p>
-                  <p className="text-xs text-purple-400">High accuracy</p>
+                  <p className="text-xs text-orange-300">High accuracy</p>
                 </div>
               </div>
             </div>
@@ -263,7 +263,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all">
           <div className="flex items-center space-x-3 mb-4">
-            <Brain className="h-8 w-8 text-purple-400" />
+            <Brain className="h-8 w-8 text-orange-300" />
             <h2 className="text-2xl font-bold text-white">AI Market Intelligence</h2>
           </div>
           
@@ -353,7 +353,7 @@ export function Dashboard() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
             { icon: Users, label: 'Characters', path: '/characters', color: 'text-blue-400', count: '250+' },
-            { icon: Award, label: 'Creators', path: '/creators', color: 'text-purple-400', count: '100+' },
+            { icon: Award, label: 'Creators', path: '/creators', color: 'text-orange-300', count: '100+' },
             { icon: Briefcase, label: 'Funds', path: '/funds', color: 'text-indigo-400', count: '25+' },
             { icon: Shield, label: 'Bonds', path: '/bonds', color: 'text-green-400', count: '50+' },
             { icon: Target, label: 'Locations', path: '/locations', color: 'text-yellow-400', count: '75+' },

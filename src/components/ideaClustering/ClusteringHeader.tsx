@@ -30,7 +30,7 @@ export function ClusteringHeader({
     switch (tier) {
       case 'basic': return <Lightbulb className="h-5 w-5 text-blue-400" />;
       case 'standard': return <Star className="h-5 w-5 text-yellow-400" />;
-      case 'premium': return <Crown className="h-5 w-5 text-purple-400" />;
+      case 'premium': return <Crown className="h-5 w-5 text-orange-300" />;
     }
   };
 
@@ -38,7 +38,7 @@ export function ClusteringHeader({
     switch (tier) {
       case 'basic': return 'bg-blue-600';
       case 'standard': return 'bg-yellow-600';
-      case 'premium': return 'bg-purple-600';
+      case 'premium': return 'bg-orange-600';
     }
   };
 

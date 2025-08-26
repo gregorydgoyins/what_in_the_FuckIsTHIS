@@ -99,7 +99,7 @@ export function IdeasPage() {
                 )}
                 
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className={`p-3 rounded-full ${info.color}`}>
+                  <div className={`p-3 rounded-full ${tier === 'premium' ? 'bg-orange-600' : info.color}`}>
                     <info.icon className="h-6 w-6 text-white" />
                   </div>
                   <div>
@@ -211,7 +211,7 @@ export function IdeasPage() {
 
       {/* Upgrade CTA */}
       {currentTier !== 'premium' && (
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-6">
+        <div className="bg-gradient-to-r from-orange-600 to-indigo-600 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">
@@ -224,7 +224,7 @@ export function IdeasPage() {
               </p>
               <button
                 onClick={() => setTier(currentTier === 'basic' ? 'standard' : 'premium')}
-                className="bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium transition-colors"
+                className="bg-white text-orange-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium transition-colors"
               >
                 <div className="flex items-center space-x-2">
                   <Zap className="h-5 w-5" />

@@ -14,7 +14,7 @@
 }
 
 .card-glow-purple {
-  @apply transition-all duration-300 hover:shadow-[0_0_25px_rgba(147,51,234,0.8)];
+  @apply transition-all duration-300 hover:shadow-[0_0_35px_rgba(251,146,60,1.0)];
 }
 
 .card-glow-indigo {
@@ -83,17 +83,17 @@
   animation: pulse-glow-green 2s ease-in-out infinite;
 }
 
-@keyframes pulse-glow-red {
+@keyframes pulse-glow-orange {
   0%, 100% {
-    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.7));
+    filter: drop-shadow(0 0 15px rgba(251, 146, 60, 1.0));
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 1.0));
+    filter: drop-shadow(0 0 25px rgba(251, 146, 60, 1.0));
   }
 }
 
-.pulse-glow-red {
-  animation: pulse-glow-red 2s ease-in-out infinite;
+.pulse-glow-orange {
+  animation: pulse-glow-orange 2s ease-in-out infinite;
 }
 
 /* Graph Glow Effects */

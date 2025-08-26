@@ -220,13 +220,13 @@ export function IdeaClustering({ className = '' }: IdeaClusteringProps) {
           {features.priorityProcessing && clusteringResult.suggestions && (
             <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
               <div className="flex items-center space-x-2 mb-4">
-                <Zap className="h-6 w-6 text-purple-400" />
+                <Zap className="h-6 w-6 text-orange-300" />
                 <h3 className="text-xl font-bold text-white">AI Insights & Recommendations</h3>
               </div>
               <div className="space-y-3">
                 {clusteringResult.suggestions.map((suggestion, index) => (
-                  <div key={index} className="flex items-start space-x-3 bg-purple-900/20 p-3 rounded-lg border border-purple-700/30">
-                    <Star className="h-4 w-4 text-purple-400 flex-shrink-0 mt-0.5" />
+                  <div key={index} className="flex items-start space-x-3 bg-orange-900/20 p-3 rounded-lg border border-orange-700/30">
+                    <Star className="h-4 w-4 text-orange-300 flex-shrink-0 mt-0.5" />
                     <p className="text-gray-300 text-sm">{suggestion}</p>
                   </div>
                 ))}
