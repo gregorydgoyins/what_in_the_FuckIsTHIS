@@ -131,4 +131,4 @@ export function PortfolioHealthCheck({ className = '' }: PortfolioHealthCheckPro
   );
 }
 
-export default TradingActivityFeed;
+export default PortfolioHealthCheck;
