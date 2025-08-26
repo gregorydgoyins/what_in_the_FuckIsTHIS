@@ -14,13 +14,6 @@ export function NewsTicker() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
-  // Update animation speed when speed state changes
-  useEffect(() => {
-    if (tickerRef.current) {
-      tickerRef.current.style.animationDuration = `${40 / speed}s`;
-      tickerRef.current.style.animationPlayState = isPaused ? 'paused' : 'running';
-    }
-  }, [speed, isPaused]);
 
   // Handle loading state
   if (isLoading && !news) {
@@ -127,9 +120,10 @@ export function NewsTicker() {
             <div className="flex-1 overflow-hidden relative">
               <div 
                 ref={tickerRef}
-                className="flex whitespace-nowrap animate-marquee"
+                className={`flex whitespace-nowrap ${isPaused ? '' : 'animate-marquee'}`}
                 style={{ 
-                  animationDuration: `${40 / speed}s`
+                  animationDuration: `${40 / speed}s`,
+                  animationPlayState: isPaused ? 'paused' : 'running'
                 }}
               >
                 {/* Render news items */}
