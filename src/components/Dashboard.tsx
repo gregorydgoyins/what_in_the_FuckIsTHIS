@@ -508,24 +508,21 @@ export function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
-              tier: 'Market Observer',
-              price: '$5-15/month',
+              name: 'Market Observer',
               description: 'Basic market trend analysis',
               icon: Lightbulb,
               color: 'bg-blue-600',
               features: ['7 market segments', 'Basic categorization', 'Simple alerts']
             },
             {
-              tier: 'Market Analyst',
-              price: '$20-45/month',
+              name: 'Market Analyst',
               description: 'Advanced sentiment tracking',
               icon: Star,
               color: 'bg-yellow-600',
               features: ['25 market segments', 'Sentiment analysis', 'Custom reports', 'Export data']
             },
             {
-              tier: 'Strategic Intelligence',
-              price: '$50-150/month',
+              name: 'Strategic Intelligence',
               description: 'Real-time AI recommendations',
               icon: Crown,
               color: 'bg-purple-600',
@@ -538,8 +535,8 @@ export function Dashboard() {
                   <tier.icon className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">{tier.tier}</h3>
-                  <p className="text-sm text-indigo-400">{tier.price}</p>
+                  <h3 className="text-lg font-bold text-white">{tier.name}</h3>
+                  <p className="text-sm text-indigo-400">Membership Level</p>
                 </div>
               </div>
               
@@ -555,7 +552,7 @@ export function Dashboard() {
               </div>
               
               <button className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition-colors group-hover:bg-indigo-500">
-                Select Plan
+                Select Membership
               </button>
             </div>
           ))}
