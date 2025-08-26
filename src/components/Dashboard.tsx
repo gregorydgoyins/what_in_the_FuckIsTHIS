@@ -45,27 +45,17 @@ export function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Hero Section with Live Market Data */}
-      <div className="hero-card p-6 text-white rounded-xl relative overflow-hidden">
+      <div className="hero-card p-8 text-white rounded-xl relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 via-purple-600/20 to-blue-600/20" />
         <div className="relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between mb-6">
-            <div className="text-center lg:text-left mb-6 lg:mb-0">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center mb-6">
+            <div className="text-center lg:text-left">
               <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg">
                 Panel Profits
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-4 max-w-2xl font-medium">
                 AI-Powered Comic Book Trading Platform with Advanced Market Intelligence
               </p>
-              <div className="flex items-center justify-center lg:justify-start space-x-4 text-sm text-white/80">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>Live Trading • {formatTime(currentTime)}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Activity className="h-4 w-4" />
-                  <span>CMI: {marketIndex.toLocaleString()}</span>
-                </div>
-              </div>
             </div>
             
             <div className="flex flex-col items-center space-y-4">
@@ -77,6 +67,28 @@ export function Dashboard() {
               />
               <div className="text-center">
                 <p className="text-white/60 text-sm">Real-time AI Analysis</p>
+              </div>
+            </div>
+            
+            <div className="bg-slate-800/50 backdrop-blur-md rounded-xl p-4 border border-slate-700/30">
+              <h3 className="text-lg font-semibold text-white mb-3">Live Market Status</h3>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span className="text-white text-sm">Market Open • {formatTime(currentTime)}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Activity className="h-4 w-4" />
+                  <span className="text-white text-sm">CMI: {marketIndex.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <TrendingUp className="h-4 w-4 text-green-400" />
+                  <span className="text-green-400 text-sm">+2.3% Today</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <BarChart2 className="h-4 w-4 text-blue-400" />
+                  <span className="text-blue-400 text-sm">Volume: 2.8M</span>
+                </div>
               </div>
             </div>
           </div>
@@ -148,6 +160,27 @@ export function Dashboard() {
             <p className="text-gray-300 text-sm mb-4">
               Tracks the performance of 50 blue-chip comic collectibles, including key issues from Action Comics #1, Detective Comics #27, and other cornerstone publications.
             </p>
+            
+            <div className="space-y-2 mb-4">
+              <h4 className="text-white font-medium text-sm">Top Holdings Today:</h4>
+              {[
+                { symbol: 'ACM1', name: 'Action Comics #1', weight: 15.2, change: 3.8 },
+                { symbol: 'DTM27', name: 'Detective Comics #27', weight: 12.8, change: 2.9 },
+                { symbol: 'MRV1', name: 'Marvel Comics #1', weight: 10.5, change: 4.2 },
+                { symbol: 'ASM15', name: 'Amazing Fantasy #15', weight: 9.8, change: 5.1 }
+              ].map((comic, index) => (
+                <div key={index} className="flex items-center justify-between text-xs">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gray-400">{comic.symbol}</span>
+                    <span className="text-white">{comic.name}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gray-400">{comic.weight}%</span>
+                    <span className="text-green-400">+{comic.change}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
             
             <div className="grid grid-cols-3 gap-3 text-sm">
               <div>

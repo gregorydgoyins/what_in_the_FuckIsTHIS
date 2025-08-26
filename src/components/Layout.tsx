@@ -154,6 +154,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <p className="text-white text-sm font-medium">561-600-2271</p>
                 </div>
+                <div className="mt-3 pt-2 border-t border-slate-600/50">
+                  <p className="text-gray-400 text-xs">© 2025 Panel Profits</p>
+                  <p className="text-gray-400 text-xs">Advanced Comic Trading Platform</p>
+                </div>
               </div>
             </div>
             
@@ -194,11 +198,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           
           <div className="mt-8 pt-8 border-t border-slate-700/50 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">© 2025 Innovation Studio. Part of the Panel Profits ecosystem.</p>
-            <p className="text-gray-400 text-sm">© 2025 Panel Profits. Advanced Comic Trading Platform.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
               <a href="#" className="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+              <a href="#" className="text-gray-400 hover:text-white text-sm">Support</a>
             </div>
           </div>
         </div>
