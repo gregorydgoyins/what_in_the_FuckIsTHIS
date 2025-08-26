@@ -29,7 +29,18 @@ export function NewsNotification({ autoHide = true, hideDelay = 8000 }: NewsNoti
         return () => clearTimeout(timer);
       }
     }
-  }, [latestStory, autoHide, hideDelay, currentStory]);
+  }, [latestStory, currentStory, autoHide, hideDelay]);
+
+  // Auto-hide timer for visible notifications
+  useEffect(() => {
+    if (visible && autoHide) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+      }, hideDelay);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [visible, autoHide, hideDelay]);
 
   // If no story or not visible, don't render
   if (!currentStory || !visible) {
