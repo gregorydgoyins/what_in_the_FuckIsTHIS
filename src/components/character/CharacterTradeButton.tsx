@@ -19,10 +19,10 @@ export function CharacterTradeButton({ symbol, name, price, className = '' }: Ch
     <>
       <button
         onClick={openModal}
-        className={`flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors ${className}`}
+        className={`flex items-center justify-center space-x-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:translate-y-0 ${className}`}
       >
         <TrendingUp className="h-4 w-4" />
-        <span>Trade</span>
+        <span>Trade Now</span>
       </button>
       
       <QuickTradeModal

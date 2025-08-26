@@ -35,6 +35,9 @@ export function AssetCard({ asset, assetType, onSelect, isSelected }: AssetCardP
   const locationType = 'locationType' in asset ? asset.locationType : undefined;
   const owner = 'owner' in asset ? asset.owner : undefined;
   const creator = 'creator' in asset ? asset.creator : undefined;
+  const powers = 'powers' in asset ? asset.powers : [];
+  const nemesis = 'nemesis' in asset ? asset.nemesis : undefined;
+  const allies = 'allies' in asset ? asset.allies : [];
 
   // Get rating color
   const getRatingColor = (rating: string) => {
@@ -150,24 +153,52 @@ export function AssetCard({ asset, assetType, onSelect, isSelected }: AssetCardP
       </div>
 
       {/* Asset Details */}
-      <div className="grid grid-cols-2 gap-4 mb-5">
+      <div className="grid grid-cols-2 gap-3 mb-5 text-sm">
         <div>
-          <p className="text-sm text-gray-400">Market Cap</p>
-          <p className="font-semibold text-white">CC {(marketCap / 1000000).toFixed(1)}M</p>
+          <p className="text-xs text-gray-400">Market Cap</p>
+          <p className="font-semibold text-white text-sm">CC {(marketCap / 1000000).toFixed(1)}M</p>
         </div>
         <div>
-          <p className="text-sm text-gray-400">Volume</p>
-          <p className="font-semibold text-white">{volume.toLocaleString()}</p>
+          <p className="text-xs text-gray-400">24h Volume</p>
+          <p className="font-semibold text-white text-sm">{volume.toLocaleString()}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-400">First Appearance</p>
-          <p className="font-semibold text-white">{firstAppearance}</p>
+          <p className="text-xs text-gray-400">First Appearance</p>
+          <p className="font-semibold text-white text-xs">{firstAppearance.split('(')[1]?.replace(')', '') || firstAppearance}</p>
         </div>
         <div>
-          <p className="text-sm text-gray-400">Media Appearances</p>
-          <p className="font-semibold text-white">{mediaAppearances}</p>
+          <p className="text-xs text-gray-400">Media Count</p>
+          <p className="font-semibold text-white text-sm">{mediaAppearances}</p>
         </div>
       </div>
+
+      {/* Character-specific quick stats */}
+      {assetType === 'character' && (
+        <div className="mb-5 bg-slate-700/30 rounded-lg p-3 border border-slate-600/30">
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div>
+              <p className="text-gray-400">Powers</p>
+              <p className="text-white">{powers.length} abilities</p>
+            </div>
+            <div>
+              <p className="text-gray-400">Universe</p>
+              <p className="text-white">{publisher}</p>
+            </div>
+            {nemesis && (
+              <>
+                <div className="col-span-1">
+                  <p className="text-red-400">Nemesis</p>
+                  <p className="text-red-300 truncate">{nemesis}</p>
+                </div>
+                <div className="col-span-1">
+                  <p className="text-green-400">Allies</p>
+                  <p className="text-green-300">{allies.length} allies</p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Asset Info with Tooltip */}
       <div 
@@ -181,20 +212,35 @@ export function AssetCard({ asset, assetType, onSelect, isSelected }: AssetCardP
         </div>
         
         {showTooltip && (
-          <div className="absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-slate-800 p-3 rounded-lg shadow-lg border border-slate-700">
+          <div className="absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-slate-800/95 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-slate-700/50">
             <p className="text-sm text-white font-medium mb-1">{name}</p>
-            <p className="text-xs text-gray-300">{description}</p>
+            <p className="text-xs text-gray-300 leading-relaxed">{description}</p>
             {assetType === 'character' && 'powers' in asset && (
               <div className="mt-2">
                 <p className="text-xs font-medium text-indigo-400">Powers:</p>
-                <ul className="text-xs text-gray-300 mt-1">
+                <ul className="text-xs text-gray-300 mt-1 space-y-1">
                   {(asset as Character).powers.slice(0, 3).map((power, index) => (
-                    <li key={index}>• {power}</li>
+                    <li key={index} className="flex items-center space-x-1">
+                      <span className="w-1 h-1 bg-indigo-400 rounded-full"></span>
+                      <span>{power}</span>
+                    </li>
                   ))}
                   {(asset as Character).powers.length > 3 && (
-                    <li>• +{(asset as Character).powers.length - 3} more</li>
+                    <li className="text-indigo-400 text-xs">+{(asset as Character).powers.length - 3} more abilities</li>
                   )}
                 </ul>
+                {assetType === 'character' && nemesis && (
+                  <div className="mt-2 pt-2 border-t border-slate-600/50">
+                    <p className="text-xs font-medium text-red-400">Nemesis:</p>
+                    <p className="text-xs text-red-300">{nemesis}</p>
+                  </div>
+                )}
+                {assetType === 'character' && allies && allies.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-slate-600/50">
+                    <p className="text-xs font-medium text-green-400">Key Allies:</p>
+                    <p className="text-xs text-green-300">{allies.slice(0, 2).join(', ')}{allies.length > 2 ? ` +${allies.length - 2} more` : ''}</p>
+                  </div>
+                )}
               </div>
             )}
             {assetType === 'gadget' && 'capabilities' in asset && (
