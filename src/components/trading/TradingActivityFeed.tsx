@@ -114,7 +114,7 @@ export function TradingActivityFeed({ className = '' }: TradingActivityFeedProps
       </div>
       
       <div className="space-y-2 max-h-64 overflow-y-auto">
-        {activities.map((activity) => (
+        {(activities || []).map((activity) => (
           <div 
             key={activity.id} 
             className={`flex items-center justify-between p-3 rounded-lg border-l-4 ${getImpactColor(activity.impact)} transition-all hover:bg-slate-700/20`}
@@ -165,11 +165,11 @@ export function TradingActivityFeed({ className = '' }: TradingActivityFeedProps
         <div className="flex items-center justify-between">
           <div className="text-sm text-gray-400">
             <span className="text-green-400 font-medium">
-              {activities.filter(a => a.action === 'buy').length}
+              {(activities || []).filter(a => a.action === 'buy').length}
             </span>
             <span> buys, </span>
             <span className="text-red-400 font-medium">
-              {activities.filter(a => a.action === 'sell').length}
+              {(activities || []).filter(a => a.action === 'sell').length}
             </span>
             <span> sells in last 5 minutes</span>
           </div>

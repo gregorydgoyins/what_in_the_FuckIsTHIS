@@ -479,6 +479,85 @@ export const mockApi = {
     };
   },
 
+  // Get trading activities
+  async fetchTradingActivities(limit: number = 10): Promise<TradeActivity[]> {
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 200 + 50));
+    
+    // Add new activity occasionally
+    if (Math.random() < 0.3) { // 30% chance
+      const newActivity = generateTradingActivity();
+      tradingActivities = [newActivity, ...tradingActivities.slice(0, 19)]; // Keep last 20
+    }
+    
+    return tradingActivities.slice(0, limit);
+  },
+
+  // Get portfolio holdings
+  async fetchPortfolioHoldings(): Promise<PortfolioHolding[]> {
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 100));
+    portfolioHoldings = generatePortfolioHoldings(); // Recalculate with current prices
+    return portfolioHoldings;
+  },
+
+  // Get market performance by category
+  async fetchMarketPerformance(): Promise<MarketPerformance[]> {
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 250 + 75));
+    marketPerformance = generateMarketPerformance(); // Recalculate with current data
+    return marketPerformance;
+  },
+
+  // Get market insights
+  async fetchMarketInsights(): Promise<MarketInsight[]> {
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 150));
+    
+    // Update insights based on current market conditions
+    const currentOverview = await this.fetchMarketOverview();
+    const updatedInsights = generateMarketInsights();
+    
+    // Adjust confidence based on market volatility
+    updatedInsights.forEach(insight => {
+      const volatilityFactor = Math.abs(currentOverview.averageChange) / 10;
+      insight.confidence = Math.max(60, Math.min(95, insight.confidence + (volatilityFactor * 10)));
+    });
+    
+    marketInsights = updatedInsights;
+    return marketInsights;
+  },
+
+  // Get portfolio summary
+  async fetchPortfolioSummary(): Promise<{
+    totalValue: number;
+    dayChange: number;
+    dayChangePercent: number;
+    diversificationScore: number;
+    unrealizedPnL: number;
+    unrealizedPnLPercent: number;
+  }> {
+    const holdings = await this.fetchPortfolioHoldings();
+    
+    const totalValue = holdings.reduce((sum, holding) => sum + holding.totalValue, 0);
+    const dayChange = holdings.reduce((sum, holding) => sum + holding.dayChange, 0);
+    const dayChangePercent = totalValue > 0 ? (dayChange / (totalValue - dayChange)) * 100 : 0;
+    const unrealizedPnL = holdings.reduce((sum, holding) => sum + holding.unrealizedPnL, 0);
+    const unrealizedPnLPercent = holdings.reduce((sum, holding) => {
+      const avgCost = holding.quantity * holding.averagePrice;
+      return avgCost > 0 ? sum + holding.unrealizedPnL : sum;
+    }, 0) / holdings.reduce((sum, holding) => sum + (holding.quantity * holding.averagePrice), 0) * 100;
+    
+    // Calculate diversification score based on number of different asset types
+    const assetTypes = new Set(holdings.map(h => h.type));
+    const diversificationScore = Math.min(100, assetTypes.size * 20 + (holdings.length * 5));
+    
+    return {
+      totalValue,
+      dayChange,
+      dayChangePercent,
+      diversificationScore,
+      unrealizedPnL,
+      unrealizedPnLPercent
+    };
+  },
+
   // Update market simulation parameters
   setMarketParameters(params: { volatility?: number; trend?: number; marketOpen?: boolean }) {
     marketSimulation = { ...marketSimulation, ...params };
@@ -487,6 +566,58 @@ export const mockApi = {
   // Get current market parameters
   getMarketParameters() {
     return { ...marketSimulation };
+  },
+
+  // Simulate a trade execution
+  async executeTrade(symbol: string, action: 'buy' | 'sell', quantity: number): Promise<{
+    success: boolean;
+    message: string;
+    executedPrice: number;
+    totalCost: number;
+    fees: number;
+  }> {
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 500)); // Simulate execution time
+    
+    const asset = currentAssetStates.get(symbol);
+    if (!asset) {
+      return {
+        success: false,
+        message: `Asset ${symbol} not found`,
+        executedPrice: 0,
+        totalCost: 0,
+        fees: 0
+      };
+    }
+    
+    // Add some slippage for market orders
+    const slippage = (Math.random() - 0.5) * 0.01; // ±0.5% slippage
+    const executedPrice = asset.price * (1 + slippage);
+    const totalCost = quantity * executedPrice;
+    const fees = totalCost * 0.001; // 0.1% fee
+    
+    // Add to trading activities
+    const newActivity = {
+      id: `${Date.now()}-${Math.random()}`,
+      symbol,
+      name: asset.name,
+      type: asset.type || ('characterType' in asset ? 'character' : 'creator'),
+      action,
+      quantity,
+      price: executedPrice,
+      timestamp: new Date(),
+      trader: 'You',
+      impact: totalCost > 100000 ? 'large' : totalCost > 25000 ? 'medium' : 'small'
+    };
+    
+    tradingActivities = [newActivity, ...tradingActivities.slice(0, 19)];
+    
+    return {
+      success: true,
+      message: `${action === 'buy' ? 'Bought' : 'Sold'} ${quantity} ${symbol} at CC ${executedPrice.toFixed(2)}`,
+      executedPrice: Math.round(executedPrice * 100) / 100,
+      totalCost: Math.round(totalCost * 100) / 100,
+      fees: Math.round(fees * 100) / 100
+    };
   }
 };
 

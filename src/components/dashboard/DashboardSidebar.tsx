@@ -2,10 +2,11 @@ import React from 'react';
 import { Shield, Activity, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { PortfolioHealthCheck } from '../portfolio/PortfolioHealthCheck';
-import { useMarketOverview } from '../../hooks/useAssetMarketData';
+import { useMarketOverview, usePortfolioData } from '../../hooks/useAssetMarketData';
 
 export function DashboardSidebar() {
   const { marketData } = useMarketOverview();
+  const { portfolio } = usePortfolioData();
 
   return (
     <div className="space-y-6">
@@ -19,16 +20,23 @@ export function DashboardSidebar() {
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <span className="text-gray-400">Total Value</span>
-            <span className="text-xl font-bold text-white">CC 2,847,230</span>
+            <span className="text-xl font-bold text-white">
+              CC {portfolio?.summary?.totalValue?.toLocaleString() || '2,847,230'}
+            </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-400">Today's P&L</span>
-            <span className="text-lg font-semibold text-green-400">+CC 42,150 (+1.5%)</span>
+            <span className={`text-lg font-semibold ${
+              (portfolio?.summary?.dayChange || 0) >= 0 ? 'text-green-400' : 'text-red-400'
+            }`}>
+              {(portfolio?.summary?.dayChange || 0) >= 0 ? '+' : ''}CC {portfolio?.summary?.dayChange?.toLocaleString() || '42,150'} 
+              ({(portfolio?.summary?.dayChange || 0) >= 0 ? '+' : ''}{portfolio?.summary?.dayChangePercent?.toFixed(1) || '1.5'}%)
+            </span>
           </div>
           <div className="w-full bg-slate-700 rounded-full h-2">
-            <div className="bg-green-500 h-2 rounded-full" style={{ width: '68%' }} />
+            <div className="bg-green-500 h-2 rounded-full" style={{ width: `${portfolio?.summary?.diversificationScore || 68}%` }} />
           </div>
-          <p className="text-sm text-gray-400">Diversification Score: 68/100</p>
+          <p className="text-sm text-gray-400">Diversification Score: {portfolio?.summary?.diversificationScore || 68}/100</p>
         </div>
         
         <Link 

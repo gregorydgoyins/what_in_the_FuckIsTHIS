@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Info } from 'lucide-react';
 import { useMarketStore } from '../store/marketStore';
+import { mockApi } from '../data/mockApi';
 
 interface OrderEntryProps {
   symbol: string | undefined;
@@ -14,36 +15,43 @@ export function OrderEntry({ symbol, onSymbolChange, className = '' }: OrderEntr
   const [quantity, setQuantity] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentPrice, setCurrentPrice] = useState(0);
   const { userBalance } = useMarketStore();
 
-  // Mock current prices for different symbols
-  const getCurrentPrice = (sym: string | undefined): number => {
-    if (!sym) return 0;
-    
-    const mockPrices: Record<string, number> = {
-      'ASM300': 2500,
-      'BATM': 4200,
-      'SPDR': 3500,
-      'TMFS': 1850,
-      'JLES': 3200,
-      'MRVLB': 1035.50,
-      'SHUF': 25.75,
-      'HERO': 85.75,
-      'VILL': 72.40
+  // Fetch current price when symbol changes
+  React.useEffect(() => {
+    const fetchPrice = async () => {
+      if (!symbol) {
+        setCurrentPrice(0);
+        return;
+      }
+      
+      try {
+        const asset = await mockApi.fetchAssetBySymbol(symbol);
+        setCurrentPrice(asset ? asset.price : 1000);
+      } catch (error) {
+        console.error('Failed to fetch asset price:', error);
+        setCurrentPrice(1000); // Fallback price
+      }
     };
     
-    return mockPrices[sym] || 1000;
-  };
+    fetchPrice();
+  }, [symbol]);
 
-  const currentPrice = getCurrentPrice(symbol);
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      if (!symbol) {
+        throw new Error('Symbol is required');
+      }
+      
+      const result = await mockApi.executeTrade(symbol, side, parseFloat(quantity));
+      
+      if (!result.success) {
+        throw new Error(result.message);
+      }
       
       // Reset form
       setQuantity('');
@@ -51,17 +59,12 @@ export function OrderEntry({ symbol, onSymbolChange, className = '' }: OrderEntr
         setPrice('');
       }
       
-      // In a real app, this would submit to an API
-      console.log('Order submitted:', {
-        symbol,
-        side,
-        orderType,
-        quantity: parseFloat(quantity),
-        price: orderType === 'limit' ? parseFloat(price) : currentPrice
-      });
+      // Show success message
+      alert(`${result.message}\nTotal Cost: CC ${result.totalCost.toFixed(2)}\nFees: CC ${result.fees.toFixed(2)}`);
       
     } catch (error) {
       console.error('Order failed:', error);
+      alert(`Order failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSubmitting(false);
     }

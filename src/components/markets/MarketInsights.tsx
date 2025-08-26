@@ -1,21 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Lightbulb, TrendingUp, AlertCircle, AlertTriangle, Star, Zap, Brain, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-interface MarketInsight {
-  id: string;
-  title: string;
-  description: string;
-  confidence: number;
-  category: 'opportunity' | 'warning' | 'trend' | 'analysis';
-  relatedAssets: Array<{
-    symbol: string;
-    name: string;
-    type: string;
-  }>;
-  timeframe: string;
-  impact: 'high' | 'medium' | 'low';
-}
+import { useMarketInsights } from '../../hooks/useAssetMarketData';
 
 interface MarketInsightsProps {
   className?: string;
@@ -24,75 +10,18 @@ interface MarketInsightsProps {
 export function MarketInsights({ className = '' }: MarketInsightsProps) {
   const [currentInsightIndex, setCurrentInsightIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { insights, isLoading } = useMarketInsights();
 
-  // Mock AI-generated market insights
-  const insights: MarketInsight[] = [
-    {
-      id: '1',
-      title: 'Creator Stock Momentum Building',
-      description: 'AI detects increasing institutional interest in creator stocks, particularly Todd McFarlane and Jim Lee.',
-      confidence: 87,
-      category: 'opportunity',
-      relatedAssets: [
-        { symbol: 'TMFS', name: 'Todd McFarlane', type: 'creator' },
-        { symbol: 'JLES', name: 'Jim Lee', type: 'creator' }
-      ],
-      timeframe: '2-4 weeks',
-      impact: 'high'
-    },
-    {
-      id: '2',
-      title: 'Golden Age Comics Undervalued',
-      description: 'Machine learning models suggest Golden Age comics are trading below fair value compared to historical patterns.',
-      confidence: 92,
-      category: 'opportunity',
-      relatedAssets: [
-        { symbol: 'GAPF', name: 'Golden Age Fund', type: 'fund' },
-        { symbol: 'ACM1', name: 'Action Comics #1', type: 'character' }
-      ],
-      timeframe: '1-2 months',
-      impact: 'medium'
-    },
-    {
-      id: '3',
-      title: 'Volatility Spike Incoming',
-      description: 'Cross-correlation analysis indicates potential volatility increase ahead of Comic-Con announcements.',
-      confidence: 78,
-      category: 'warning',
-      relatedAssets: [
-        { symbol: 'MRVL', name: 'Marvel Entertainment', type: 'publisher' },
-        { symbol: 'DCCP', name: 'DC Comics', type: 'publisher' }
-      ],
-      timeframe: '1-2 weeks',
-      impact: 'medium'
-    },
-    {
-      id: '4',
-      title: 'Character Cross-Media Impact',
-      description: 'Streaming platform data suggests upcoming character appearances will drive significant price movements.',
-      confidence: 85,
-      category: 'trend',
-      relatedAssets: [
-        { symbol: 'SPDR', name: 'Spider-Man', type: 'character' },
-        { symbol: 'BATM', name: 'Batman', type: 'character' }
-      ],
-      timeframe: '3-6 months',
-      impact: 'high'
-    },
-    {
-      id: '5',
-      title: 'Bond Market Consolidation',
-      description: 'AI models predict publisher bonds will outperform as investors seek stable income streams.',
-      confidence: 81,
-      category: 'analysis',
-      relatedAssets: [
-        { symbol: 'MRVLB', name: 'Marvel Bond', type: 'bond' },
-        { symbol: 'DCCB', name: 'DC Bond', type: 'bond' }
-      ],
-      timeframe: '2-3 months',
-      impact: 'low'
-    }
-  ];
+  if (isLoading || !insights) {
+    return (
+      <div className={`bg-slate-800/90 rounded-xl p-6 border border-slate-700/30 ${className}`}>
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-indigo-500" />
+          <span className="ml-3 text-gray-400">Analyzing market...</span>
+        </div>
+      </div>
+    );
+  }
 
   // Auto-rotate insights every 8 seconds
   useEffect(() => {

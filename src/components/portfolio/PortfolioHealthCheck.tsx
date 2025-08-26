@@ -2,20 +2,33 @@ import React from 'react';
 import { Shield, AlertTriangle, CheckCircle, TrendingUp, Info, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { DiversificationScore } from './DiversificationScore';
+import { usePortfolioData } from '../../hooks/useAssetMarketData';
 
 interface PortfolioHealthCheckProps {
   className?: string;
 }
 
 export function PortfolioHealthCheck({ className = '' }: PortfolioHealthCheckProps) {
-  // Mock portfolio health data
+  const { portfolio, isLoading } = usePortfolioData();
+  
+  if (isLoading || !portfolio) {
+    return (
+      <div className={`bg-slate-800/90 rounded-xl p-6 border border-slate-700/30 ${className}`}>
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-orange-500" />
+          <span className="ml-3 text-gray-400">Analyzing portfolio...</span>
+        </div>
+      </div>
+    );
+  }
+
   const healthMetrics = {
-    diversificationScore: 68,
-    riskLevel: 'Moderate',
-    allocationBalance: 82,
-    rebalanceNeeded: true,
+    diversificationScore: portfolio.summary.diversificationScore,
+    riskLevel: portfolio.summary.diversificationScore > 70 ? 'Low' : portfolio.summary.diversificationScore > 40 ? 'Moderate' : 'High',
+    allocationBalance: portfolio.summary.diversificationScore,
+    rebalanceNeeded: portfolio.summary.diversificationScore < 60,
     lastRebalance: '12 days ago',
-    recommendations: 3
+    recommendations: portfolio.summary.diversificationScore < 60 ? 3 : portfolio.summary.diversificationScore < 80 ? 1 : 0
   };
 
   const getHealthStatus = () => {
@@ -31,7 +44,7 @@ export function PortfolioHealthCheck({ className = '' }: PortfolioHealthCheckPro
     { text: 'Add Golden Age exposure', priority: 'high', asset: 'GAPF' },
     { text: 'Reduce Marvel concentration', priority: 'medium', asset: 'MRVL' },
     { text: 'Consider bond allocation', priority: 'low', asset: 'MRVLB' }
-  ];
+  ].slice(0, healthMetrics.recommendations);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
