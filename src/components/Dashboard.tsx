@@ -9,6 +9,10 @@ import { MarketSentimentGauge } from './ui/MarketSentimentGauge';
 import { RecommendationsCards } from './markets/RecommendationsCards';
 import { IPOAnnouncements } from './markets/IPOAnnouncements';
 import { NewsFeed } from './news/NewsFeed';
+import { MarketPerformanceSummary } from './markets/MarketPerformanceSummary';
+import { TradingActivityFeed } from './trading/TradingActivityFeed';
+import { MarketInsights } from './markets/MarketInsights';
+import { PortfolioHealthCheck } from './portfolio/PortfolioHealthCheck';
 
 export function Dashboard() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -175,6 +179,13 @@ export function Dashboard() {
 
           {/* AI Recommendations */}
           <RecommendationsCards />
+
+          {/* Additional Market Information Modules */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <MarketPerformanceSummary />
+            <TradingActivityFeed />
+            <MarketInsights />
+          </div>
         </div>
 
         {/* Sidebar */}
@@ -208,6 +219,9 @@ export function Dashboard() {
               View Full Portfolio
             </Link>
           </div>
+
+          {/* Portfolio Health Check */}
+          <PortfolioHealthCheck />
 
           {/* Top Movers */}
           <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
