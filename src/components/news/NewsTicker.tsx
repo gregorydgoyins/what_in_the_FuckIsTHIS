@@ -120,7 +120,7 @@ export function NewsTicker() {
             <div className="flex-1 overflow-hidden relative">
               <div 
                 ref={tickerRef}
-                className={`flex whitespace-nowrap ${isPaused ? '' : 'animate-marquee'}`}
+                className="flex whitespace-nowrap animate-marquee"
                 style={{ 
                   animationDuration: `${40 / speed}s`,
                   animationPlayState: isPaused ? 'paused' : 'running'
