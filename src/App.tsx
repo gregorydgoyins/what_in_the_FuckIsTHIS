@@ -14,6 +14,7 @@ const IdeasPage = lazy(() => import('./pages/IdeasPage').then(module => ({ defau
 const IdeaMappingPage = lazy(() => import('./pages/IdeaMappingPage').then(module => ({ default: module.IdeaMappingPage })));
 
 // Trading pages
+const TradingPage = lazy(() => import('./pages/trading/TradingPage').then(module => ({ default: module.TradingPage })));
 const BuyPage = lazy(() => import('./pages/trading/BuyPage').then(module => ({ default: module.BuyPage })));
 const SellPage = lazy(() => import('./pages/trading/SellPage').then(module => ({ default: module.SellPage })));
 const ETFsPage = lazy(() => import('./pages/trading/ETFsPage').then(module => ({ default: module.ETFsPage })));
@@ -114,7 +115,7 @@ function App() {
             <Route path="/ideas/mapping" element={<IdeaMappingPage />} />
             
             {/* Trading Routes */}
-            <Route path="/trading" element={<BuyPage />} />
+            <Route path="/trading" element={<TradingPage />} />
             <Route path="/trading/buy" element={<BuyPage />} />
             <Route path="/trading/sell" element={<SellPage />} />
             <Route path="/trading/etfs" element={<ETFsPage />} />
