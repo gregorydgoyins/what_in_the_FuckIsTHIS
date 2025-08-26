@@ -312,6 +312,12 @@ const keyComicsData = [
 // Store current asset states (simulates real-time market data)
 const currentAssetStates = new Map();
 
+// Initialize dynamic data stores
+let tradingActivities: any[] = [];
+let portfolioHoldings: any[] = [];
+let marketPerformance: any[] = [];
+let marketInsights: any[] = [];
+
 // Initialize asset states
 const initializeAssetStates = () => {
   [...baseCharacters, ...baseCreators, ...baseBonds, ...baseFunds, ...baseLocations, ...baseGadgets, ...keyComicsData].forEach(asset => {
@@ -357,14 +363,150 @@ const simulateMarketMovement = (asset: any) => {
   };
 };
 
+// Generate trading activities
+const generateTradingActivity = () => {
+  const symbols = ['SPDR', 'BATM', 'SUPR', 'TMFS', 'JLES', 'MRVLB', 'SHUF'];
+  const names = ['Spider-Man', 'Batman', 'Superman', 'Todd McFarlane', 'Jim Lee', 'Marvel Bond', 'Superhero Fund'];
+  const types = ['character', 'character', 'character', 'creator', 'creator', 'bond', 'fund'];
+  const traders = ['ProTrader42', 'ComicKing', 'MarvelFan99', 'DCCollector', 'TradingAce', 'InvestorX', 'AssetHunter'];
+  
+  const randomIndex = Math.floor(Math.random() * symbols.length);
+  const quantity = Math.floor(Math.random() * 50) + 1;
+  const price = 1000 + Math.floor(Math.random() * 3000);
+  const impact = quantity * price > 100000 ? 'large' : quantity * price > 25000 ? 'medium' : 'small';
+  
+  return {
+    id: `${Date.now()}-${Math.random()}`,
+    symbol: symbols[randomIndex],
+    name: names[randomIndex],
+    type: types[randomIndex],
+    action: Math.random() > 0.5 ? 'buy' : 'sell',
+    quantity,
+    price,
+    timestamp: new Date(),
+    trader: traders[Math.floor(Math.random() * traders.length)],
+    impact
+  };
+};
+
+// Generate portfolio holdings
+const generatePortfolioHoldings = () => {
+  return [
+    {
+      symbol: 'ASM300',
+      name: 'Amazing Spider-Man #300',
+      type: 'character',
+      quantity: 2,
+      averagePrice: 2400,
+      currentPrice: 2500,
+      totalValue: 5000,
+      dayChange: 250,
+      unrealizedPnL: 200
+    },
+    {
+      symbol: 'TMFS',
+      name: 'Todd McFarlane',
+      type: 'creator',
+      quantity: 50,
+      averagePrice: 1800,
+      currentPrice: 2500,
+      totalValue: 125000,
+      dayChange: 6250,
+      unrealizedPnL: 35000
+    },
+    {
+      symbol: 'MRVLB',
+      name: 'Marvel Entertainment Bond',
+      type: 'bond',
+      quantity: 10,
+      averagePrice: 1030,
+      currentPrice: 1035,
+      totalValue: 10350,
+      dayChange: 82.5,
+      unrealizedPnL: 50
+    }
+  ];
+};
+
+// Generate market performance data
+const generateMarketPerformance = () => {
+  return [
+    { category: 'Heroes', percentChange: 3.2, volume: 2850000 },
+    { category: 'Villains', percentChange: 1.8, volume: 2100000 },
+    { category: 'Creators', percentChange: 4.5, volume: 1200000 },
+    { category: 'Publishers', percentChange: 2.1, volume: 980000 },
+    { category: 'Bonds', percentChange: 0.8, volume: 450000 },
+    { category: 'Funds', percentChange: 2.3, volume: 680000 }
+  ];
+};
+
+// Generate market insights
+const generateMarketInsights = () => {
+  return [
+    {
+      title: 'Spider-Man Movie Announcement Impact',
+      description: 'Recent Spider-Man 4 announcement driving significant price increases across Spider-verse assets.',
+      category: 'opportunity',
+      impact: 'high',
+      confidence: 88,
+      timeframe: '2-4 weeks',
+      relatedAssets: [
+        { symbol: 'SPDR', type: 'character' },
+        { symbol: 'ASM300', type: 'comic' }
+      ]
+    },
+    {
+      title: 'Creator Bond Market Strengthening',
+      description: 'Creator bonds showing increased demand as investors seek stable income streams.',
+      category: 'trend',
+      impact: 'medium',
+      confidence: 82,
+      timeframe: '1-2 months',
+      relatedAssets: [
+        { symbol: 'TMFB', type: 'bond' },
+        { symbol: 'JLEB', type: 'bond' }
+      ]
+    },
+    {
+      title: 'Golden Age Comics Overvaluation Warning',
+      description: 'AI analysis suggests some Golden Age comics may be trading above intrinsic value.',
+      category: 'warning',
+      impact: 'medium',
+      confidence: 76,
+      timeframe: '3-6 months',
+      relatedAssets: [
+        { symbol: 'ACM1', type: 'comic' },
+        { symbol: 'DTM27', type: 'comic' }
+      ]
+    }
+  ];
+};
+
+// Helper function to determine asset type from symbol
+const getRandomAssetType = (symbol: string) => {
+  if (symbol.includes('B')) return 'bond';
+  if (symbol.includes('F')) return 'fund';
+  if (['TMFS', 'JLES', 'DCTS'].includes(symbol)) return 'creator';
+  return 'character';
+};
+
+// Initialize data stores
+const initializeDataStores = () => {
+  tradingActivities = Array.from({ length: 10 }, generateTradingActivity);
+  portfolioHoldings = generatePortfolioHoldings();
+  marketPerformance = generateMarketPerformance();
+  marketInsights = generateMarketInsights();
+};
+
 // Initialize on first import
 initializeAssetStates();
+initializeDataStores();
 
 // API Functions
 export const mockApi = {
   // Generic asset fetching
   async fetchAssets(type: 'character' | 'creator' | 'bond' | 'fund' | 'location' | 'gadget' | 'comic'): Promise<any[]> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 500 + 100)); // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 100 + 50)); // Reduced network delay
     
     let baseData: any[] = [];
     switch (type) {
@@ -404,7 +546,7 @@ export const mockApi = {
 
   // Fetch single asset by symbol
   async fetchAssetBySymbol(symbol: string): Promise<any | null> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 50));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 50 + 25)); // Reduced delay
     
     const currentState = currentAssetStates.get(symbol);
     if (currentState) {
@@ -418,7 +560,7 @@ export const mockApi = {
 
   // Search assets across all types
   async searchAssets(query: string): Promise<any[]> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 100));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 100 + 50)); // Reduced delay
     
     const allAssets = [
       ...await this.fetchAssets('character'),
@@ -481,7 +623,7 @@ export const mockApi = {
 
   // Get trading activities
   async fetchTradingActivities(limit: number = 10): Promise<TradeActivity[]> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 200 + 50));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 50 + 25)); // Reduced delay
     
     // Add new activity occasionally
     if (Math.random() < 0.3) { // 30% chance
@@ -494,21 +636,21 @@ export const mockApi = {
 
   // Get portfolio holdings
   async fetchPortfolioHoldings(): Promise<PortfolioHolding[]> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 100));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 75 + 25)); // Reduced delay
     portfolioHoldings = generatePortfolioHoldings(); // Recalculate with current prices
     return portfolioHoldings;
   },
 
   // Get market performance by category
   async fetchMarketPerformance(): Promise<MarketPerformance[]> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 250 + 75));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 75 + 25)); // Reduced delay
     marketPerformance = generateMarketPerformance(); // Recalculate with current data
     return marketPerformance;
   },
 
   // Get market insights
   async fetchMarketInsights(): Promise<MarketInsight[]> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 400 + 150));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 100 + 50)); // Reduced delay
     
     // Update insights based on current market conditions
     const currentOverview = await this.fetchMarketOverview();
@@ -576,7 +718,7 @@ export const mockApi = {
     totalCost: number;
     fees: number;
   }> {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 500)); // Simulate execution time
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 200 + 100)); // Reduced execution time
     
     const asset = currentAssetStates.get(symbol);
     if (!asset) {
