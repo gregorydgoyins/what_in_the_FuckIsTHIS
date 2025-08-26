@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Bell, X, ExternalLink, TrendingUp, TrendingDown, AlertCircle } from 'lucide-react';
 import { useNewsData } from '../../hooks/useNewsData';
 import { format } from 'date-fns';
@@ -13,6 +13,8 @@ export function NewsNotification({ autoHide = true, hideDelay = 8000 }: NewsNoti
   const { latestStory } = useNewsData();
   const [visible, setVisible] = useState(false);
   const [currentStory, setCurrentStory] = useState(latestStory);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   // Show notification when a new story arrives
   useEffect(() => {
@@ -42,8 +44,8 @@ export function NewsNotification({ autoHide = true, hideDelay = 8000 }: NewsNoti
     }
   }, [visible, autoHide, hideDelay]);
 
-  // If no story or not visible, don't render
-  if (!currentStory || !visible) {
+  // If no story, not visible, or on home page, don't render
+  if (!currentStory || !visible || isHomePage) {
     return null;
   }
 
