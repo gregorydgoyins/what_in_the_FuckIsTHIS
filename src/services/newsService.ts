@@ -77,50 +77,83 @@ class NewsService {
         return { data: mockNewsData.slice(0, options.limit || 10), error: null };
       }
 
-      let query = supabase
-        .from('news_articles')
-        .select(`
-          *,
-          related_securities (
-            security_type,
-            symbol,
-            name
-          )
-        `)
-        .eq('status', options.status || 'published')
-        .order('published_at', { ascending: false });
+      try {
+        let query = supabase
+          .from('news_articles')
+          .select(`
+            *,
+            related_securities (
+              security_type,
+              symbol,
+              name
+            )
+          `)
+          .eq('status', options.status || 'published')
+          .order('published_at', { ascending: false });
 
-      if (options.limit) {
-        query = query.limit(options.limit);
-      }
+        if (options.limit) {
+          query = query.limit(options.limit);
+        }
 
-      if (options.offset) {
-        query = query.range(options.offset, options.offset + (options.limit || 10) - 1);
-      }
+        if (options.offset) {
+          query = query.range(options.offset, options.offset + (options.limit || 10) - 1);
+        }
 
-      if (options.category && options.category !== 'all') {
-        query = query.eq('category', options.category);
-      }
+        if (options.category && options.category !== 'all') {
+          query = query.eq('category', options.category);
+        }
 
-      if (options.impact && options.impact !== 'all') {
-        query = query.eq('impact', options.impact);
-      }
+        if (options.impact && options.impact !== 'all') {
+          query = query.eq('impact', options.impact);
+        }
 
-      if (options.source && options.source !== 'all') {
-        query = query.eq('source', options.source);
-      }
+        if (options.source && options.source !== 'all') {
+          query = query.eq('source', options.source);
+        }
 
-      if (options.featured) {
-        query = query.eq('is_featured', true);
-      }
+        if (options.featured) {
+          query = query.eq('is_featured', true);
+        }
 
-      const { data, error } = await query;
+        const { data, error } = await query;
 
-      if (error) {
-        console.error('Error fetching news articles:', error);
-        // Return mock data as fallback
+        if (error) {
+          console.error('Error fetching news articles:', error);
+          // Return mock data as fallback
+          return { data: mockNewsData.slice(0, options.limit || 10), error: null };
+        }
+
+        // Transform database results to NewsItem format
+        const newsItems: NewsItem[] = (data || []).map(article => ({
+          id: article.id,
+          title: article.title,
+          description: article.description,
+          content: article.content,
+          publishedAt: new Date(article.published_at),
+          url: article.url,
+          source: article.source,
+          impact: article.impact,
+          imageUrl: article.image_url,
+          keywords: article.keywords || [],
+          relatedSecurity: article.related_securities?.[0] ? {
+            type: article.related_securities[0].security_type,
+            symbol: article.related_securities[0].symbol,
+            name: article.related_securities[0].name
+          } : undefined
+        }));
+
+        return { data: newsItems, error: null };
+      } catch (networkError) {
+        console.error('Network error fetching news articles:', networkError);
+        // Return mock data as fallback for network errors
         return { data: mockNewsData.slice(0, options.limit || 10), error: null };
       }
+    } catch (error) {
+      console.error('News service error:', error);
+      // Return mock data as fallback
+      return { data: mockNewsData.slice(0, options.limit || 10), error: null };
+    }
+  }
 
       // Transform database results to NewsItem format
       const newsItems: NewsItem[] = (data || []).map(article => ({
