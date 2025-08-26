@@ -145,19 +145,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <p className="text-xs text-indigo-400">Comic Trading Platform</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="flex flex-col space-y-1">
-                  <Link to="/about" className="text-gray-400 hover:text-white text-sm transition-colors">About Us</Link>
-                  <Link to="/contact" className="text-gray-400 hover:text-white text-sm transition-colors">Contact Us</Link>
-                </div>
-                <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
-                  <div className="space-y-1">
-                    <p className="text-white text-sm font-medium">561-600-2271</p>
-                    <div className="text-gray-400 text-xs leading-snug">
-                      <div>1300 GREENSBORO LANE</div>
-                      <div>SUITE 305</div>
-                      <div>SARASOTA FL 34234</div>
-                    </div>
+              <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
+                <div className="space-y-1">
+                  <p className="text-white text-sm font-medium">561-600-2271</p>
+                  <div className="text-gray-400 text-xs leading-snug">
+                    <div>1300 GREENSBORO LANE</div>
+                    <div>SUITE 305</div>
+                    <div>SARASOTA FL 34234</div>
                   </div>
                 </div>
               </div>
