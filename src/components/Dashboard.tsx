@@ -559,41 +559,6 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to dominate the comic market?</h2>
-          <p className="text-white/90 mb-8 text-lg max-w-2xl mx-auto">
-            Combine cutting-edge AI analysis with strategic comic asset trading. Start with 2 million Comic Coins and build your empire.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Link 
-              to="/learn"
-              className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
-            >
-              <Lightbulb className="h-5 w-5" />
-              <span>Learn Trading</span>
-            </Link>
-            
-            <Link 
-              to="/characters"
-              className="flex items-center space-x-2 bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-lg transition-colors font-medium"
-            >
-              <Eye className="h-5 w-5" />
-              <span>Browse Assets</span>
-            </Link>
-            
-            <Link 
-              to="/trading"
-              className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors font-medium"
-            >
-              <Play className="h-5 w-5" />
-              <span>Start Trading Now</span>
-            </Link>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

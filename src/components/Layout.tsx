@@ -147,12 +147,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
                 <div className="space-y-1">
-                  <p className="text-white text-sm font-medium">561-600-2271</p>
                   <div className="text-gray-400 text-xs leading-snug">
                     <div>1300 GREENSBORO LANE</div>
                     <div>SUITE 305</div>
                     <div>SARASOTA FL 34234</div>
                   </div>
+                  <p className="text-white text-sm font-medium">561-600-2271</p>
                 </div>
               </div>
             </div>
