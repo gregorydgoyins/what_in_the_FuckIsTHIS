@@ -90,7 +90,27 @@ export function CharacterDetailsPage() {
               </span>
             </div>
             <p className="text-gray-400 mb-2">{character.symbol} • {character.publisher} • {character.characterType.charAt(0).toUpperCase() + character.characterType.slice(1)}</p>
-            <p className="text-gray-300 mb-4">{character.description}</p>
+            <div className="mb-4">
+              <p className="text-gray-300 mb-3">{character.description}</p>
+              {character.characterType === 'hero' && (
+                <div className="inline-flex items-center space-x-2 bg-blue-900/30 px-3 py-1 rounded-full border border-blue-700/30">
+                  <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                  <span className="text-blue-200 text-sm">Hero</span>
+                </div>
+              )}
+              {character.characterType === 'villain' && (
+                <div className="inline-flex items-center space-x-2 bg-red-900/30 px-3 py-1 rounded-full border border-red-700/30">
+                  <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                  <span className="text-red-200 text-sm">Villain</span>
+                </div>
+              )}
+              {character.characterType === 'sidekick' && (
+                <div className="inline-flex items-center space-x-2 bg-green-900/30 px-3 py-1 rounded-full border border-green-700/30">
+                  <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                  <span className="text-green-200 text-sm">Sidekick</span>
+                </div>
+              )}
+            </div>
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <Star className="h-5 w-5 text-yellow-400" />
@@ -177,41 +197,43 @@ export function CharacterDetailsPage() {
             </div>
 
             {/* Character Relationships */}
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Character Relationships</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {character.nemesis && (
-                  <div className="bg-red-900/30 p-4 rounded-lg border border-red-700/30">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Crosshair className="h-5 w-5 text-red-400" />
-                      <h4 className="font-medium text-white">Nemesis</h4>
-                    </div>
-                    <p className="text-red-200">{character.nemesis}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {character.nemesis && (
+                <div className="bg-red-900/30 p-4 rounded-lg border border-red-700/30">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Crosshair className="h-5 w-5 text-red-400" />
+                    <h4 className="font-medium text-white">Arch-Nemesis</h4>
                   </div>
-                )}
-                
-                {character.allies && character.allies.length > 0 && (
-                  <div className="bg-green-900/30 p-4 rounded-lg border border-green-700/30">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Users className="h-5 w-5 text-green-400" />
-                      <h4 className="font-medium text-white">Allies</h4>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {character.allies.map((ally, index) => (
-                        <span key={index} className="px-2 py-1 bg-green-900/50 rounded text-sm text-green-200">
-                          {ally}
-                        </span>
-                      ))}
-                    </div>
+                  <p className="text-red-200 font-medium">{character.nemesis}</p>
+                  <p className="text-xs text-red-300 mt-1">Primary antagonist and greatest enemy</p>
+                </div>
+              )}
+              
+              {character.allies && character.allies.length > 0 && (
+                <div className="bg-green-900/30 p-4 rounded-lg border border-green-700/30">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <Users className="h-5 w-5 text-green-400" />
+                    <h4 className="font-medium text-white">Key Allies ({character.allies.length})</h4>
                   </div>
-                )}
-              </div>
+                  <div className="space-y-1">
+                    {character.allies.slice(0, 3).map((ally, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <span className="w-1 h-1 bg-green-400 rounded-full"></span>
+                        <span className="text-green-200 text-sm">{ally}</span>
+                      </div>
+                    ))}
+                    {character.allies.length > 3 && (
+                      <p className="text-xs text-green-300 mt-2">+{character.allies.length - 3} more allies</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Character Origin */}
-            <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+            <div className="bg-slate-700/50 p-5 rounded-xl border border-slate-600/50">
               <h3 className="font-semibold text-white mb-3">Character Background</h3>
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex justify-between">
                   <span className="text-gray-400">First Appearance</span>
                   <span className="text-white">{character.firstAppearance}</span>
@@ -228,6 +250,14 @@ export function CharacterDetailsPage() {
                   <span className="text-gray-400">Media Adaptations</span>
                   <span className="text-white">{character.mediaAppearances} appearances</span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Popularity Rating</span>
+                  <span className="text-white">{character.popularity}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Universe</span>
+                  <span className="text-white">{character.publisher}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -235,18 +265,49 @@ export function CharacterDetailsPage() {
 
         {activeTab === 'powers' && (
           <div className="space-y-6">
-            {/* Powers List */}
+            {/* Powers & Abilities Grid */}
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Powers & Abilities</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {character.powers.map((power, index) => (
-                  <div key={index} className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
-                    <div className="flex items-center space-x-2">
+                  <div key={index} className="bg-gradient-to-br from-slate-700/70 to-slate-800/70 p-4 rounded-xl border border-slate-600/50 hover:border-indigo-500/50 transition-all group">
+                    <div className="flex items-center space-x-3">
                       <Zap className="h-5 w-5 text-yellow-400" />
-                      <p className="text-white">{power}</p>
+                      <div>
+                        <p className="text-white font-medium">{power}</p>
+                        <div className="w-full bg-slate-600/50 rounded-full h-1.5 mt-2">
+                          <div 
+                            className="bg-yellow-400 h-1.5 rounded-full transition-all duration-500 group-hover:bg-yellow-300"
+                            style={{ width: `${75 + Math.random() * 25}%` }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+            
+            {/* Power Rating */}
+            <div className="bg-gradient-to-r from-indigo-900/30 to-purple-900/30 p-5 rounded-xl border border-indigo-700/30">
+              <h3 className="font-semibold text-white mb-4">Power Assessment</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center">
+                  <p className="text-sm text-gray-400 mb-1">Overall Rating</p>
+                  <p className="text-2xl font-bold text-white">{character.popularity > 95 ? 'S-Tier' : character.popularity > 90 ? 'A-Tier' : character.popularity > 80 ? 'B-Tier' : 'C-Tier'}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-gray-400 mb-1">Power Count</p>
+                  <p className="text-2xl font-bold text-yellow-400">{character.powers.length}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-gray-400 mb-1">Threat Level</p>
+                  <p className="text-2xl font-bold text-indigo-400">
+                    {character.characterType === 'villain' ? 'High' : 
+                     character.characterType === 'hero' ? 'Protective' : 
+                     'Support'}
+                  </p>
+                </div>
               </div>
             </div>
             
