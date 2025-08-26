@@ -476,7 +476,6 @@ export function LearningCenter() {
                   {module.completed ? 'Review' : module.progress > 0 ? 'Continue' : 'Start Learning'}
                 </span>
               </Link>
-            </Link>
           </div>
         ))}
       </div>
