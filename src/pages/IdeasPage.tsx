@@ -174,7 +174,10 @@ export function IdeasPage() {
                 
                 <div className="flex items-center space-x-3 mb-4">
                   <div className={`p-3 rounded-full ${tier === 'premium' ? 'bg-orange-600' : info.color}`}>
-                    <info.icon className="h-6 w-6 text-white" />
+                    {(() => {
+                      const IconComponent = info.icon;
+                      return <IconComponent className="h-6 w-6 text-white" />;
+                    })()}
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-white">{info.name}</h3>
@@ -373,7 +376,10 @@ export function IdeasPage() {
             <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
               <div className="flex items-center space-x-3 mb-3">
                 <div className={`p-2 rounded-full ${tierInfo[currentTier].color}`}>
-                  <tierInfo[currentTier].icon className="h-5 w-5 text-white" />
+                  {(() => {
+                    const IconComponent = tierInfo[currentTier].icon;
+                    return <IconComponent className="h-5 w-5 text-white" />;
+                  })()}
                 </div>
                 <h4 className="font-medium text-white">{tierInfo[currentTier].name}</h4>
               </div>
