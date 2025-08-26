@@ -138,17 +138,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container-responsive mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">About & Contact</h3>
-              <ul className="space-y-2">
-                <li><Link to="/about" className="text-gray-400 hover:text-white">About Us</Link></li>
-                <li><Link to="/contact" className="text-gray-400 hover:text-white">Contact Us</Link></li>
-                <li className="text-gray-400">561-600-2271</li>
-                <li className="text-gray-400 text-sm leading-tight">
-                  1300 GREENSBORO LANE<br />
-                  SUITE 305<br />
-                  SARASOTA FL 34234
-                </li>
-              </ul>
+              <div className="flex items-center space-x-2 mb-4">
+                <Brain className="h-6 w-6 text-indigo-400" />
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Panel Profits</h3>
+                  <p className="text-xs text-indigo-400">Comic Trading Platform</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex flex-col space-y-1">
+                  <Link to="/about" className="text-gray-400 hover:text-white text-sm transition-colors">About Us</Link>
+                  <Link to="/contact" className="text-gray-400 hover:text-white text-sm transition-colors">Contact Us</Link>
+                </div>
+                <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
+                  <div className="space-y-1">
+                    <p className="text-white text-sm font-medium">561-600-2271</p>
+                    <div className="text-gray-400 text-xs leading-snug">
+                      <div>1300 GREENSBORO LANE</div>
+                      <div>SUITE 305</div>
+                      <div>SARASOTA FL 34234</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <div>
