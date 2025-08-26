@@ -136,7 +136,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="bg-slate-800/90 backdrop-blur-md border-t border-slate-700/50 py-8">
         <div className="container-responsive mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Panel Profits</h3>
               <p className="text-gray-400">AI-powered comic book trading platform with advanced market intelligence and professional-grade analytics.</p>
@@ -149,6 +149,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <li><Link to="/creators" className="text-gray-400 hover:text-white">Creators</Link></li>
                 <li><Link to="/bonds" className="text-gray-400 hover:text-white">Bonds</Link></li>
                 <li><Link to="/funds" className="text-gray-400 hover:text-white">Funds</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-4">About & Contact</h3>
+              <ul className="space-y-2">
+                <li><Link to="/about" className="text-gray-400 hover:text-white">About Us</Link></li>
+                <li><Link to="/contact" className="text-gray-400 hover:text-white">Contact Us</Link></li>
+                <li className="text-gray-400">561-600-2271</li>
+                <li className="text-gray-400 text-sm leading-tight">
+                  1300 GREENSBORO LANE<br />
+                  SUITE 305<br />
+                  SARASOTA FL 34234
+                </li>
               </ul>
             </div>
             

@@ -45,15 +45,15 @@ export function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Hero Section with Live Market Data */}
-      <div className="hero-card p-8 text-white rounded-xl relative overflow-hidden">
+      <div className="hero-card p-6 text-white rounded-xl relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 via-purple-600/20 to-blue-600/20" />
         <div className="relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between mb-8">
+          <div className="flex flex-col lg:flex-row items-center justify-between mb-6">
             <div className="text-center lg:text-left mb-6 lg:mb-0">
               <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
                 Panel Profits
               </h1>
-              <p className="text-xl text-white/90 mb-6 max-w-2xl">
+              <p className="text-xl text-white/90 mb-4 max-w-2xl">
                 AI-Powered Comic Book Trading Platform with Advanced Market Intelligence
               </p>
               <div className="flex items-center justify-center lg:justify-start space-x-4 text-sm text-white/80">
@@ -81,10 +81,10 @@ export function Dashboard() {
             </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4">
             <Link 
               to="/ideas"
-              className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg
+              className="group relative inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-lg
                        bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500
                        text-white shadow-lg hover:shadow-xl
                        transition-all duration-300 ease-out transform hover:-translate-y-1 active:translate-y-0
@@ -101,7 +101,7 @@ export function Dashboard() {
 
             <Link 
               to="/trading"
-              className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg
+              className="group relative inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-lg
                        bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500
                        text-white shadow-lg hover:shadow-xl
                        transition-all duration-300 ease-out transform hover:-translate-y-1 active:translate-y-0

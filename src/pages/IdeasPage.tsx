@@ -86,7 +86,6 @@ export function IdeasPage() {
   const tierInfo = {
     basic: {
       name: 'Market Observer',
-      price: '$5-15/month',
       description: 'Basic market trend analysis and categorization',
       icon: Lightbulb,
       color: 'bg-blue-600',
@@ -99,7 +98,6 @@ export function IdeasPage() {
     },
     standard: {
       name: 'Market Analyst',
-      price: '$20-45/month',
       description: 'Advanced market analysis with sentiment tracking',
       icon: Star,
       color: 'bg-yellow-600',
@@ -113,7 +111,6 @@ export function IdeasPage() {
     },
     premium: {
       name: 'Strategic Intelligence',
-      price: '$50-150/month',
       description: 'Premium market intelligence with real-time insights',
       icon: Crown,
       color: 'bg-purple-600',
@@ -150,7 +147,7 @@ export function IdeasPage() {
 
       {/* Tier Selection */}
       <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
-        <h2 className="text-xl font-bold text-white mb-6">Choose Your Market Intelligence Tier</h2>
+        <h2 className="text-xl font-bold text-white mb-6">Choose Your Market Intelligence Membership</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {(Object.keys(tierInfo) as SubscriptionTier[]).map((tier) => {
@@ -181,7 +178,7 @@ export function IdeasPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-white">{info.name}</h3>
-                    <p className="text-sm text-indigo-400">{info.price}</p>
+                    <p className="text-sm text-indigo-400">Membership Tier</p>
                   </div>
                 </div>
                 
@@ -210,7 +207,7 @@ export function IdeasPage() {
         
         <div className="mt-6 text-center">
           <p className="text-gray-400 text-sm">
-            Currently using: <span className="text-indigo-400 font-medium capitalize">{currentTier}</span> tier
+            Currently using: <span className="text-indigo-400 font-medium capitalize">{currentTier}</span> membership
           </p>
         </div>
       </div>
@@ -454,15 +451,13 @@ export function IdeasPage() {
             {currentTier !== 'premium' && (
               <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 rounded-lg">
                 <p className="text-white text-sm mb-3">
-                  {currentTier === 'basic' 
-                    ? 'Upgrade to Standard for sentiment analysis and price predictions.'
-                    : 'Upgrade to Premium for real-time trading signals and strategic intelligence.'}
+                  Upgrade your membership for enhanced market intelligence capabilities.
                 </p>
                 <button
                   onClick={() => setTier(currentTier === 'basic' ? 'standard' : 'premium')}
                   className="bg-white text-indigo-600 hover:bg-gray-100 px-4 py-2 rounded text-sm font-medium transition-colors"
                 >
-                  Upgrade Now
+                  Upgrade Membership
                 </button>
               </div>
             )}
@@ -718,12 +713,10 @@ export function IdeasPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">
-                Ready to unlock advanced market intelligence?
+                Ready to upgrade your membership?
               </h2>
               <p className="text-white/90 mb-4">
-                {currentTier === 'basic' 
-                  ? 'Upgrade to Market Analyst for publisher sentiment analysis and custom market reports.'
-                  : 'Upgrade to Strategic Intelligence for real-time market analysis and advanced visualizations.'}
+                Unlock advanced market intelligence capabilities with a higher membership tier.
               </p>
               <button
                 onClick={() => setTier(currentTier === 'basic' ? 'standard' : 'premium')}
@@ -731,7 +724,7 @@ export function IdeasPage() {
               >
                 <div className="flex items-center space-x-2">
                   <Zap className="h-5 w-5" />
-                  <span>Upgrade Now</span>
+                  <span>Upgrade Membership</span>
                 </div>
               </button>
             </div>
