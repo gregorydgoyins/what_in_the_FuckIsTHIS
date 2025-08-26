@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Brain, Network, Lightbulb, Star, Crown, Zap, TrendingUp, Users, 
+  Brain, Network, Lightbulb, Star, Crown, Zap, TrendingUp, Users, BookOpen,
   BarChart2, Target, ArrowRight, Activity, DollarSign, Shield,
   Calendar, Award, Briefcase, Eye, Play, ChevronRight, Check
 } from 'lucide-react';
