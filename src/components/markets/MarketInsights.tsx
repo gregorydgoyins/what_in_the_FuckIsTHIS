@@ -114,7 +114,7 @@ export function MarketInsights({ className = '' }: MarketInsightsProps) {
       case 'opportunity': return <TrendingUp className="h-5 w-5 text-green-400" />;
       case 'warning': return <AlertTriangle className="h-5 w-5 text-yellow-400" />;
       case 'trend': return <Star className="h-5 w-5 text-blue-400" />;
-      case 'analysis': return <Brain className="h-5 w-5 text-purple-400" />;
+      case 'analysis': return <Brain className="h-5 w-5 text-orange-300" />;
       default: return <Lightbulb className="h-5 w-5 text-indigo-400" />;
     }
   };
@@ -124,7 +124,7 @@ export function MarketInsights({ className = '' }: MarketInsightsProps) {
       case 'opportunity': return 'border-green-700/30 bg-green-900/10';
       case 'warning': return 'border-yellow-700/30 bg-yellow-900/10';
       case 'trend': return 'border-blue-700/30 bg-blue-900/10';
-      case 'analysis': return 'border-purple-700/30 bg-purple-900/10';
+      case 'analysis': return 'border-orange-700/30 bg-orange-900/10';
       default: return 'border-indigo-700/30 bg-indigo-900/10';
     }
   };
@@ -208,7 +208,7 @@ export function MarketInsights({ className = '' }: MarketInsightsProps) {
         <div className="flex items-center justify-between">
           <div className="text-sm text-gray-400">
             <span>Powered by </span>
-            <span className="text-indigo-400 font-medium">AI Analysis Engine</span>
+            <span className="text-orange-300 font-medium">AI Analysis Engine</span>
           </div>
           <Link 
             to="/ideas"

@@ -45,7 +45,7 @@ export function PortfolioHealthCheck({ className = '' }: PortfolioHealthCheckPro
   return (
     <div className={`bg-slate-800/90 rounded-xl p-6 border border-slate-700/30 hover:shadow-[0_0_15px_rgba(147,51,234,0.3)] transition-all hover:-translate-y-1 ${className}`}>
       <div className="flex items-center space-x-2 mb-5">
-        <Shield className="h-6 w-6 text-purple-400" />
+        <Shield className="h-6 w-6 text-orange-300" />
         <h3 className="font-semibold text-white text-lg">Portfolio Health</h3>
         <div className="ml-auto">
           <healthStatus.icon className={`h-5 w-5 ${healthStatus.color}`} />
@@ -121,7 +121,7 @@ export function PortfolioHealthCheck({ className = '' }: PortfolioHealthCheckPro
           </div>
           <Link 
             to="/portfolio"
-            className="text-purple-400 hover:text-purple-300 text-sm font-medium"
+            className="flex items-center space-x-1 text-orange-300 hover:text-orange-200 text-sm font-medium"
           >
             Full Analysis →
           </Link>
