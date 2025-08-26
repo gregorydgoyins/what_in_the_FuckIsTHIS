@@ -461,19 +461,22 @@ export function LearningCenter() {
                 <Award className="h-4 w-4" />
                 <span className="text-sm font-medium">{module.points} points</span>
               </div>
-              <button className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+              <Link 
+                to={module.id === '1' ? '/learn/comic-fundamentals' : '#'}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 module.completed 
                   ? 'bg-green-600 hover:bg-green-700 text-white' 
                   : module.progress > 0
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
                     : 'bg-slate-700 hover:bg-slate-600 text-white'
-              }`}>
+              }`}
+              >
                 <Play className="h-4 w-4" />
                 <span>
                   {module.completed ? 'Review' : module.progress > 0 ? 'Continue' : 'Start Learning'}
                 </span>
-              </button>
-            </div>
+              </Link>
+            </Link>
           </div>
         ))}
       </div>
