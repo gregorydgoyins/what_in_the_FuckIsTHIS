@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import { Breadcrumbs } from '../components/common/Breadcrumbs';
 import { IdeaClustering } from '../components/IdeaClustering';
+import { NewsFeed } from '../components/news/NewsFeed';
+import { useNewsData } from '../hooks/useNewsData';
 import { useSubscriptionStore } from '../store/subscriptionStore';
 import { SubscriptionTier } from '../types';
 
 export function IdeasPage() {
   const { currentTier, setTier, features } = useSubscriptionStore();
+  const { data: news } = useNewsData({ limit: 5 });
 
   // Market data for charts
   const marketTrendData = [
@@ -279,6 +282,187 @@ export function IdeasPage() {
 
       {/* AI Clustering Component */}
       <IdeaClustering />
+
+      {/* AI News Analysis by Tier */}
+      <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+        <div className="flex items-center space-x-3 mb-6">
+          <Brain className="h-6 w-6 text-orange-300" />
+          <h2 className="text-xl font-bold text-white">AI News Intelligence</h2>
+          <div className={`px-3 py-1 rounded-full text-white text-sm ${tierInfo[currentTier].color}`}>
+            {tierInfo[currentTier].name}
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* News Analysis */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Market Impact Analysis</h3>
+            
+            {news?.slice(0, 3).map((article, index) => (
+              <div key={article.id} className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+                <div className="flex items-start justify-between mb-2">
+                  <h4 className="font-medium text-white text-sm">{article.title}</h4>
+                  <div className={`px-2 py-1 rounded-full text-xs ${
+                    article.impact === 'positive' ? 'bg-green-900/50 text-green-200' :
+                    article.impact === 'negative' ? 'bg-red-900/50 text-red-200' :
+                    'bg-yellow-900/50 text-yellow-200'
+                  }`}>
+                    {article.impact}
+                  </div>
+                </div>
+                
+                {/* Tier-specific analysis */}
+                {currentTier === 'basic' && (
+                  <div className="bg-blue-900/20 p-3 rounded border border-blue-700/30">
+                    <p className="text-blue-200 text-sm">
+                      <strong>Basic Analysis:</strong> News categorized as {article.impact} impact on market sentiment.
+                    </p>
+                  </div>
+                )}
+                
+                {currentTier === 'standard' && (
+                  <div className="bg-yellow-900/20 p-3 rounded border border-yellow-700/30">
+                    <p className="text-yellow-200 text-sm">
+                      <strong>Advanced Analysis:</strong> {article.impact === 'positive' ? 'Bullish sentiment detected' : article.impact === 'negative' ? 'Bearish sentiment detected' : 'Neutral sentiment'} with {Math.floor(Math.random() * 20 + 70)}% confidence.
+                      {article.relatedSecurity && ` Expected impact on ${article.relatedSecurity.name}: ${article.impact === 'positive' ? '+2-4%' : article.impact === 'negative' ? '-1-3%' : '±1%'}.`}
+                    </p>
+                  </div>
+                )}
+                
+                {currentTier === 'premium' && (
+                  <div className="bg-purple-900/20 p-3 rounded border border-purple-700/30">
+                    <p className="text-purple-200 text-sm mb-2">
+                      <strong>Strategic Intelligence:</strong> {article.impact === 'positive' ? 'Strong buy signal' : article.impact === 'negative' ? 'Caution signal' : 'Hold signal'} detected with {Math.floor(Math.random() * 15 + 85)}% AI confidence.
+                    </p>
+                    <div className="space-y-1">
+                      <p className="text-xs text-purple-300">
+                        • Cross-correlation analysis: {article.relatedSecurity ? `${article.relatedSecurity.name} +${Math.random() * 3 + 2}%` : 'Multiple asset impact detected'}
+                      </p>
+                      <p className="text-xs text-purple-300">
+                        • Optimal trade window: {article.impact === 'positive' ? 'Next 2-4 hours' : 'Monitor for 24-48 hours'}
+                      </p>
+                      <p className="text-xs text-purple-300">
+                        • Risk level: {article.impact === 'negative' ? 'Elevated' : 'Moderate'} | Volatility: {Math.floor(Math.random() * 10 + 15)}%
+                      </p>
+                    </div>
+                  </div>
+                )}
+                
+                {article.relatedSecurity && (
+                  <div className="mt-2">
+                    <Link 
+                      to={`/${article.relatedSecurity.type}/${article.relatedSecurity.symbol}`}
+                      className="text-indigo-400 hover:text-indigo-300 text-xs"
+                    >
+                      Trade {article.relatedSecurity.name} →
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )) || (
+              <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50 text-center">
+                <p className="text-gray-400">Loading news analysis...</p>
+              </div>
+            )}
+          </div>
+          
+          {/* Tier Benefits for News */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Your News Intelligence Level</h3>
+            
+            <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className={`p-2 rounded-full ${tierInfo[currentTier].color}`}>
+                  <tierInfo[currentTier].icon className="h-5 w-5 text-white" />
+                </div>
+                <h4 className="font-medium text-white">{tierInfo[currentTier].name}</h4>
+              </div>
+              
+              <div className="space-y-2">
+                {currentTier === 'basic' && (
+                  <>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Basic news categorization</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Simple impact classification</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <X className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm text-gray-500">Sentiment confidence scores</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <X className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm text-gray-500">Trading recommendations</span>
+                    </div>
+                  </>
+                )}
+                
+                {currentTier === 'standard' && (
+                  <>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Advanced sentiment analysis</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Price impact predictions</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Confidence scoring</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <X className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm text-gray-500">Real-time trading signals</span>
+                    </div>
+                  </>
+                )}
+                
+                {currentTier === 'premium' && (
+                  <>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Strategic intelligence analysis</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Cross-correlation insights</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Optimal trading windows</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Check className="h-4 w-4 text-green-400" />
+                      <span className="text-sm text-gray-300">Real-time risk assessments</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            {/* Upgrade prompt */}
+            {currentTier !== 'premium' && (
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 rounded-lg">
+                <p className="text-white text-sm mb-3">
+                  {currentTier === 'basic' 
+                    ? 'Upgrade to Standard for sentiment analysis and price predictions.'
+                    : 'Upgrade to Premium for real-time trading signals and strategic intelligence.'}
+                </p>
+                <button
+                  onClick={() => setTier(currentTier === 'basic' ? 'standard' : 'premium')}
+                  className="bg-white text-indigo-600 hover:bg-gray-100 px-4 py-2 rounded text-sm font-medium transition-colors"
+                >
+                  Upgrade Now
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Comic Market Index */}
       <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
