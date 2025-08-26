@@ -38,9 +38,9 @@ export function IdeaNodeRenderer({
       />
       <text
         x={node.position.x}
-        y={node.position.y + 5}
+        y={node.position.y}
         fill="white"
-        fontSize="10"
+        fontSize="9"
         textAnchor="middle"
         className="pointer-events-none font-medium select-none"
         style={{
@@ -49,6 +49,21 @@ export function IdeaNodeRenderer({
       >
         {node.label.length > 12 ? node.label.substring(0, 12) + '...' : node.label}
       </text>
+      {node.value !== undefined && (
+        <text
+          x={node.position.x}
+          y={node.position.y + 12}
+          fill="#FCD34D"
+          fontSize="8"
+          textAnchor="middle"
+          className="pointer-events-none font-medium select-none"
+          style={{
+            textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)'
+          }}
+        >
+          CC {node.value.toLocaleString()}
+        </text>
+      )}
     </g>
   );
 }

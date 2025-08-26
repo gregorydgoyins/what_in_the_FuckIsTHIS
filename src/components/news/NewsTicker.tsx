@@ -109,7 +109,7 @@ export function NewsTicker() {
       
       {/* News Ticker */}
       <div 
-        className="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/50 relative"
+        className="bg-slate-800/70 backdrop-blur-md border-b border-slate-700/50 relative"
         role="complementary"
         aria-label="Comic News Ticker"
         onMouseEnter={() => setIsHovering(true)}

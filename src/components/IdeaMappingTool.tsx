@@ -46,7 +46,8 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     label: '',
     description: '',
     category: 'general',
-    tags: ''
+    tags: '',
+    value: undefined as number | undefined
   });
   
   const [newRelationshipForm, setNewRelationshipForm] = useState({
@@ -55,7 +56,8 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
     type: 'related-to' as RelationshipType,
     strength: 'moderate' as RelationshipStrength,
     direction: 'unidirectional' as RelationshipDirection,
-    description: ''
+    description: '',
+    weight: undefined as number | undefined
   });
 
   // Refs
@@ -103,6 +105,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         description: newNodeForm.description,
         category: newNodeForm.category,
         tags: newNodeForm.tags.split(',').map(tag => tag.trim()).filter(Boolean),
+        value: newNodeForm.value,
         position: { 
           x: Math.random() * 400 + 100, 
           y: Math.random() * 300 + 100 
@@ -110,7 +113,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
       });
       
       setNodes(prev => [...prev, newNode]);
-      setNewNodeForm({ label: '', description: '', category: 'general', tags: '' });
+      setNewNodeForm({ label: '', description: '', category: 'general', tags: '', value: undefined });
       setIsCreateNodeModalOpen(false);
     } catch (error) {
       console.error('Failed to create node:', error);
@@ -125,6 +128,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         label: newNodeForm.label,
         description: newNodeForm.description,
         category: newNodeForm.category,
+        value: newNodeForm.value,
         tags: newNodeForm.tags.split(',').map(tag => tag.trim()).filter(Boolean)
       });
       
@@ -163,6 +167,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         type: newRelationshipForm.type,
         strength: newRelationshipForm.strength,
         direction: newRelationshipForm.direction,
+        weight: newRelationshipForm.weight,
         description: newRelationshipForm.description
       });
       
@@ -173,7 +178,8 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
         type: 'related-to',
         strength: 'moderate',
         direction: 'unidirectional',
-        description: ''
+        description: '',
+        weight: undefined
       });
       setIsCreateRelationshipModalOpen(false);
     } catch (error) {
@@ -215,6 +221,7 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
       label: node.label,
       description: node.description,
       category: node.category,
+      value: node.value,
       tags: node.tags.join(', ')
     });
     setIsEditNodeModalOpen(true);
@@ -503,6 +510,22 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
                 </p>
               </div>
               
+              <div className="bg-slate-700/50 p-3 rounded-lg border border-slate-600/50">
+                <p className="text-sm text-gray-400">Total Network Value</p>
+                <p className="text-xl font-bold text-yellow-400">
+                  CC {filteredNodes.reduce((sum, node) => sum + (node.value || 0), 0).toLocaleString()}
+                </p>
+              </div>
+              
+              <div className="bg-slate-700/50 p-3 rounded-lg border border-slate-600/50">
+                <p className="text-sm text-gray-400">Avg. Relationship Weight</p>
+                <p className="text-xl font-bold text-white">
+                  {filteredRelationships.length > 0 
+                    ? (filteredRelationships.reduce((sum, rel) => sum + (rel.weight || 0), 0) / filteredRelationships.length).toFixed(2)
+                    : '0.00'}
+                </p>
+              </div>
+              
               {/* Most connected nodes */}
               <div className="bg-slate-700/50 p-3 rounded-lg border border-slate-600/50">
                 <h4 className="font-medium text-white mb-2">Most Connected</h4>
@@ -537,6 +560,9 @@ export function IdeaMappingTool({ className = '' }: IdeaMappingToolProps) {
                       <div>
                         <h4 className="font-medium text-white mb-2">{node.label}</h4>
                         <p className="text-gray-300 text-sm mb-2">{node.description}</p>
+                        {node.value && (
+                          <p className="text-yellow-400 text-sm mb-2">Value: CC {node.value.toLocaleString()}</p>
+                        )}
                         <div className="flex flex-wrap gap-1">
                           {node.tags.map(tag => (
                             <span key={tag} className="px-2 py-1 bg-slate-700/50 text-gray-300 rounded text-xs">

@@ -14,7 +14,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-slate-900 text-white">
       {/* Header */}
-      <header className="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/50">
+      <header className="sticky top-0 z-40 bg-slate-800/70 backdrop-blur-md border-b border-slate-700/50">
         <div className="container-responsive mx-auto">
           <div className="flex items-center justify-between h-16">
             {/* Logo and Mobile Menu Button */}
@@ -125,8 +125,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </div>
       
       {/* Main Content */}
-      <main className="container-responsive mx-auto py-6">
-        {children}
+      <main className="relative">
+        <div className="main-content-parallax">
+          <div className="container-responsive mx-auto py-6">
+            {children}
+          </div>
+        </div>
       </main>
       
       {/* Footer */}

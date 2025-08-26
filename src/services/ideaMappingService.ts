@@ -9,6 +9,7 @@ const mockIdeaNodes: IdeaNode[] = [
     category: 'technology',
     tags: ['AI', 'trading', 'automation'],
     position: { x: 100, y: 100 },
+    value: 500000,
     createdAt: new Date('2024-05-01'),
     updatedAt: new Date('2024-05-01')
   },
@@ -19,6 +20,7 @@ const mockIdeaNodes: IdeaNode[] = [
     category: 'technology',
     tags: ['API', 'data', 'infrastructure'],
     position: { x: 300, y: 150 },
+    value: 250000,
     createdAt: new Date('2024-05-02'),
     updatedAt: new Date('2024-05-02')
   },
@@ -29,6 +31,7 @@ const mockIdeaNodes: IdeaNode[] = [
     category: 'finance',
     tags: ['risk', 'portfolio', 'protection'],
     position: { x: 200, y: 300 },
+    value: 350000,
     createdAt: new Date('2024-05-03'),
     updatedAt: new Date('2024-05-03')
   },
@@ -39,6 +42,7 @@ const mockIdeaNodes: IdeaNode[] = [
     category: 'security',
     tags: ['auth', 'security', 'users'],
     position: { x: 400, y: 200 },
+    value: 150000,
     createdAt: new Date('2024-05-04'),
     updatedAt: new Date('2024-05-04')
   },
@@ -49,6 +53,7 @@ const mockIdeaNodes: IdeaNode[] = [
     category: 'technology',
     tags: ['mobile', 'app', 'cross-platform'],
     position: { x: 150, y: 450 },
+    value: 400000,
     createdAt: new Date('2024-05-05'),
     updatedAt: new Date('2024-05-05')
   }
@@ -62,6 +67,7 @@ const mockRelationships: IdeaRelationship[] = [
     type: 'depends-on',
     strength: 'strong',
     direction: 'unidirectional',
+    weight: 0.9,
     description: 'Trading bot requires market data to function',
     createdAt: new Date('2024-05-01'),
     updatedAt: new Date('2024-05-01')
@@ -73,6 +79,7 @@ const mockRelationships: IdeaRelationship[] = [
     type: 'enables',
     strength: 'moderate',
     direction: 'unidirectional',
+    weight: 0.7,
     description: 'Trading bot enables automated risk management',
     createdAt: new Date('2024-05-02'),
     updatedAt: new Date('2024-05-02')
@@ -84,6 +91,7 @@ const mockRelationships: IdeaRelationship[] = [
     type: 'depends-on',
     strength: 'strong',
     direction: 'unidirectional',
+    weight: 0.8,
     description: 'API requires authentication for secure access',
     createdAt: new Date('2024-05-03'),
     updatedAt: new Date('2024-05-03')
@@ -95,6 +103,7 @@ const mockRelationships: IdeaRelationship[] = [
     type: 'depends-on',
     strength: 'strong',
     direction: 'unidirectional',
+    weight: 0.85,
     description: 'Mobile app needs API for data access',
     createdAt: new Date('2024-05-04'),
     updatedAt: new Date('2024-05-04')
@@ -106,6 +115,7 @@ const mockRelationships: IdeaRelationship[] = [
     type: 'related-to',
     strength: 'moderate',
     direction: 'bidirectional',
+    weight: 0.6,
     description: 'Risk management features should be available on mobile',
     createdAt: new Date('2024-05-05'),
     updatedAt: new Date('2024-05-05')

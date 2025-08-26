@@ -136,6 +136,19 @@ export function IdeaMappingModals({
                   placeholder="tag1, tag2, tag3..."
                 />
               </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Market Value (CC)</label>
+                <input
+                  type="number"
+                  value={newNodeForm.value || ''}
+                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, value: e.target.value ? parseFloat(e.target.value) : undefined }))}
+                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
+                  placeholder="Enter market value..."
+                  min="0"
+                  step="1000"
+                />
+              </div>
             </div>
             
             <div className="flex justify-end space-x-3 p-6 border-t border-slate-700/50">
@@ -255,6 +268,20 @@ export function IdeaMappingModals({
                   placeholder="Describe the relationship..."
                 />
               </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Weight (0.0 - 1.0)</label>
+                <input
+                  type="number"
+                  value={newRelationshipForm.weight || ''}
+                  onChange={(e) => setNewRelationshipForm(prev => ({ ...prev, weight: e.target.value ? parseFloat(e.target.value) : undefined }))}
+                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
+                  placeholder="Enter relationship weight..."
+                  min="0"
+                  max="1"
+                  step="0.1"
+                />
+              </div>
             </div>
             
             <div className="flex justify-end space-x-3 p-6 border-t border-slate-700/50">
@@ -336,6 +363,19 @@ export function IdeaMappingModals({
                   value={newNodeForm.tags}
                   onChange={(e) => setNewNodeForm(prev => ({ ...prev, tags: e.target.value }))}
                   className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Market Value (CC)</label>
+                <input
+                  type="number"
+                  value={newNodeForm.value || ''}
+                  onChange={(e) => setNewNodeForm(prev => ({ ...prev, value: e.target.value ? parseFloat(e.target.value) : undefined }))}
+                  className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white"
+                  placeholder="Enter market value..."
+                  min="0"
+                  step="1000"
                 />
               </div>
             </div>

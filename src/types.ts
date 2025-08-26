@@ -218,6 +218,7 @@ export interface IdeaNode {
   category: string;
   tags: string[];
   position?: { x: number; y: number };
+  value?: number;
   createdAt: Date;
   updatedAt: Date;
   metadata?: Record<string, any>;
@@ -231,6 +232,7 @@ export interface IdeaRelationship {
   customLabel?: string;
   strength: RelationshipStrength;
   direction: RelationshipDirection;
+  weight?: number;
   description?: string;
   createdAt: Date;
   updatedAt: Date;

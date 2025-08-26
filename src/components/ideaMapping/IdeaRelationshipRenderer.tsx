@@ -86,6 +86,21 @@ export function IdeaRelationshipRenderer({
       >
         {relationship.type.replace('-', ' ')}
       </text>
+      {relationship.weight !== undefined && (
+        <text
+          x={midX}
+          y={midY - labelOffset + 12}
+          fill="#FCD34D"
+          fontSize="8"
+          textAnchor="middle"
+          className="pointer-events-none select-none"
+          style={{
+            textShadow: '0 1px 3px rgba(0, 0, 0, 0.8)'
+          }}
+        >
+          Weight: {relationship.weight.toFixed(1)}
+        </text>
+      )}
     </g>
   );
 }
