@@ -1,7 +1,7 @@
 import React from 'react';
 import { Brain, Crown, Star, Lightbulb, Zap, Check, X, Network, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import { Breadcrumbs } from '../components/common/Breadcrumbs';
 import { IdeaClustering } from '../components/IdeaClustering';
 import { useSubscriptionStore } from '../store/subscriptionStore';
@@ -34,6 +34,52 @@ export function IdeasPage() {
     { category: 'Bonds', volume: 450000, growth: 3.1 },
     { category: 'Funds', volume: 680000, growth: 7.9 }
   ];
+
+  // Comic Market Index data
+  const comicMarketIndexData = [
+    { time: '9:30', value: 14150 },
+    { time: '10:00', value: 14180 },
+    { time: '10:30', value: 14220 },
+    { time: '11:00', value: 14195 },
+    { time: '11:30', value: 14250 },
+    { time: '12:00', value: 14280 },
+    { time: '12:30', value: 14265 },
+    { time: '1:00', value: 14290 },
+    { time: '1:30', value: 14315 },
+    { time: '2:00', value: 14350 },
+    { time: '2:30', value: 14325 },
+    { time: '3:00', value: 14375 },
+    { time: '3:30', value: 14400 }
+  ];
+
+  // Portfolio breakdown data
+  const portfolioBreakdownData = [
+    { name: 'Heroes', value: 35, color: '#22C55E' },
+    { name: 'Villains', value: 20, color: '#EF4444' },
+    { name: 'Creators', value: 15, color: '#3B82F6' },
+    { name: 'Publishers', value: 12, color: '#8B5CF6' },
+    { name: 'Bonds', value: 10, color: '#F59E0B' },
+    { name: 'Funds', value: 8, color: '#EC4899' }
+  ];
+
+  // Top gainers data
+  const topGainersData = [
+    { symbol: 'ASM300', name: 'Amazing Spider-Man #300', change: 8.5, price: 2650 },
+    { symbol: 'BATM', name: 'Batman', change: 6.2, price: 4462 },
+    { symbol: 'TMFS', name: 'Todd McFarlane', change: 5.8, price: 1958 },
+    { symbol: 'SPDR', name: 'Spider-Man', change: 5.3, price: 3686 },
+    { symbol: 'WNDR', name: 'Wonder Woman', change: 4.9, price: 3986 }
+  ];
+
+  // Market laggards data
+  const marketLaggardsData = [
+    { symbol: 'LEXL', name: 'Lex Luthor', change: -3.2, price: 3488 },
+    { symbol: 'ARTS', name: 'Stanley Artgerm Lau', change: -2.8, price: 1459 },
+    { symbol: 'BMBS', name: 'Brian Michael Bendis', change: -2.1, price: 2058 },
+    { symbol: 'GCAP', name: 'Greg Capullo', change: -1.9, price: 1911 },
+    { symbol: 'DCCB', name: 'DC Comics Bond', change: -1.5, price: 1013 }
+  ];
+
   const tierInfo = {
     basic: {
       name: 'Market Observer',
@@ -233,6 +279,147 @@ export function IdeasPage() {
 
       {/* AI Clustering Component */}
       <IdeaClustering />
+
+      {/* Comic Market Index */}
+      <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+        <h2 className="text-xl font-bold text-white mb-6">Comic Market Index (CMI)</h2>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-3">
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={comicMarketIndexData}>
+                  <defs>
+                    <linearGradient id="colorCMI" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                  <XAxis dataKey="time" stroke="#94a3b8" />
+                  <YAxis stroke="#94a3b8" domain={['dataMin - 50', 'dataMax + 50']} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#1e293b',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      color: '#e2e8f0'
+                    }}
+                    formatter={(value: number) => [value.toLocaleString(), 'CMI']}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="value" 
+                    stroke="#3B82F6" 
+                    strokeWidth={2}
+                    fillOpacity={1} 
+                    fill="url(#colorCMI)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+              <p className="text-sm text-gray-400">Current Index</p>
+              <p className="text-2xl font-bold text-white">14,400</p>
+              <p className="text-green-400 text-sm">+250 (+1.77%)</p>
+            </div>
+            <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+              <p className="text-sm text-gray-400">Today's Range</p>
+              <p className="text-white">14,150 - 14,400</p>
+            </div>
+            <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+              <p className="text-sm text-gray-400">52-Week High</p>
+              <p className="text-white">15,250</p>
+            </div>
+            <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+              <p className="text-sm text-gray-400">52-Week Low</p>
+              <p className="text-white">12,800</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Portfolio Breakdown and Market Movers */}
+      <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+        <h2 className="text-xl font-bold text-white mb-6">Portfolio & Market Movers</h2>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Portfolio Breakdown Pie Chart */}
+          <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+            <h3 className="text-lg font-semibold text-white mb-4">Portfolio Breakdown</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={portfolioBreakdownData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {portfolioBreakdownData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value: number) => [`${value}%`, 'Allocation']}
+                    contentStyle={{
+                      backgroundColor: '#1e293b',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      color: '#e2e8f0'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          
+          {/* Top Gainers */}
+          <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+            <h3 className="text-lg font-semibold text-white mb-4">Top Gainers</h3>
+            <div className="space-y-3">
+              {topGainersData.map((stock, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-600/50">
+                  <div>
+                    <p className="text-white font-medium">{stock.symbol}</p>
+                    <p className="text-xs text-gray-400">{stock.name}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-green-400 font-bold">+{stock.change}%</p>
+                    <p className="text-sm text-gray-300">CC {stock.price.toLocaleString()}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Market Laggards */}
+          <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+            <h3 className="text-lg font-semibold text-white mb-4">Market Laggards</h3>
+            <div className="space-y-3">
+              {marketLaggardsData.map((stock, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-600/50">
+                  <div>
+                    <p className="text-white font-medium">{stock.symbol}</p>
+                    <p className="text-xs text-gray-400">{stock.name}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-red-400 font-bold">{stock.change}%</p>
+                    <p className="text-sm text-gray-300">CC {stock.price.toLocaleString()}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Market Intelligence Charts */}
       <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
