@@ -50,10 +50,10 @@ export function Dashboard() {
         <div className="relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between mb-6">
             <div className="text-center lg:text-left mb-6 lg:mb-0">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+              <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg">
                 Panel Profits
               </h1>
-              <p className="text-xl text-white/90 mb-4 max-w-2xl">
+              <p className="text-lg md:text-xl text-white/90 mb-4 max-w-2xl font-medium">
                 AI-Powered Comic Book Trading Platform with Advanced Market Intelligence
               </p>
               <div className="flex items-center justify-center lg:justify-start space-x-4 text-sm text-white/80">

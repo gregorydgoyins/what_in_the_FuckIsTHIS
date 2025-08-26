@@ -77,6 +77,8 @@ const MarketCalendarPage = lazy(() => import('./pages/markets/MarketCalendarPage
 // Learning pages
 const LearningCenter = lazy(() => import('./components/learn/LearningCenter').then(module => ({ default: module.LearningCenter })));
 const ComicFundamentalsCoursePage = lazy(() => import('./pages/learn/ComicFundamentalsCoursePage').then(module => ({ default: module.ComicFundamentalsCoursePage })));
+const AdvancedOptionsCoursePage = lazy(() => import('./pages/learn/AdvancedOptionsCoursePage').then(module => ({ default: module.AdvancedOptionsCoursePage })));
+const PortfolioManagementCoursePage = lazy(() => import('./pages/learn/PortfolioManagementCoursePage').then(module => ({ default: module.PortfolioManagementCoursePage })));
 
 // News pages
 const BlogFeed = lazy(() => import('./components/news/BlogFeed').then(module => ({ default: module.BlogFeed })));
@@ -188,6 +190,8 @@ function App() {
             {/* Learning Routes */}
             <Route path="/learn" element={<LearningCenter />} />
             <Route path="/learn/comic-fundamentals" element={<ComicFundamentalsCoursePage />} />
+            <Route path="/learn/advanced-options" element={<AdvancedOptionsCoursePage />} />
+            <Route path="/learn/portfolio-management" element={<PortfolioManagementCoursePage />} />
             
             {/* News Routes */}
             <Route path="/news" element={<NewsFeed />} />

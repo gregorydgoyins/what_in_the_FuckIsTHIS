@@ -132,6 +132,30 @@ const mockLearningModules: LearningModule[] = [
     points: 200
   },
   {
+    id: '10',
+    title: 'Advanced Options Strategies',
+    description: 'Master sophisticated options strategies for comic book investments including straddles, butterflies, and complex spreads',
+    duration: '150 min',
+    difficulty: 'Advanced',
+    progress: 45,
+    completed: false,
+    category: 'Trading',
+    lessons: 10,
+    points: 385
+  },
+  {
+    id: '11',
+    title: 'Portfolio Management & Diversification',
+    description: 'Learn professional portfolio management techniques tailored for comic book investments with advanced risk management',
+    duration: '145 min',
+    difficulty: 'Intermediate',
+    progress: 60,
+    completed: false,
+    category: 'Portfolio',
+    lessons: 10,
+    points: 392
+  },
+  {
     id: '9',
     title: 'Risk Management Essentials',
     description: 'Protect your portfolio with effective risk management strategies',
@@ -463,6 +487,12 @@ export function LearningCenter() {
               </div>
               <Link 
                 to={module.id === '1' ? '/learn/comic-fundamentals' : '#'}
+                to={
+                  module.id === '1' ? '/learn/comic-fundamentals' :
+                  module.id === '10' ? '/learn/advanced-options' :
+                  module.id === '11' ? '/learn/portfolio-management' :
+                  '#'
+                }
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 module.completed 
                   ? 'bg-green-600 hover:bg-green-700 text-white' 
