@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 import { AssetCard } from './AssetCard';
 import { Character, Location, Gadget } from '../../types';
+import { useAssetMarketData } from '../../hooks/useAssetMarketData';
+import { Loader } from '../common/Loader';
 
 interface AssetStockListProps {
-  assets: (Character | Location | Gadget)[];
   assetType: 'character' | 'location' | 'gadget';
   title: string;
   description?: string;
@@ -17,7 +18,6 @@ interface AssetStockListProps {
 }
 
 export function AssetStockList({ 
-  assets, 
   assetType, 
   title, 
   description,
@@ -29,7 +29,34 @@ export function AssetStockList({
   const [sortBy, setSortBy] = useState('marketCap');
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
+  // Fetch asset data using the new hook
+  const { data: assets, isLoading, error } = useAssetMarketData<Character | Location | Gadget>({
+    assetType,
+    autoRefresh: true,
+    refreshInterval: 10000 // 10 seconds
+  });
+
   const ratings = ['all', 'Strong Buy', 'Buy', 'Hold', 'Sell'];
+
+  if (isLoading) {
+    return <Loader label={`Loading ${assetType}s...`} />;
+  }
+
+  if (error) {
+    return (
+      <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl text-center">
+        <p className="text-red-400">Error loading {assetType}s: {error}</p>
+      </div>
+    );
+  }
+
+  if (!assets || !Array.isArray(assets)) {
+    return (
+      <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl text-center">
+        <p className="text-gray-400">No {assetType}s available</p>
+      </div>
+    );
+  }
 
   // Get icon based on asset type
   const getAssetIcon = () => {
@@ -46,7 +73,7 @@ export function AssetStockList({
   };
 
   // Filter assets based on selected filters
-  const filteredAssets = assets
+  const filteredAssets = (assets as (Character | Location | Gadget)[])
     .filter(asset => {
       const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            asset.symbol.toLowerCase().includes(searchQuery.toLowerCase());
@@ -160,7 +187,7 @@ export function AssetStockList({
       </div>
 
       {/* Assets Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredAssets.map((asset) => (
           <AssetCard 
             key={asset.id}

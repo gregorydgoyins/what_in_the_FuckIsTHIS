@@ -1,7 +1,6 @@
 import React from 'react';
 import { Breadcrumbs } from '../../components/common/Breadcrumbs';
 import { AssetStockList } from '../../components/asset/AssetStockList';
-import { heroes } from '../../data/characterData';
 
 export function HeroStockPage() {
   return (
@@ -11,7 +10,6 @@ export function HeroStockPage() {
         { name: 'Heroes' }
       ]} />
       <AssetStockList 
-        assets={heroes}
         assetType="character"
         title="Superhero Stocks"
         description="Invest in the most iconic superheroes from across the comic universe. These characters represent the pinnacle of heroism and typically offer stable growth with occasional spikes during major media adaptations."
