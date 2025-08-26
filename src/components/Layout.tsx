@@ -46,7 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <Link to="/ideas" className="nav-link flex items-center space-x-2">
                 <Lightbulb className="h-4 w-4" />
-                <span>AI Intelligence</span>
+                <span>Key Comics</span>
               </Link>
               <Link to="/trading" className="nav-link flex items-center space-x-2">
                 <TrendingUp className="h-4 w-4" />
@@ -104,7 +104,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             Home
           </Link>
           <Link to="/ideas" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
-            AI Intelligence
+            Key Comics
           </Link>
           <Link to="/trading" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
             Trading

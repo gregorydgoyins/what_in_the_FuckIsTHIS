@@ -105,7 +105,7 @@ export function Dashboard() {
             >
               <span className="relative z-10 flex items-center space-x-3">
                 <Brain className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-                <span>AI Market Intelligence</span>
+                <span>AI Market Analysis</span>
                 <ArrowRight className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1" />
               </span>
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
@@ -325,6 +325,78 @@ export function Dashboard() {
 
           {/* AI Recommendations */}
           <RecommendationsCards />
+
+          {/* Key Comic Pricing Search Engine */}
+          <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+            <div className="flex items-center space-x-3 mb-6">
+              <BookOpen className="h-6 w-6 text-indigo-400" />
+              <h2 className="text-2xl font-bold text-white">Key Comic Pricing Search</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search by title, symbol, or character..."
+                    className="pl-10 pr-4 py-3 w-full bg-slate-700/50 border border-slate-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <select className="bg-slate-700/50 text-white border-slate-600/50 rounded-lg px-3 py-2">
+                    <option value="all">All Ages</option>
+                    <option value="golden">Golden Age</option>
+                    <option value="silver">Silver Age</option>
+                    <option value="bronze">Bronze Age</option>
+                    <option value="modern">Modern Age</option>
+                  </select>
+                  
+                  <select className="bg-slate-700/50 text-white border-slate-600/50 rounded-lg px-3 py-2">
+                    <option value="all">All Publishers</option>
+                    <option value="marvel">Marvel</option>
+                    <option value="dc">DC Comics</option>
+                    <option value="image">Image</option>
+                  </select>
+                </div>
+                
+                <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg transition-colors">
+                  Search Comics
+                </button>
+              </div>
+              
+              <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+                <h3 className="font-medium text-white mb-4">Quick Price Lookup</h3>
+                <div className="space-y-3">
+                  {[
+                    { symbol: 'ACM1', title: 'Action Comics #1', price: 3200000, change: 4.06 },
+                    { symbol: 'DTM27', title: 'Detective Comics #27', price: 2800000, change: 3.13 },
+                    { symbol: 'AF15', title: 'Amazing Fantasy #15', price: 1800000, change: 5.57 },
+                    { symbol: 'ASM300', title: 'Amazing Spider-Man #300', price: 2500, change: 5.26 }
+                  ].map((comic, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-slate-800/50 rounded border border-slate-600/50">
+                      <div>
+                        <p className="text-white font-medium text-sm">{comic.title}</p>
+                        <p className="text-xs text-gray-400">{comic.symbol}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-white font-bold text-sm">CC {comic.price.toLocaleString()}</p>
+                        <p className="text-green-400 text-xs">+{comic.change}%</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <Link 
+                  to="/key-comics"
+                  className="block w-full mt-4 bg-slate-600 hover:bg-slate-700 text-white text-center py-2 rounded-lg transition-colors"
+                >
+                  View All Key Comics
+                </Link>
+              </div>
+            </div>
+          </div>
 
           {/* Additional Market Information Modules */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

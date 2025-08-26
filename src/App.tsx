@@ -12,6 +12,7 @@ import { Dashboard } from './components/Dashboard';
 // Lazy loaded pages
 const IdeasPage = lazy(() => import('./pages/IdeasPage').then(module => ({ default: module.IdeasPage })));
 const IdeaMappingPage = lazy(() => import('./pages/IdeaMappingPage').then(module => ({ default: module.IdeaMappingPage })));
+const KeyComicsPage = lazy(() => import('./pages/KeyComicsPage').then(module => ({ default: module.KeyComicsPage })));
 
 // Trading pages
 const TradingPage = lazy(() => import('./pages/trading/TradingPage').then(module => ({ default: module.TradingPage })));
@@ -116,6 +117,7 @@ function App() {
             {/* Ideas Routes */}
             <Route path="/ideas" element={<IdeasPage />} />
             <Route path="/ideas/mapping" element={<IdeaMappingPage />} />
+            <Route path="/key-comics" element={<KeyComicsPage />} />
             
             {/* Trading Routes */}
             <Route path="/trading" element={<TradingPage />} />
