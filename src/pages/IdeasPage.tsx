@@ -1,6 +1,7 @@
 import React from 'react';
 import { Brain, Crown, Star, Lightbulb, Zap, Check, X, Network, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { Breadcrumbs } from '../components/common/Breadcrumbs';
 import { IdeaClustering } from '../components/IdeaClustering';
 import { useSubscriptionStore } from '../store/subscriptionStore';
@@ -9,6 +10,30 @@ import { SubscriptionTier } from '../types';
 export function IdeasPage() {
   const { currentTier, setTier, features } = useSubscriptionStore();
 
+  // Market data for charts
+  const marketTrendData = [
+    { month: 'Jan', heroes: 2400, villains: 1900, creators: 1500, publishers: 1200 },
+    { month: 'Feb', heroes: 2550, villains: 2100, creators: 1650, publishers: 1300 },
+    { month: 'Mar', heroes: 2800, villains: 2300, creators: 1800, publishers: 1400 },
+    { month: 'Apr', heroes: 3100, villains: 2500, creators: 2000, publishers: 1550 },
+    { month: 'May', heroes: 3350, villains: 2700, creators: 2200, publishers: 1700 },
+    { month: 'Jun', heroes: 3200, villains: 2650, creators: 2150, publishers: 1680 }
+  ];
+
+  const sentimentData = [
+    { name: 'Positive', value: 65, color: '#22C55E' },
+    { name: 'Neutral', value: 25, color: '#6B7280' },
+    { name: 'Negative', value: 10, color: '#EF4444' }
+  ];
+
+  const volumeData = [
+    { category: 'Heroes', volume: 2850000, growth: 12.5 },
+    { category: 'Villains', volume: 2100000, growth: 8.2 },
+    { category: 'Creators', volume: 1200000, growth: 15.8 },
+    { category: 'Publishers', volume: 980000, growth: 5.3 },
+    { category: 'Bonds', volume: 450000, growth: 3.1 },
+    { category: 'Funds', volume: 680000, growth: 7.9 }
+  ];
   const tierInfo = {
     basic: {
       name: 'Market Observer',
@@ -209,6 +234,107 @@ export function IdeasPage() {
       {/* AI Clustering Component */}
       <IdeaClustering />
 
+      {/* Market Intelligence Charts */}
+      <div className="bg-slate-800/90 backdrop-blur-md rounded-xl p-6 shadow-xl">
+        <h2 className="text-xl font-bold text-white mb-6">Market Intelligence Dashboard</h2>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* Market Trend Chart */}
+          <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+            <h3 className="text-lg font-semibold text-white mb-4">6-Month Market Performance</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={marketTrendData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                  <XAxis dataKey="month" stroke="#94a3b8" />
+                  <YAxis stroke="#94a3b8" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#1e293b',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      color: '#e2e8f0'
+                    }}
+                  />
+                  <Line type="monotone" dataKey="heroes" stroke="#22c55e" strokeWidth={2} name="Heroes" />
+                  <Line type="monotone" dataKey="villains" stroke="#ef4444" strokeWidth={2} name="Villains" />
+                  <Line type="monotone" dataKey="creators" stroke="#3b82f6" strokeWidth={2} name="Creators" />
+                  <Line type="monotone" dataKey="publishers" stroke="#8b5cf6" strokeWidth={2} name="Publishers" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          
+          {/* Market Sentiment Pie Chart */}
+          <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+            <h3 className="text-lg font-semibold text-white mb-4">Current Market Sentiment</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={sentimentData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({ name, value }) => `${name} ${value}%`}
+                  >
+                    {sentimentData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    formatter={(value: number) => [`${value}%`, 'Sentiment']}
+                    contentStyle={{
+                      backgroundColor: '#1e293b',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      color: '#e2e8f0'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+        
+        {/* Trading Volume Chart */}
+        <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-600/50">
+          <h3 className="text-lg font-semibold text-white mb-4">Trading Volume by Category</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={volumeData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis dataKey="category" stroke="#94a3b8" />
+                <YAxis stroke="#94a3b8" tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
+                <Tooltip
+                  formatter={(value: number) => [`${(value / 1000000).toFixed(1)}M`, 'Volume (CC)']}
+                  contentStyle={{
+                    backgroundColor: '#1e293b',
+                    border: 'none',
+                    borderRadius: '0.5rem',
+                    color: '#e2e8f0'
+                  }}
+                />
+                <Bar dataKey="volume" fill="#818cf8" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          
+          <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+            {volumeData.map((item, index) => (
+              <div key={index} className="bg-slate-800/50 p-3 rounded-lg border border-slate-600/50">
+                <p className="text-sm text-gray-400">{item.category}</p>
+                <p className="text-lg font-bold text-white">CC {(item.volume / 1000000).toFixed(1)}M</p>
+                <p className={`text-sm ${item.growth > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {item.growth > 0 ? '+' : ''}{item.growth}% growth
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       {/* Upgrade CTA */}
       {currentTier !== 'premium' && (
         <div className="bg-gradient-to-r from-orange-600 to-indigo-600 rounded-xl p-6">

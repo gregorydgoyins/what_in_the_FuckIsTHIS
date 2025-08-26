@@ -155,33 +155,6 @@ class NewsService {
     }
   }
 
-      // Transform database results to NewsItem format
-      const newsItems: NewsItem[] = (data || []).map(article => ({
-        id: article.id,
-        title: article.title,
-        description: article.description,
-        content: article.content,
-        publishedAt: new Date(article.published_at),
-        url: article.url,
-        source: article.source,
-        impact: article.impact,
-        imageUrl: article.image_url,
-        keywords: article.keywords || [],
-        relatedSecurity: article.related_securities?.[0] ? {
-          type: article.related_securities[0].security_type,
-          symbol: article.related_securities[0].symbol,
-          name: article.related_securities[0].name
-        } : undefined
-      }));
-
-      return { data: newsItems, error: null };
-    } catch (error) {
-      console.error('News service error:', error);
-      // Return mock data as fallback
-      return { data: mockNewsData.slice(0, options.limit || 10), error: null };
-    }
-  }
-
   async getNewsArticleById(id: string): Promise<{ data: NewsItem | null; error: any }> {
     try {
       // Check if Supabase is properly configured
