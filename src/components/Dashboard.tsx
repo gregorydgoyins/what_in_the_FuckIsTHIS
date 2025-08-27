@@ -15,7 +15,7 @@ import { IPOAnnouncements } from './markets/IPOAnnouncements';
 import { NewsFeed } from './news/NewsFeed';
 import { MarketPerformanceSummary } from './markets/MarketPerformanceSummary';
 import { TradingActivityFeed } from './trading/TradingActivityFeed';
-import { MarketInsights } from './markets/MarketInsights';
+import MarketInsights from './markets/MarketInsights';
 import { useSubscriptionStore } from '../store/subscriptionStore';
 import { SubscriptionTier } from '../types';
 
