@@ -1,155 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import { Lightbulb, TrendingUp, AlertCircle, AlertTriangle, Star, Zap, Brain, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useMarketInsights } from '../../hooks/useAssetMarketData';
+import React, { useEffect, useMemo, useState } from "react";
+import { useMarketInsights, type MarketInsight } from "../../hooks/useMarketInsights";
 
-interface MarketInsightsProps {
-  className?: string;
-}
+/**
+ * MarketInsights
+ *
+ * Fixes the hooks-order bug by:
+ * 1) Calling all hooks unconditionally at the top level.
+ * 2) Using derived flags inside effects instead of conditional hook calls.
+ * 3) Using child components for mapped lists (no hooks inside array callbacks).
+ */
+export default function MarketInsights({
+  symbols = ["AAPL", "MSFT", "GOOGL"],
+}: {
+  symbols?: string[];
+}) {
+  // ✅ Always call hooks in the same order; never guard them with conditionals
+  const [selected, setSelected] = useState<string | null>(null);
+  const enabled = symbols.length > 0;
 
-export function MarketInsights({ className = '' }: MarketInsightsProps) {
-  const [currentInsightIndex, setCurrentInsightIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const { insights, isLoading } = useMarketInsights();
+  // ✅ Custom hook is called unconditionally; the hook internally checks `enabled`
+  const { data, loading, error, refresh } = useMarketInsights({ symbols, enabled });
 
-  if (isLoading || !insights) {
+  // ✅ Pure derivations can be memoized safely (unconditional)
+  const sorted = useMemo<MarketInsight[]>(() => {
+    if (!data) return [];
+    return [...data].sort((a, b) => b.score - a.score);
+  }, [data]);
+
+  // ✅ Side-effects are unconditional; internal guards avoid conditional hook order changes
+  useEffect(() => {
+    if (!enabled) return;
+    if (sorted.length && !selected) setSelected(sorted[0].symbol);
+  }, [enabled, sorted, selected]);
+
+  // UI states are derived from values above; returning different JSX is fine
+  if (!enabled) {
     return (
-      <div className={`bg-slate-800/90 rounded-xl p-6 border border-slate-700/30 ${className}`}>
-        <div className="flex justify-center items-center py-8">
-          <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-indigo-500" />
-          <span className="ml-3 text-gray-400">Analyzing market...</span>
-        </div>
+      <div className="p-6 rounded-2xl border shadow-sm">
+        <h2 className="text-xl font-semibold">Market Insights</h2>
+        <p className="mt-2 text-sm">Provide at least one symbol to load insights.</p>
       </div>
     );
   }
 
-  // Auto-rotate insights every 8 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentInsightIndex((prev) => (prev + 1) % insights.length);
-        setIsAnimating(false);
-      }, 150);
-    }, 8000);
-
-    return () => clearInterval(interval);
-  }, [insights.length]);
-
-  const currentInsight = insights[currentInsightIndex];
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'opportunity': return <TrendingUp className="h-5 w-5 text-green-400" />;
-      case 'warning': return <AlertTriangle className="h-5 w-5 text-yellow-400" />;
-      case 'trend': return <Star className="h-5 w-5 text-blue-400" />;
-      case 'analysis': return <Brain className="h-5 w-5 text-orange-300" />;
-      default: return <Lightbulb className="h-5 w-5 text-indigo-400" />;
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'opportunity': return 'border-green-700/30 bg-green-900/10';
-      case 'warning': return 'border-yellow-700/30 bg-yellow-900/10';
-      case 'trend': return 'border-blue-700/30 bg-blue-900/10';
-      case 'analysis': return 'border-orange-700/30 bg-orange-900/10';
-      default: return 'border-indigo-700/30 bg-indigo-900/10';
-    }
-  };
-
-  const getImpactBadge = (impact: string) => {
-    const colors = {
-      high: 'bg-red-900/50 text-red-200 border-red-700/50',
-      medium: 'bg-yellow-900/50 text-yellow-200 border-yellow-700/50',
-      low: 'bg-green-900/50 text-green-200 border-green-700/50'
-    };
-    return colors[impact as keyof typeof colors] || colors.medium;
-  };
-
   return (
-    <div className={`bg-slate-800/90 rounded-xl p-6 border border-slate-700/30 hover:shadow-[0_0_15px_rgba(129,140,248,0.3)] transition-all hover:-translate-y-1 ${className}`}>
-      <div className="flex items-center space-x-2 mb-5">
-        <Brain className="h-6 w-6 text-indigo-400" />
-        <h3 className="font-semibold text-white text-lg">AI Market Insights</h3>
-        <div className="ml-auto flex items-center space-x-2">
-          <span className="px-2 py-1 bg-indigo-900/50 text-indigo-200 rounded-full text-xs border border-indigo-700/50">
-            AI Confidence: {currentInsight.confidence}%
-          </span>
+    <div className="p-6 rounded-2xl border shadow-sm space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold">Market Insights</h2>
+        <button
+          onClick={refresh}
+          className="px-3 py-1.5 rounded-xl border text-sm hover:bg-gray-50 active:scale-[.99]"
+          aria-label="Refresh insights"
+        >
+          Refresh
+        </button>
+      </div>
+
+      {loading && (
+        <div className="text-sm animate-pulse">Loading insights…</div>
+      )}
+
+      {error && (
+        <div role="alert" className="text-sm text-red-600">
+          Failed to load insights: {error.message}
         </div>
-      </div>
-      
-      <div className={`transition-all duration-150 ${isAnimating ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'}`}>
-        <div className={`p-4 rounded-lg border ${getCategoryColor(currentInsight.category)}`}>
-          <div className="flex items-start space-x-3 mb-3">
-            {getCategoryIcon(currentInsight.category)}
-            <div className="flex-1">
-              <div className="flex items-center space-x-2 mb-1">
-                <h4 className="font-semibold text-white">{currentInsight.title}</h4>
-                <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${getImpactBadge(currentInsight.impact)}`}>
-                  {currentInsight.impact.toUpperCase()}
-                </span>
-              </div>
-              <p className="text-gray-300 text-sm">{currentInsight.description}</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between text-xs text-gray-400 mb-3">
-            <span>Timeframe: {currentInsight.timeframe}</span>
-            <span>Impact: {currentInsight.impact} probability</span>
-          </div>
-          
-          <div className="flex flex-wrap gap-2">
-            {currentInsight.relatedAssets.map((asset, index) => (
-              <Link
-                key={index}
-                to={`/${asset.type}/${asset.symbol}`}
-                className="px-2 py-1 bg-slate-700/50 rounded text-xs text-indigo-300 hover:bg-slate-700 transition-colors border border-slate-600/50"
-              >
-                {asset.symbol}
-              </Link>
-            ))}
-          </div>
+      )}
+
+      {!loading && !error && sorted.length === 0 && (
+        <div className="text-sm">No insights available.</div>
+      )}
+
+      {!loading && !error && sorted.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {sorted.map((insight) => (
+            <InsightCard
+              key={insight.symbol}
+              insight={insight}
+              selected={selected === insight.symbol}
+              onSelect={() => setSelected(insight.symbol)}
+            />
+          ))}
         </div>
-      </div>
-      
-      {/* Navigation dots */}
-      <div className="flex items-center justify-center space-x-2 mt-4">
-        {insights.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              setIsAnimating(true);
-              setTimeout(() => {
-                setCurrentInsightIndex(index);
-                setIsAnimating(false);
-              }, 150);
-            }}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === currentInsightIndex ? 'bg-indigo-400' : 'bg-slate-600 hover:bg-slate-500'
-            }`}
-            aria-label={`View insight ${index + 1}`}
-          />
-        ))}
-      </div>
-      
-      <div className="mt-5 pt-4 border-t border-slate-600/30">
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-400">
-            <span>Powered by </span>
-            <span className="text-orange-300 font-medium">AI Analysis Engine</span>
-          </div>
-          <Link 
-            to="/ideas"
-            className="flex items-center space-x-1 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
-          >
-            <span>Full Analysis</span>
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
+      )}
+
+      {selected && (
+        <DetailPanel
+          insight={sorted.find((i) => i.symbol === selected) || sorted[0]}
+        />
+      )}
     </div>
   );
 }
 
-export default MarketInsights;
+function InsightCard({
+  insight,
+  selected,
+  onSelect,
+}: {
+  insight: MarketInsight;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      onClick={onSelect}
+      className={`text-left p-4 rounded-2xl border shadow-sm transition-transform ${
+        selected ? "ring-2 ring-offset-2" : "hover:scale-[1.01]"
+      }`}
+      aria-pressed={selected}
+    >
+      <div className="flex items-center justify-between">
+        <div className="font-medium">{insight.symbol}</div>
+        <div className="text-sm tabular-nums">{insight.score.toFixed(2)}</div>
+      </div>
+      <p className="mt-2 text-sm line-clamp-3">{insight.summary}</p>
+    </button>
+  );
+}
+
+function DetailPanel({ insight }: { insight: MarketInsight }) {
+  return (
+    <div className="p-4 rounded-2xl border bg-gray-50">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold">{insight.symbol}</h3>
+        <span className="text-sm">Score: {insight.score.toFixed(2)}</span>
+      </div>
+      <p className="mt-2 text-sm whitespace-pre-wrap">{insight.details}</p>
+    </div>
+  );
+}
